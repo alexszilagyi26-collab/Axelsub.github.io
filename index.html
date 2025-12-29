@@ -11,8 +11,8 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   color: #fff;
-  background:red
-   ;
+  background: url("images/bg.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
 /* ===== FEJLÉC ===== */
@@ -20,15 +20,17 @@ header {
   padding: 20px;
   font-size: 28px;
   font-weight: bold;
-  background: linear-gradient(90deg, #ff4500, #ff0000);
+  background: linear-gradient(90deg, rgba(255,69,0,0.8), rgba(255,0,0,0.8));
+  backdrop-filter: blur(4px);
 }
 
-/* ===== MENÜ ===== */
+/* ===== MENÜ (ÁTLÁTSZÓ) ===== */
 nav {
-  background: #111;
   position: sticky;
   top: 0;
   z-index: 9999;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
 }
 
 nav ul {
@@ -41,7 +43,6 @@ nav ul {
 }
 
 nav li {
-  position: relative;
   cursor: pointer;
   font-weight: bold;
 }
@@ -50,43 +51,35 @@ nav li:hover {
   color: #ff4500;
 }
 
-/* ===== LENYÍLÓ (STABIL) ===== */
-.dropdown {
-  position: relative;
-}
+/* ===== DROPDOWN ===== */
+.dropdown { position: relative; }
 
 .dropdown-content {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  background: #1c1c1c;
+  background: rgba(0,0,0,0.85);
   padding: 12px 18px;
   border-radius: 10px;
   min-width: 220px;
-  z-index: 9999;
 }
 
-.dropdown-content li {
-  padding: 10px 0;
-  font-weight: normal;
-}
-
-.dropdown-content li:hover {
-  color: #ff4500;
-}
-
-/* 🔥 EZ A FIX */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
+.dropdown-content li {
+  padding: 8px 0;
+}
+
 /* ===== ÚJ RÉSZEK ===== */
 .new-episodes {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   padding: 20px;
   margin: 20px;
   border-radius: 12px;
+  backdrop-filter: blur(4px);
 }
 
 .new-episodes h2 {
@@ -94,20 +87,21 @@ nav li:hover {
   color: #ff4500;
 }
 
-/* ===== ANIME KÁRTYÁK ===== */
+/* ===== GRID ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px;
+  padding: 25px;
 }
 
+/* ===== CARD ===== */
 .card {
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 14px;
   overflow: hidden;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: 0.3s;
 }
 
 .card:hover {
@@ -117,17 +111,12 @@ nav li:hover {
 
 .card img {
   width: 100%;
-  height: 260px;
+  height: 280px;
   object-fit: cover;
 }
 
 .card div {
   padding: 12px;
-  font-size: 15px;
-}
-
-.soon {
-  opacity: 0.6;
 }
 
 a {
@@ -148,9 +137,8 @@ a {
     <li class="dropdown">
       Anime ▾
       <ul class="dropdown-content">
-        <li>Aktív animék</li>
+        <li>Futó animék</li>
         <li>Befejezett animék</li>
-        <li>Hamarosan</li>
       </ul>
     </li>
     <li>Manga</li>
@@ -160,34 +148,34 @@ a {
 </nav>
 
 <section class="new-episodes">
-  <h2>🆕 Új részek</h2>
+  <h2>🆕 Ajánlott animék</h2>
   <p>
-    • Kingdom – 6. évad 13. rész (Magyar felirat)<br>
+    • Kingdom – 6. évad 13. rész<br>
     • Chitose-kun wa Ramune Bin no Naka – 9. rész<br>
     • Kakuriyo no Yadomeshi Ni – 12. rész
   </p>
 </section>
 
 <section class="grid">
+
   <a href="kingdom.html">
     <div class="card">
       <img src="images/kingdom.jpg">
-      <div>Kingdom</div>
+      <div>Kingdom<br><small>6. évad – fut</small></div>
     </div>
   </a>
 
-  <div class="card soon">
-    <img src="images/aot.jpg">
-    <div>Attack on Titan<br><small>(készül)</small></div>
+  <div class="card">
+    <img src="images/chitose.jpg">
+    <div>Chitose-kun wa Ramune Bin no Naka<br><small>9. rész – fut</small></div>
   </div>
 
-  <div class="card soon">
-    <img src="images/jjk.jpg">
-    <div>Jujutsu Kaisen<br><small>(készül)</small></div>
+  <div class="card">
+    <img src="images/kakuriyo.jpg">
+    <div>Kakuriyo no Yadomeshi Ni<br><small>befejezett</small></div>
   </div>
+
 </section>
 
 </body>
 </html>
-
-
