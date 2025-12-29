@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>AxelSub – Anime Feliratok</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    header {
+      background: #111;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .new-episodes {
+      background: #1a1a1a;
+      padding: 15px;
+    }
+    .new-episodes h2 {
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+    .card {
+      background: #1c1c1c;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .card img {
+      width: 100%;
+      display: block;
+    }
+    .card div {
+      padding: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  AxelSub • Anime Feliratok
+</header>
+
+<section class="new-episodes">
+  <h2>🆕 Új részek</h2>
+  <p>• Kingdom S6 – 13. rész<br>
+     • Jujutsu Kaisen – 22. rész</p>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <img src="anime1.jpg" alt="Anime">
+    <div>Kingdom</div>
+  </div>
+
+  <div class="card">
+    <img src="anime2.jpg" alt="Anime">
+    <div>Jujutsu Kaisen</div>
+  </div>
+
+  <div class="card">
+    <img src="anime3.jpg" alt="Anime">
+    <div>Attack on Titan</div>
+  </div>
+</section>
+
+</body>
+</html>
