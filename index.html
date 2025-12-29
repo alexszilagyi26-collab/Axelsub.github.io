@@ -20,12 +20,12 @@
     }
 
     /* ===== MENÜ ===== */
-    .menu {
+    nav {
       background: #181818;
       padding: 10px 20px;
     }
 
-    .menu ul {
+    nav ul {
       list-style: none;
       display: flex;
       gap: 25px;
@@ -33,11 +33,17 @@
       padding: 0;
     }
 
-    .menu li {
+    nav li {
       position: relative;
       cursor: pointer;
     }
 
+    nav a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    /* ===== LENYÍLÓ ===== */
     .dropdown-content {
       display: none;
       position: absolute;
@@ -45,7 +51,8 @@
       left: 0;
       background: #222;
       padding: 10px;
-      min-width: 160px;
+      min-width: 180px;
+      border-radius: 4px;
     }
 
     .dropdown-content li {
@@ -94,11 +101,6 @@
     .soon {
       opacity: 0.6;
     }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
   </style>
 </head>
 
@@ -109,19 +111,20 @@
 </header>
 
 <!-- ===== MENÜ ===== -->
-<nav class="menu">
+<nav>
   <ul>
     <li class="dropdown">
       <span>Anime ▾</span>
       <ul class="dropdown-content">
-        <li>Aktív animék</li>
-        <li>Befejezett animék</li>
-        <li>Hamarosan</li>
+        <li><a href="#">Aktív animék</a></li>
+        <li><a href="#">Befejezett animék</a></li>
+        <li><a href="#">Hamarosan</a></li>
       </ul>
     </li>
-    <li>Manga</li>
-    <li>Hírek</li>
-    <li>Csevegő</li>
+
+    <li><a href="#">Manga</a></li>
+    <li><a href="#">Hírek</a></li>
+    <li><a href="#">Csevegő</a></li>
   </ul>
 </nav>
 
@@ -138,12 +141,10 @@
 <!-- ===== ANIMÉK ===== -->
 <section class="grid">
 
-  <a href="kingdom.html">
-    <div class="card">
-      <img src="images/kingdom.jpg" alt="Kingdom">
-      <div>Kingdom</div>
-    </div>
-  </a>
+  <div class="card">
+    <img src="images/kingdom.jpg" alt="Kingdom">
+    <div>Kingdom</div>
+  </div>
 
   <div class="card soon">
     <img src="images/aot.jpg" alt="Attack on Titan">
