@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AxelSub – Anime Feliratok</title>
+
   <style>
     body {
       margin: 0;
@@ -18,6 +19,44 @@
       font-weight: bold;
     }
 
+    /* ===== MENÜ ===== */
+    .menu {
+      background: #181818;
+      padding: 10px 20px;
+    }
+
+    .menu ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu li {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 28px;
+      left: 0;
+      background: #222;
+      padding: 10px;
+      min-width: 160px;
+    }
+
+    .dropdown-content li {
+      padding: 6px 0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* ===== ÚJ RÉSZEK ===== */
     .new-episodes {
       background: #1a1a1a;
       padding: 15px;
@@ -27,6 +66,7 @@
       margin-top: 0;
     }
 
+    /* ===== ANIME KÁRTYÁK ===== */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -61,12 +101,31 @@
     }
   </style>
 </head>
+
 <body>
 
 <header>
   AxelSub • Anime Feliratok
 </header>
 
+<!-- ===== MENÜ ===== -->
+<nav class="menu">
+  <ul>
+    <li class="dropdown">
+      <span>Anime ▾</span>
+      <ul class="dropdown-content">
+        <li>Aktív animék</li>
+        <li>Befejezett animék</li>
+        <li>Hamarosan</li>
+      </ul>
+    </li>
+    <li>Manga</li>
+    <li>Hírek</li>
+    <li>Csevegő</li>
+  </ul>
+</nav>
+
+<!-- ===== ÚJ RÉSZEK ===== -->
 <section class="new-episodes">
   <h2>🆕 Új részek</h2>
   <p>
@@ -76,9 +135,9 @@
   </p>
 </section>
 
+<!-- ===== ANIMÉK ===== -->
 <section class="grid">
 
-  <!-- KÉSZ – kattintható -->
   <a href="kingdom.html">
     <div class="card">
       <img src="images/kingdom.jpg" alt="Kingdom">
@@ -86,13 +145,11 @@
     </div>
   </a>
 
-  <!-- MÉG NINCS FORDÍTVA -->
   <div class="card soon">
     <img src="images/aot.jpg" alt="Attack on Titan">
     <div>Attack on Titan<br><small>(készül)</small></div>
   </div>
 
-  <!-- MÉG NINCS FORDÍTVA -->
   <div class="card soon">
     <img src="images/jjk.jpg" alt="Jujutsu Kaisen">
     <div>Jujutsu Kaisen<br><small>(készül)</small></div>
