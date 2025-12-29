@@ -12,8 +12,8 @@ body {
   font-family: Arial, sans-serif;
   color: #fff;
   background:
-    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
-    url("images/background.jpg") center/cover fixed;
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
+    url("images/bg.jpg") center/cover fixed;
 }
 
 /* ===== FEJLÉC ===== */
@@ -29,7 +29,7 @@ nav {
   background: #111;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 nav ul {
@@ -51,20 +51,25 @@ nav li:hover {
   color: #ff4500;
 }
 
-/* ===== LENYÍLÓ (NEM TŰNIK EL) ===== */
+/* ===== LENYÍLÓ (STABIL) ===== */
+.dropdown {
+  position: relative;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 35px;
+  top: 100%;
   left: 0;
   background: #1c1c1c;
-  padding: 12px 16px;
-  border-radius: 8px;
-  min-width: 200px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  min-width: 220px;
+  z-index: 9999;
 }
 
 .dropdown-content li {
-  padding: 8px 0;
+  padding: 10px 0;
   font-weight: normal;
 }
 
@@ -72,8 +77,8 @@ nav li:hover {
   color: #ff4500;
 }
 
-.dropdown:hover .dropdown-content,
-.dropdown-content:hover {
+/* 🔥 EZ A FIX */
+.dropdown:hover .dropdown-content {
   display: block;
 }
 
@@ -90,7 +95,7 @@ nav li:hover {
   color: #ff4500;
 }
 
-/* ===== KÁRTYÁK ===== */
+/* ===== ANIME KÁRTYÁK ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -139,7 +144,6 @@ a {
   AxelSub • Anime Feliratok
 </header>
 
-<!-- ===== MENÜ ===== -->
 <nav>
   <ul>
     <li class="dropdown">
@@ -156,36 +160,35 @@ a {
   </ul>
 </nav>
 
-<!-- ===== ÚJ RÉSZEK ===== -->
 <section class="new-episodes">
   <h2>🆕 Új részek</h2>
   <p>
     • Kingdom – 6. évad 13. rész (Magyar felirat)<br>
-    • Chitose-kun wa Ramune Bin no Naka – 9. rész (Magyar felirat)<br>
-    • Kakuriyo no Yadomeshi Ni – 12. rész (Magyar felirat)
+    • Chitose-kun wa Ramune Bin no Naka – 9. rész<br>
+    • Kakuriyo no Yadomeshi Ni – 12. rész
   </p>
 </section>
 
-<!-- ===== ANIMÉK ===== -->
 <section class="grid">
   <a href="kingdom.html">
     <div class="card">
-      <img src="images/kingdom.jpg" alt="Kingdom">
+      <img src="images/kingdom.jpg">
       <div>Kingdom</div>
     </div>
   </a>
 
   <div class="card soon">
-    <img src="images/aot.jpg" alt="Attack on Titan">
+    <img src="images/aot.jpg">
     <div>Attack on Titan<br><small>(készül)</small></div>
   </div>
 
   <div class="card soon">
-    <img src="images/jjk.jpg" alt="Jujutsu Kaisen">
+    <img src="images/jjk.jpg">
     <div>Jujutsu Kaisen<br><small>(készül)</small></div>
   </div>
 </section>
 
 </body>
 </html>
+
 
