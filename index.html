@@ -5,177 +5,208 @@
 <title>AxelSub – Anime Feliratok</title>
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #fff;
-  background: url("images/bg.jpg") no-repeat center center fixed;
-  background-size: cover;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:#fff;
+  background:url("images/bg.jpg") no-repeat center center fixed;
+  background-size:cover;
 }
 
-/* ===== FEJLÉC ===== */
-header {
-  padding: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  background: linear-gradient(90deg, rgba(255,69,0,0.8), rgba(255,0,0,0.8));
-  backdrop-filter: blur(4px);
+/* ===== HEADER ===== */
+header{
+  padding:20px;
+  font-size:28px;
+  font-weight:bold;
+  background:linear-gradient(90deg,rgba(255,69,0,.8),rgba(255,0,0,.8));
+  backdrop-filter:blur(4px);
 }
 
-/* ===== MENÜ (ÁTLÁTSZÓ) ===== */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(6px);
+/* ===== NAV ===== */
+nav{
+  position:sticky;
+  top:0;
+  z-index:9999;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(6px);
 }
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-  padding: 15px 25px;
-  margin: 0;
-  align-items: center;
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:30px;
+  padding:15px 25px;
+  margin:0;
+  align-items:center;
 }
-
-nav li {
-  cursor: pointer;
-  font-weight: bold;
+nav li{
+  cursor:pointer;
+  font-weight:bold;
 }
-
-nav li:hover {
-  color: #ff4500;
-}
+nav li:hover{color:#ff4500}
 
 /* ===== DROPDOWN ===== */
-.dropdown { position: relative; }
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: rgba(0,0,0,0.85);
-  padding: 12px 18px;
-  border-radius: 10px;
-  min-width: 220px;
+.dropdown{position:relative}
+.dropdown-content{
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  background:rgba(0,0,0,.85);
+  padding:12px 18px;
+  border-radius:10px;
 }
+.dropdown:hover .dropdown-content{display:block}
 
-.dropdown:hover .dropdown-content {
-  display: block;
+/* ===== AJÁNLÓ ===== */
+.new-episodes{
+  background:rgba(0,0,0,.55);
+  padding:20px;
+  margin:20px;
+  border-radius:12px;
+  backdrop-filter:blur(4px);
 }
-
-.dropdown-content li {
-  padding: 8px 0;
-}
-
-/* ===== ÚJ RÉSZEK ===== */
-.new-episodes {
-  background: rgba(0,0,0,0.55);
-  padding: 20px;
-  margin: 20px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-}
-
-.new-episodes h2 {
-  margin-top: 0;
-  color: #ff4500;
-}
+.new-episodes h2{color:#ff4500}
 
 /* ===== GRID ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 25px;
-  padding: 25px;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:25px;
+  padding:25px;
 }
-
-/* ===== CARD ===== */
-.card {
-  background: rgba(0,0,0,0.7);
-  border-radius: 14px;
-  overflow: hidden;
-  text-align: center;
-  transition: 0.3s;
+.card{
+  background:rgba(0,0,0,.7);
+  border-radius:14px;
+  overflow:hidden;
+  text-align:center;
+  transition:.3s;
 }
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #ff4500;
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px #ff4500;
 }
-
-.card img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
+.card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
 }
+.card div{padding:12px}
 
-.card div {
-  padding: 12px;
+/* ===== KATALÓGUS (TELJES KÉPERNYŐS KERESŐ) ===== */
+#catalog{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  display:none;
+  z-index:99999;
 }
-
-a {
-  text-decoration: none;
-  color: inherit;
+.catalog-inner{
+  padding:30px;
+}
+.catalog-inner input{
+  width:100%;
+  padding:18px;
+  font-size:22px;
+  border-radius:30px;
+  border:none;
+  outline:none;
+}
+.close{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:30px;
+  cursor:pointer;
+}
+.catalog-grid{
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:25px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  AxelSub • Anime Feliratok
-</header>
+<header>AxelSub • Anime Feliratok</header>
 
 <nav>
-  <ul>
-    <li class="dropdown">
-      Anime ▾
-      <ul class="dropdown-content">
-        <li>Futó animék</li>
-        <li>Befejezett animék</li>
-      </ul>
-    </li>
-    <li>Manga</li>
-    <li>Hírek</li>
-    <li>Csevegő</li>
-  </ul>
+<ul>
+  <li class="dropdown">
+    Anime ▾
+    <ul class="dropdown-content">
+      <li>Futó animék</li>
+      <li>Befejezett animék</li>
+    </ul>
+  </li>
+  <li>Manga</li>
+  <li>Hírek</li>
+  <li>Csevegő</li>
+
+  <li style="margin-left:auto" onclick="openCatalog()">🔍 Keresés</li>
+</ul>
 </nav>
 
 <section class="new-episodes">
-  <h2>🆕 Ajánlott animék</h2>
-  <p>
-    • Kingdom – 6. évad 13. rész<br>
-    • Chitose-kun wa Ramune Bin no Naka – 9. rész<br>
-    • Kakuriyo no Yadomeshi Ni – 12. rész
-  </p>
+<h2>🆕 Ajánlott animék</h2>
+• Kingdom – 6. évad 13. rész<br>
+• Chitose-kun wa Ramune Bin no Naka – 9. rész<br>
+• Kakuriyo no Yadomeshi Ni – 12. rész
 </section>
 
 <section class="grid">
+<div class="card">
+<img src="images/kingdom.jpg">
+<div>Kingdom<br><small>6. évad – fut</small></div>
+</div>
 
-  <a href="kingdom.html">
-    <div class="card">
-      <img src="images/kingdom.jpg">
-      <div>Kingdom<br><small>6. évad – fut</small></div>
-    </div>
-  </a>
+<div class="card">
+<img src="images/chitose.jpg">
+<div>Chitose-kun wa Ramune Bin no Naka<br><small>9. rész – fut</small></div>
+</div>
 
-  <div class="card">
-    <img src="images/chitose.jpg">
-    <div>Chitose-kun wa Ramune Bin no Naka<br><small>9. rész – fut</small></div>
-  </div>
-
-  <div class="card">
-    <img src="images/kakuriyo.jpg">
-    <div>Kakuriyo no Yadomeshi Ni<br><small>befejezett</small></div>
-  </div>
-
+<div class="card">
+<img src="images/kakuriyo.jpg">
+<div>Kakuriyo no Yadomeshi Ni<br><small>befejezett</small></div>
+</div>
 </section>
+
+<!-- ===== KATALÓGUS ===== -->
+<div id="catalog">
+<div class="catalog-inner">
+<span class="close" onclick="closeCatalog()">✖</span>
+
+<input type="text" id="search" placeholder="Mit szeretnél ma nézni?">
+
+<div class="catalog-grid" id="catalogGrid">
+  <div class="card"><img src="images/kingdom.jpg"><div>Kingdom</div></div>
+  <div class="card"><img src="images/chitose.jpg"><div>Chitose-kun wa Ramune Bin no Naka</div></div>
+  <div class="card"><img src="images/kakuriyo.jpg"><div>Kakuriyo no Yadomeshi Ni</div></div>
+</div>
+</div>
+</div>
+
+<script>
+function openCatalog(){
+  document.getElementById("catalog").style.display="block";
+}
+function closeCatalog(){
+  document.getElementById("catalog").style.display="none";
+}
+
+const search=document.getElementById("search");
+const cards=document.querySelectorAll("#catalogGrid .card");
+
+search.addEventListener("keyup",()=>{
+  let v=search.value.toLowerCase();
+  cards.forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
+  });
+});
+</script>
 
 </body>
 </html>
+
