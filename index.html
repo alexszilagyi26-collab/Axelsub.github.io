@@ -12,67 +12,18 @@ body{
   background:#0b0b0b;
   color:#fff;
 }
-
-/* ===== HEADER ===== */
 header{
   padding:18px 25px;
   font-size:26px;
   font-weight:bold;
   background:#111;
   display:flex;
-  align-items:center;
-  gap:30px;
 }
 nav{margin-left:auto}
-nav span{
-  margin-left:20px;
-  cursor:pointer;
-  opacity:.8;
-}
+nav span{margin-left:20px;cursor:pointer;opacity:.8}
 nav span:hover{opacity:1}
 
-/* ===== HERO ===== */
-.hero{
-  position:relative;
-  height:420px;
-  overflow:hidden;
-}
-.hero-slide{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 1s;
-}
-.hero-slide.active{opacity:1}
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
-}
-.hero-content{
-  position:absolute;
-  bottom:40px;
-  left:40px;
-  z-index:2;
-}
-.hero-content h2{
-  font-size:34px;
-  margin:0 0 10px;
-}
-.hero-content button{
-  padding:12px 22px;
-  font-size:16px;
-  background:#ff4500;
-  border:none;
-  color:#fff;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* ===== KÁRTYÁK ===== */
+/* ===== CARDS ===== */
 section{padding:25px}
 .grid{
   display:grid;
@@ -103,7 +54,7 @@ section{padding:25px}
   position:fixed;
   inset:0;
   background:#000;
-  z-index:999999;
+  z-index:9999;
 }
 #playerLayout{
   display:flex;
@@ -118,16 +69,27 @@ section{padding:25px}
 .episodes{
   flex:1;
   background:#111;
+  overflow-y:auto;
 }
 .episodes h3{
   margin:0;
   padding:15px;
   background:#1a1a1a;
 }
+
+/* ===== EPIZÓD CARD ===== */
 .ep{
-  padding:12px;
+  display:flex;
+  gap:10px;
+  padding:10px;
   cursor:pointer;
   border-bottom:1px solid #222;
+}
+.ep img{
+  width:120px;
+  height:70px;
+  object-fit:cover;
+  border-radius:6px;
 }
 .ep:hover,.ep.active{
   background:#ff4500;
@@ -150,47 +112,23 @@ section{padding:25px}
     <span>Anime</span>
     <span>Manga</span>
     <span>Csevegő</span>
-    <span>🔍 Kereső</span>
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-slide active" style="background-image:url('images/chitose.jpg')">
-    <div class="hero-content">
-      <h2>Chitose-kun wa Ramune Bin no Naka</h2>
-    </div>
-  </div>
-  <div class="hero-slide" style="background-image:url('images/kingdom.jpg')">
-    <div class="hero-content">
-      <h2>Kingdom – 6. évad</h2>
-    </div>
-  </div>
-</section>
-
-<!-- AJÁNLOTT -->
 <section>
 <h2>🔥 Ajánlott animék</h2>
 <div class="grid">
-  <div class="card" onclick="openPlayer()">
+
+  <div class="card" onclick="openAnime('kingdom')">
+    <img src="images/kingdom.jpg">
+    <div>Kingdom – 6. évad</div>
+  </div>
+
+  <div class="card" onclick="openAnime('chitose')">
     <img src="images/chitose.jpg">
     <div>Chitose-kun – 9. rész</div>
   </div>
-  <div class="card" onclick="openPlayer()">
-    <img src="images/kingdom.jpg">
-    <div>Kingdom – 6. évad 13. rész</div>
-  </div>
-</div>
-</section>
 
-<!-- HAMAROSAN -->
-<section>
-<h2>⏳ Hamarosan</h2>
-<div class="grid">
-  <div class="card">
-    <img src="images/kizoku.jpg">
-    <div>Kizoku Tensei<br><small>Hamarosan</small></div>
-  </div>
 </div>
 </section>
 
@@ -199,50 +137,74 @@ section{padding:25px}
   <div class="close" onclick="closePlayer()">✖</div>
   <div id="playerLayout">
     <div class="video">
-      <iframe id="player"></iframe>
+      <iframe id="player" allow="autoplay;fullscreen"></iframe>
     </div>
     <div class="episodes">
-      <h3>Epizódok</h3>
-
-      <div class="ep"
-        onclick="play(this,'https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview')">
-        Kingdom – 6. évad 13. rész
-      </div>
-
-      <div class="ep"
-        onclick="play(this,'https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview')">
-        Chitose-kun wa Ramune Bin no Naka – 9. rész
-      </div>
-
+      <h3 id="epTitle">Epizódok</h3>
+      <div id="epList"></div>
     </div>
   </div>
 </div>
 
 <script>
-/* HERO AUTO */
-let slides=document.querySelectorAll(".hero-slide");
-let i=0;
-setInterval(()=>{
-  slides[i].classList.remove("active");
-  i=(i+1)%slides.length;
-  slides[i].classList.add("active");
-},5000);
+/* ===== ADATOK ===== */
+const animes={
+  kingdom:{
+    title:"Kingdom – 6. évad",
+    episodes:[
+      {
+        title:"13. rész",
+        img:"images/kingdom.jpg",
+        link:"https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview"
+      }
+    ]
+  },
+  chitose:{
+    title:"Chitose-kun wa Ramune Bin no Naka",
+    episodes:[
+      {
+        title:"9. rész",
+        img:"images/chitose.jpg",
+        link:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+      }
+    ]
+  }
+};
 
-/* PLAYER */
-function openPlayer(){
+/* ===== PLAYER LOGIKA ===== */
+function openAnime(key){
+  const anime=animes[key];
+  document.getElementById("epTitle").innerText=anime.title;
+  const list=document.getElementById("epList");
+  list.innerHTML="";
+
+  anime.episodes.forEach((ep,i)=>{
+    const div=document.createElement("div");
+    div.className="ep";
+    div.innerHTML=`
+      <img src="${ep.img}">
+      <div>${ep.title}</div>
+    `;
+    div.onclick=()=>play(div,ep.link);
+    list.appendChild(div);
+
+    if(i===0) play(div,ep.link);
+  });
+
   document.getElementById("playerOverlay").style.display="block";
 }
-function closePlayer(){
-  document.getElementById("playerOverlay").style.display="none";
-  document.getElementById("player").src="";
-}
+
 function play(el,link){
   document.getElementById("player").src=link;
   document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
   el.classList.add("active");
 }
+
+function closePlayer(){
+  document.getElementById("playerOverlay").style.display="none";
+  document.getElementById("player").src="";
+}
 </script>
 
 </body>
 </html>
-
