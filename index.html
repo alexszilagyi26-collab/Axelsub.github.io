@@ -23,9 +23,7 @@ header{
   align-items:center;
   gap:30px;
 }
-nav{
-  margin-left:auto;
-}
+nav{margin-left:auto}
 nav span{
   margin-left:20px;
   cursor:pointer;
@@ -74,10 +72,8 @@ nav span:hover{opacity:1}
   cursor:pointer;
 }
 
-/* ===== AJÁNLOTT ===== */
-.recommended{
-  padding:25px;
-}
+/* ===== KÁRTYÁK ===== */
+section{padding:25px}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -131,9 +127,11 @@ nav span:hover{opacity:1}
 .ep{
   padding:12px;
   cursor:pointer;
+  border-bottom:1px solid #222;
 }
-.ep:hover,.active{background:#ff4500}
-
+.ep:hover,.ep.active{
+  background:#ff4500;
+}
 .close{
   position:absolute;
   top:15px;
@@ -161,30 +159,37 @@ nav span:hover{opacity:1}
   <div class="hero-slide active" style="background-image:url('images/chitose.jpg')">
     <div class="hero-content">
       <h2>Chitose-kun wa Ramune Bin no Naka</h2>
-      <button onclick="openPlayer(chitose)">▶ Lejátszás</button>
     </div>
   </div>
-
   <div class="hero-slide" style="background-image:url('images/kingdom.jpg')">
     <div class="hero-content">
-      <h2>Kingdom – 6. évad 13. rész</h2>
-      <button onclick="openPlayer(kingdom)">▶ Lejátszás</button>
+      <h2>Kingdom – 6. évad</h2>
     </div>
   </div>
 </section>
 
 <!-- AJÁNLOTT -->
-<section class="recommended">
+<section>
 <h2>🔥 Ajánlott animék</h2>
 <div class="grid">
-  <div class="card" onclick="openPlayer(chitose)">
+  <div class="card" onclick="openPlayer()">
     <img src="images/chitose.jpg">
     <div>Chitose-kun – 9. rész</div>
   </div>
-
-  <div class="card" onclick="openPlayer(kingdom)">
+  <div class="card" onclick="openPlayer()">
     <img src="images/kingdom.jpg">
     <div>Kingdom – 6. évad 13. rész</div>
+  </div>
+</div>
+</section>
+
+<!-- HAMAROSAN -->
+<section>
+<h2>⏳ Hamarosan</h2>
+<div class="grid">
+  <div class="card">
+    <img src="images/kizoku.jpg">
+    <div>Kizoku Tensei<br><small>Hamarosan</small></div>
   </div>
 </div>
 </section>
@@ -194,31 +199,26 @@ nav span:hover{opacity:1}
   <div class="close" onclick="closePlayer()">✖</div>
   <div id="playerLayout">
     <div class="video">
-      <iframe id="player" allow="autoplay; fullscreen"></iframe>
+      <iframe id="player"></iframe>
     </div>
     <div class="episodes">
       <h3>Epizódok</h3>
-      <div <div class="episodes">
-  <h3>Epizód kiválasztása</h3>
 
-  <div class="ep active">
-    Chitose-kun wa Ramune Bin no Naka – 9. rész
-  </div>
+      <div class="ep"
+        onclick="play(this,'https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview')">
+        Kingdom – 6. évad 13. rész
+      </div>
 
-  <div class="ep">
-    Kingdom – 6. évad 13. rész
-  </div>
-</div>
-</div>
+      <div class="ep"
+        onclick="play(this,'https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview')">
+        Chitose-kun wa Ramune Bin no Naka – 9. rész
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
-/* LINKEK */
-const chitose="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview";
-const kingdom="https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview";
-
 /* HERO AUTO */
 let slides=document.querySelectorAll(".hero-slide");
 let i=0;
@@ -229,16 +229,20 @@ setInterval(()=>{
 },5000);
 
 /* PLAYER */
-function openPlayer(link){
-  document.getElementById("player").src=link;
+function openPlayer(){
   document.getElementById("playerOverlay").style.display="block";
-  document.documentElement.requestFullscreen?.();
 }
 function closePlayer(){
   document.getElementById("playerOverlay").style.display="none";
-  document.exitFullscreen?.();
+  document.getElementById("player").src="";
+}
+function play(el,link){
+  document.getElementById("player").src=link;
+  document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
+  el.classList.add("active");
 }
 </script>
 
 </body>
 </html>
+
