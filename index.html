@@ -56,11 +56,9 @@ header input{
   position:absolute;
   inset:0;
   opacity:0;
-  transition:opacity .6s ease;
+  transition:.6s;
 }
-.slide.active{
-  opacity:1;
-}
+.slide.active{opacity:1}
 .slide img{
   width:100%;
   height:100%;
@@ -76,37 +74,31 @@ header input{
   bottom:30px;
   left:30px;
 }
-.slide-content h1{
-  margin:0 0 10px;
-}
 .play-btn{
   background:#ff4d00;
-  color:#fff;
   border:none;
   padding:10px 16px;
-  border-radius:6px;
+  color:#fff;
   font-weight:bold;
   cursor:pointer;
 }
 
 /* ===== SECTIONS ===== */
-.section{
-  padding:20px;
-}
+.section{padding:20px}
 .cards{
   display:flex;
   gap:15px;
   overflow-x:auto;
 }
 
-/* ===== AJÁNLÓ ===== */
+/* ===== ANIME CARD ===== */
 .anime-card{
   min-width:280px;
   height:160px;
   position:relative;
   border-radius:14px;
   overflow:hidden;
-  background:#000;
+  cursor:pointer;
 }
 .anime-card img{
   width:100%;
@@ -125,17 +117,18 @@ header input{
   font-weight:bold;
 }
 
-/* ===== EPIZÓDOK ===== */
+/* ===== EPISODES ===== */
 .episodes{
   display:flex;
   gap:12px;
   flex-wrap:wrap;
 }
 .ep{
-  width:150px;
+  width:160px;
   background:var(--card);
   border-radius:10px;
   overflow:hidden;
+  cursor:pointer;
 }
 .ep img{
   width:100%;
@@ -146,67 +139,67 @@ header input{
   padding:6px;
   text-align:center;
 }
+
+/* ===== PLAYER ===== */
+.player{
+  padding:20px;
+}
+iframe{
+  width:100%;
+  height:420px;
+  border-radius:12px;
+  border:none;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <input type="text" placeholder="Keresés animekre...">
+  <input placeholder="Keresés animekre...">
   <div class="toggle" onclick="toggleMode()">Dark / Light</div>
 </header>
 
 <!-- ===== SLIDER ===== -->
 <div class="slider">
   <div class="slide active">
-    <img src="images/kingdom.jpg">
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <h1>Kingdom – 6. évad 13. rész</h1>
-      <button class="play-btn">▶ Lejátszás</button>
-    </div>
-  </div>
-
-  <div class="slide">
     <img src="images/chitose.jpg">
     <div class="slide-overlay"></div>
     <div class="slide-content">
-      <h1>Chitose – 9. rész</h1>
-      <button class="play-btn">▶ Lejátszás</button>
+      <h2>Chitose – 9. rész</h2>
+      <button class="play-btn" onclick="playEpisode(9)">▶ Lejátszás</button>
     </div>
   </div>
 </div>
+
+<!-- ===== PLAYER ===== -->
+<div class="player" id="player"></div>
 
 <!-- ===== AJÁNLOTT ===== -->
 <div class="section">
-  <h2>Ajánlott animék</h2>
-  <div class="cards">
-    <div class="anime-card">
-      <img src="images/kingdom.jpg">
-      <div class="overlay"></div>
-      <div class="title">Kingdom – 6. évad</div>
-    </div>
-    <div class="anime-card">
-      <img src="images/chitose.jpg">
-      <div class="overlay"></div>
-      <div class="title">Chitose – 9. rész</div>
-    </div>
+<h2>Ajánlott animék</h2>
+<div class="cards">
+
+  <div class="anime-card" onclick="scrollToEpisodes()">
+    <img src="images/chitose.jpg">
+    <div class="overlay"></div>
+    <div class="title">Chitose‑kun wa Ramune Bin no Naka</div>
   </div>
+
+</div>
 </div>
 
-<!-- ===== LEGUTÓBBI ===== -->
-<div class="section">
-  <h2>Legutóbbi részek</h2>
-  <div class="episodes">
-    <div class="ep">
-      <img src="images/kingdom.jpg">
-      <div>Kingdom – 13. rész</div>
-    </div>
-    <div class="ep">
-      <img src="images/chitose.jpg">
-      <div>Chitose – 9. rész</div>
-    </div>
+<!-- ===== EPIZÓDOK ===== -->
+<div class="section" id="episodes">
+<h2>Epizódok</h2>
+<div class="episodes">
+
+  <div class="ep" onclick="playEpisode(9)">
+    <img src="images/chitose.jpg">
+    <div>9. rész</div>
   </div>
+
+</div>
 </div>
 
 <script>
@@ -214,17 +207,38 @@ function toggleMode(){
   document.body.classList.toggle("light");
 }
 
-/* SLIDER AUTO */
-let index = 0;
-const slides = document.querySelectorAll(".slide");
-
+/* ===== SLIDER AUTO ===== */
+let i=0;
+const slides=document.querySelectorAll(".slide");
 setInterval(()=>{
-  slides[index].classList.remove("active");
-  index = (index + 1) % slides.length;
-  slides[index].classList.add("active");
+  slides[i].classList.remove("active");
+  i=(i+1)%slides.length;
+  slides[i].classList.add("active");
 },5000);
+
+/* ===== VIDEO DATA ===== */
+const episodes={
+  9:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+};
+
+/* ===== PLAY ===== */
+function playEpisode(ep){
+  localStorage.setItem("lastEpisode",ep);
+  document.getElementById("player").innerHTML=
+  `<iframe src="${episodes[ep]}" allowfullscreen></iframe>`;
+  window.scrollTo({top:300,behavior:"smooth"});
+}
+
+/* ===== LOAD LAST ===== */
+const last=localStorage.getItem("lastEpisode");
+if(last) playEpisode(last);
+
+function scrollToEpisodes(){
+  document.getElementById("episodes").scrollIntoView({behavior:"smooth"});
+}
 </script>
 
 </body>
 </html>
+
 
