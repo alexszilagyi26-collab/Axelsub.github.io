@@ -2,26 +2,63 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>AxelSub • Anime Feliratok</title>
+<title>AxelSub • Anime</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root{
+  --bg:#0b0b0b;
+  --card:#111;
+  --text:#fff;
+  --accent:#ff4500;
+}
+body.light{
+  --bg:#f2f2f2;
+  --card:#fff;
+  --text:#000;
+}
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#0b0b0b;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
 }
+
+/* ===== HEADER ===== */
 header{
-  padding:18px 25px;
-  font-size:26px;
-  font-weight:bold;
+  padding:15px 25px;
   background:#111;
   display:flex;
+  align-items:center;
+  gap:20px;
 }
-nav{margin-left:auto}
-nav span{margin-left:20px;cursor:pointer;opacity:.8}
-nav span:hover{opacity:1}
+header input{
+  margin-left:auto;
+  padding:6px 10px;
+}
+header button{
+  margin-left:10px;
+  cursor:pointer;
+}
+
+/* ===== HERO ===== */
+.hero{
+  height:350px;
+  background:url("images/kingdom.jpg") center/cover;
+  position:relative;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.8),transparent);
+}
+.hero h1{
+  position:absolute;
+  bottom:30px;
+  left:30px;
+}
 
 /* ===== CARDS ===== */
 section{padding:25px}
@@ -31,7 +68,7 @@ section{padding:25px}
   gap:20px;
 }
 .card{
-  background:#111;
+  background:var(--card);
   border-radius:12px;
   overflow:hidden;
   cursor:pointer;
@@ -39,7 +76,7 @@ section{padding:25px}
 }
 .card:hover{
   transform:scale(1.05);
-  box-shadow:0 0 15px #ff4500;
+  box-shadow:0 0 15px var(--accent);
 }
 .card img{
   width:100%;
@@ -49,14 +86,14 @@ section{padding:25px}
 .card div{padding:10px}
 
 /* ===== PLAYER ===== */
-#playerOverlay{
+#overlay{
   display:none;
   position:fixed;
   inset:0;
   background:#000;
   z-index:9999;
 }
-#playerLayout{
+#layout{
   display:flex;
   height:100%;
 }
@@ -64,35 +101,25 @@ section{padding:25px}
 .video iframe{
   width:100%;
   height:100%;
-  border:none;
 }
 .episodes{
   flex:1;
   background:#111;
-  overflow-y:auto;
+  overflow:auto;
 }
-.episodes h3{
-  margin:0;
-  padding:15px;
-  background:#1a1a1a;
-}
-
-/* ===== EPIZÓD CARD ===== */
 .ep{
   display:flex;
   gap:10px;
   padding:10px;
   cursor:pointer;
-  border-bottom:1px solid #222;
 }
 .ep img{
-  width:120px;
-  height:70px;
+  width:100px;
+  height:60px;
   object-fit:cover;
-  border-radius:6px;
 }
 .ep:hover,.ep.active{
-  background:#ff4500;
+  background:var(--accent);
 }
 .close{
   position:absolute;
@@ -101,46 +128,41 @@ section{padding:25px}
   font-size:26px;
   cursor:pointer;
 }
+
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+  #layout{flex-direction:column}
+  .episodes{height:40%}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  AxelSub
-  <nav>
-    <span>Anime</span>
-    <span>Manga</span>
-    <span>Csevegő</span>
-  </nav>
+  <b>AxelSub</b>
+  <input id="search" placeholder="Keresés..." oninput="filterAnime()">
+  <button onclick="toggleMode()">🌙/☀️</button>
 </header>
 
-<section>
-<h2>🔥 Ajánlott animék</h2>
-<div class="grid">
-
-  <div class="card" onclick="openAnime('kingdom')">
-    <img src="images/kingdom.jpg">
-    <div>Kingdom – 6. évad</div>
-  </div>
-
-  <div class="card" onclick="openAnime('chitose')">
-    <img src="images/chitose.jpg">
-    <div>Chitose-kun – 9. rész</div>
-  </div>
-
+<div class="hero">
+  <h1>🔥 Ajánlott animék</h1>
 </div>
+
+<section>
+<div class="grid" id="animeGrid"></div>
 </section>
 
 <!-- PLAYER -->
-<div id="playerOverlay">
+<div id="overlay">
   <div class="close" onclick="closePlayer()">✖</div>
-  <div id="playerLayout">
+  <div id="layout">
     <div class="video">
-      <iframe id="player" allow="autoplay;fullscreen"></iframe>
+      <iframe id="player"></iframe>
     </div>
     <div class="episodes">
-      <h3 id="epTitle">Epizódok</h3>
+      <h3 id="epTitle"></h3>
+      <select id="seasonSelect" onchange="loadSeason()"></select>
       <div id="epList"></div>
     </div>
   </div>
@@ -148,63 +170,97 @@ section{padding:25px}
 
 <script>
 /* ===== ADATOK ===== */
-const animes={
+const data={
   kingdom:{
-    title:"Kingdom – 6. évad",
-    episodes:[
-      {
-        title:"13. rész",
-        img:"images/kingdom.jpg",
-        link:"https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview"
-      }
-    ]
+    title:"Kingdom",
+    img:"images/kingdom.jpg",
+    seasons:{
+      "6. évad":[
+        {title:"13. rész",img:"images/kingdom.jpg",link:"https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview"}
+      ]
+    }
   },
   chitose:{
-    title:"Chitose-kun wa Ramune Bin no Naka",
-    episodes:[
-      {
-        title:"9. rész",
-        img:"images/chitose.jpg",
-        link:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
-      }
-    ]
+    title:"Chitose-kun",
+    img:"images/chitose.jpg",
+    seasons:{
+      "1. évad":[
+        {title:"9. rész",img:"images/chitose.jpg",link:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"}
+      ]
+    }
   }
 };
 
-/* ===== PLAYER LOGIKA ===== */
-function openAnime(key){
-  const anime=animes[key];
-  document.getElementById("epTitle").innerText=anime.title;
-  const list=document.getElementById("epList");
-  list.innerHTML="";
+let currentAnime=null;
+let currentSeason=null;
 
-  anime.episodes.forEach((ep,i)=>{
+/* ===== LISTA ===== */
+function render(){
+  const grid=document.getElementById("animeGrid");
+  grid.innerHTML="";
+  Object.keys(data).forEach(k=>{
+    const a=data[k];
     const div=document.createElement("div");
-    div.className="ep";
-    div.innerHTML=`
-      <img src="${ep.img}">
-      <div>${ep.title}</div>
-    `;
-    div.onclick=()=>play(div,ep.link);
-    list.appendChild(div);
-
-    if(i===0) play(div,ep.link);
+    div.className="card";
+    div.innerHTML=`<img src="${a.img}"><div>${a.title}</div>`;
+    div.onclick=()=>openAnime(k);
+    grid.appendChild(div);
   });
+}
+render();
 
-  document.getElementById("playerOverlay").style.display="block";
+/* ===== KERESŐ ===== */
+function filterAnime(){
+  const v=search.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(v)?"":"none";
+  });
+}
+
+/* ===== PLAYER ===== */
+function openAnime(key){
+  currentAnime=data[key];
+  document.getElementById("overlay").style.display="block";
+  document.getElementById("player").src="";
+  epTitle.innerText=currentAnime.title;
+
+  seasonSelect.innerHTML="";
+  Object.keys(currentAnime.seasons).forEach(s=>{
+    seasonSelect.innerHTML+=`<option>${s}</option>`;
+  });
+  currentSeason=seasonSelect.value;
+  loadSeason();
+}
+
+function loadSeason(){
+  currentSeason=seasonSelect.value;
+  epList.innerHTML="";
+  currentAnime.seasons[currentSeason].forEach(ep=>{
+    const d=document.createElement("div");
+    d.className="ep";
+    d.innerHTML=`<img src="${ep.img}"><div>${ep.title}</div>`;
+    d.onclick=()=>play(d,ep.link);
+    epList.appendChild(d);
+  });
 }
 
 function play(el,link){
-  document.getElementById("player").src=link;
+  player.src=link;
   document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
   el.classList.add("active");
 }
 
 function closePlayer(){
-  document.getElementById("playerOverlay").style.display="none";
-  document.getElementById("player").src="";
+  overlay.style.display="none";
+  player.src="";
+}
+
+/* ===== DARK/LIGHT ===== */
+function toggleMode(){
+  document.body.classList.toggle("light");
 }
 </script>
 
 </body>
 </html>
+
