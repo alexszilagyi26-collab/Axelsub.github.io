@@ -3,72 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <title>AxelSub • Anime</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --bg:#0b0b0b;
-  --card:#111;
-  --text:#fff;
-  --accent:#ff4500;
-}
-body.light{
-  --bg:#f2f2f2;
-  --card:#fff;
-  --text:#000;
-}
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  background:#0b0b0b;
+  color:#fff;
+  transition:.3s;
 }
-
-/* ===== HEADER ===== */
+body.light{
+  background:#f2f2f2;
+  color:#111;
+}
 header{
-  padding:15px 25px;
+  padding:18px 25px;
+  font-size:26px;
   background:#111;
   display:flex;
   align-items:center;
-  gap:20px;
 }
-header input{
-  margin-left:auto;
-  padding:6px 10px;
-}
-header button{
-  margin-left:10px;
+nav{margin-left:auto}
+nav span{
+  margin-left:20px;
   cursor:pointer;
+  opacity:.8;
 }
+nav span:hover{opacity:1}
 
-/* ===== HERO ===== */
-.hero{
-  height:350px;
-  background:url("images/kingdom.jpg") center/cover;
-  position:relative;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.8),transparent);
-}
-.hero h1{
-  position:absolute;
-  bottom:30px;
-  left:30px;
+section{padding:25px}
+
+/* ===== SEARCH ===== */
+#search{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  margin-bottom:20px;
 }
 
 /* ===== CARDS ===== */
-section{padding:25px}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:20px;
 }
 .card{
-  background:var(--card);
+  background:#111;
   border-radius:12px;
   overflow:hidden;
   cursor:pointer;
@@ -76,7 +58,7 @@ section{padding:25px}
 }
 .card:hover{
   transform:scale(1.05);
-  box-shadow:0 0 15px var(--accent);
+  box-shadow:0 0 15px #ff4500;
 }
 .card img{
   width:100%;
@@ -86,14 +68,14 @@ section{padding:25px}
 .card div{padding:10px}
 
 /* ===== PLAYER ===== */
-#overlay{
+#playerOverlay{
   display:none;
   position:fixed;
   inset:0;
   background:#000;
   z-index:9999;
 }
-#layout{
+#playerLayout{
   display:flex;
   height:100%;
 }
@@ -101,25 +83,26 @@ section{padding:25px}
 .video iframe{
   width:100%;
   height:100%;
+  border:none;
 }
 .episodes{
   flex:1;
   background:#111;
-  overflow:auto;
+  overflow-y:auto;
 }
 .ep{
   display:flex;
   gap:10px;
   padding:10px;
   cursor:pointer;
+  border-bottom:1px solid #222;
 }
+.ep:hover,.ep.active{background:#ff4500}
 .ep img{
   width:100px;
   height:60px;
   object-fit:cover;
-}
-.ep:hover,.ep.active{
-  background:var(--accent);
+  border-radius:6px;
 }
 .close{
   position:absolute;
@@ -129,138 +112,127 @@ section{padding:25px}
   cursor:pointer;
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:900px){
-  #layout{flex-direction:column}
-  .episodes{height:40%}
+/* ===== SLIDER ===== */
+#slider img{
+  width:100%;
+  height:350px;
+  object-fit:cover;
+  border-radius:12px;
 }
 </style>
 </head>
 
 <body>
-
 <header>
-  <b>AxelSub</b>
-  <input id="search" placeholder="Keresés..." oninput="filterAnime()">
-  <button onclick="toggleMode()">🌙/☀️</button>
+  AxelSub
+  <nav>
+    <span onclick="toggleTheme()">🌗</span>
+  </nav>
 </header>
 
-<div class="hero">
-  <h1>🔥 Ajánlott animék</h1>
+<section>
+<input id="search" placeholder="🔍 Anime keresés..." onkeyup="searchAnime()">
+
+<h2>🔥 Anime ajánló</h2>
+<div id="slider">
+  <img id="slideImg" src="images/kingdom.jpg">
 </div>
 
-<section>
+<h2>🆕 Legutóbb frissült</h2>
 <div class="grid" id="animeGrid"></div>
 </section>
 
 <!-- PLAYER -->
-<div id="overlay">
+<div id="playerOverlay">
   <div class="close" onclick="closePlayer()">✖</div>
-  <div id="layout">
+  <div id="playerLayout">
     <div class="video">
       <iframe id="player"></iframe>
     </div>
-    <div class="episodes">
-      <h3 id="epTitle"></h3>
-      <select id="seasonSelect" onchange="loadSeason()"></select>
-      <div id="epList"></div>
-    </div>
+    <div class="episodes" id="epList"></div>
   </div>
 </div>
 
 <script>
 /* ===== ADATOK ===== */
-const data={
+const animes={
   kingdom:{
-    title:"Kingdom",
+    title:"Kingdom – 6. évad",
     img:"images/kingdom.jpg",
-    seasons:{
-      "6. évad":[
-        {title:"13. rész",img:"images/kingdom.jpg",link:"https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview"}
-      ]
-    }
+    episodes:[
+      {
+        title:"13. rész",
+        img:"images/kingdom.jpg",
+        link:"https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview"
+      }
+    ]
   },
   chitose:{
     title:"Chitose-kun",
     img:"images/chitose.jpg",
-    seasons:{
-      "1. évad":[
-        {title:"9. rész",img:"images/chitose.jpg",link:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"}
-      ]
-    }
+    episodes:[
+      {
+        title:"9. rész",
+        img:"images/chitose.jpg",
+        link:"https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+      }
+    ]
   }
 };
 
-let currentAnime=null;
-let currentSeason=null;
-
-/* ===== LISTA ===== */
-function render(){
-  const grid=document.getElementById("animeGrid");
-  grid.innerHTML="";
-  Object.keys(data).forEach(k=>{
-    const a=data[k];
-    const div=document.createElement("div");
-    div.className="card";
-    div.innerHTML=`<img src="${a.img}"><div>${a.title}</div>`;
-    div.onclick=()=>openAnime(k);
-    grid.appendChild(div);
-  });
-}
-render();
-
-/* ===== KERESŐ ===== */
-function filterAnime(){
-  const v=search.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(v)?"":"none";
-  });
+/* ===== GRID ===== */
+const grid=document.getElementById("animeGrid");
+for(let key in animes){
+  grid.innerHTML+=`
+    <div class="card" onclick="openAnime('${key}')">
+      <img src="${animes[key].img}">
+      <div>${animes[key].title}</div>
+    </div>`;
 }
 
 /* ===== PLAYER ===== */
 function openAnime(key){
-  currentAnime=data[key];
-  document.getElementById("overlay").style.display="block";
-  document.getElementById("player").src="";
-  epTitle.innerText=currentAnime.title;
-
-  seasonSelect.innerHTML="";
-  Object.keys(currentAnime.seasons).forEach(s=>{
-    seasonSelect.innerHTML+=`<option>${s}</option>`;
-  });
-  currentSeason=seasonSelect.value;
-  loadSeason();
-}
-
-function loadSeason(){
-  currentSeason=seasonSelect.value;
+  const epList=document.getElementById("epList");
   epList.innerHTML="";
-  currentAnime.seasons[currentSeason].forEach(ep=>{
-    const d=document.createElement("div");
-    d.className="ep";
-    d.innerHTML=`<img src="${ep.img}"><div>${ep.title}</div>`;
-    d.onclick=()=>play(d,ep.link);
-    epList.appendChild(d);
+  animes[key].episodes.forEach(ep=>{
+    const div=document.createElement("div");
+    div.className="ep";
+    div.innerHTML=`<img src="${ep.img}"><div>${ep.title}</div>`;
+    div.onclick=()=>play(div,ep.link);
+    epList.appendChild(div);
   });
+  document.getElementById("playerOverlay").style.display="block";
 }
-
 function play(el,link){
-  player.src=link;
+  document.getElementById("player").src=link;
   document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
   el.classList.add("active");
 }
-
 function closePlayer(){
-  overlay.style.display="none";
-  player.src="";
+  document.getElementById("playerOverlay").style.display="none";
+  document.getElementById("player").src="";
 }
 
-/* ===== DARK/LIGHT ===== */
-function toggleMode(){
+/* ===== SLIDER ===== */
+const slides=Object.values(animes).map(a=>a.img);
+let i=0;
+setInterval(()=>{
+  i=(i+1)%slides.length;
+  document.getElementById("slideImg").src=slides[i];
+},4000);
+
+/* ===== SEARCH ===== */
+function searchAnime(){
+  const q=document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(q)?"block":"none";
+  });
+}
+
+/* ===== THEME ===== */
+function toggleTheme(){
   document.body.classList.toggle("light");
 }
 </script>
-
 </body>
 </html>
-
