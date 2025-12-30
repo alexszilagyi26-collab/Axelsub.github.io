@@ -2,141 +2,95 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>AxelSub – Anime Feliratok</title>
+<title>Chitose – Lejátszó</title>
+
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,sans-serif;
+  background:#000;
   color:#fff;
-  background:url("images/bg.jpg") no-repeat center center fixed;
-  background-size:cover;
 }
-header{
-  padding:20px;
-  font-size:28px;
-  font-weight:bold;
-  background:linear-gradient(90deg,rgba(255,69,0,.8),rgba(255,0,0,.8));
-}
-nav{
-  position:sticky;
-  top:0;
-  z-index:9999;
-  background:rgba(0,0,0,.4);
-}
-nav ul{
-  list-style:none;
+
+/* ===== LAYOUT ===== */
+#watch{
   display:flex;
-  gap:30px;
-  padding:15px 25px;
-  margin:0;
+  height:100vh;
 }
-nav li{cursor:pointer;font-weight:bold}
-nav li:hover{color:#ff4500}
 
-.new-episodes{
-  background:rgba(0,0,0,.55);
-  padding:20px;
-  margin:20px;
-  border-radius:12px;
+/* ===== VIDEO ===== */
+.video{
+  flex:3;
+  background:#000;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:25px;
-  padding:25px;
-}
-.card{
-  background:rgba(0,0,0,.7);
-  border-radius:14px;
-  overflow:hidden;
-  text-align:center;
-  transition:.3s;
-  cursor:pointer;
-}
-.card:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px #ff4500;
-}
-.card img{
-  width:100%;
-  height:280px;
-  object-fit:cover;
-}
-.card div{padding:12px}
-
-/* ===== LEJÁTSZÓ ===== */
-#player{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.95);
-  z-index:99999;
-}
-.player-inner{
+.video iframe{
   width:100%;
   height:100%;
-  display:flex;
-  flex-direction:column;
-}
-.player-inner iframe{
-  flex:1;
   border:none;
 }
-.close{
+
+/* ===== EPIZÓDOK ===== */
+.episodes{
+  flex:1;
+  background:#111;
+  overflow-y:auto;
+  border-left:2px solid #222;
+}
+.episodes h3{
   padding:15px;
-  font-size:22px;
+  margin:0;
+  background:#1a1a1a;
+}
+.ep{
+  padding:12px 15px;
+  border-bottom:1px solid #222;
   cursor:pointer;
-  text-align:right;
+}
+.ep:hover{
+  background:#ff4500;
+}
+.active{
+  background:#ff4500;
 }
 </style>
 </head>
 
 <body>
 
-<header>AxelSub • Anime Feliratok</header>
+<div id="watch">
 
-<nav>
-<ul>
-  <li>Anime</li>
-  <li>Manga</li>
-  <li>Hírek</li>
-</ul>
-</nav>
-
-<section class="new-episodes">
-<h2>🆕 Ajánlott animék</h2>
-• Chitose-kun wa Ramune Bin no Naka – 9. rész
-</section>
-
-<section class="grid">
-  <!-- CHITOSE CARD -->
-  <div class="card" onclick="openPlayer()">
-    <img src="images/chitose.jpg">
-    <div>
-      Chitose-kun wa Ramune Bin no Naka<br>
-      <small>9. rész – Magyar felirat</small>
-    </div>
-  </div>
-</section>
-
-<!-- ===== LEJÁTSZÓ ABLAK ===== -->
-<div id="player">
-  <div class="player-inner">
-    <div class="close" onclick="closePlayer()">✖ Bezárás</div>
-    <iframe 
+  <!-- VIDEO -->
+  <div class="video">
+    <iframe id="player"
       src="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
       allow="autoplay">
     </iframe>
   </div>
+
+  <!-- EPIZÓD LISTA -->
+  <div class="episodes">
+    <h3>Epizódok</h3>
+
+    <div class="ep active"
+      onclick="play(this,'https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview')">
+      9. rész – Magyar felirat
+    </div>
+
+    <!-- IDE JÖNNEK MAJD TOVÁBBIAK -->
+    <!--
+    <div class="ep" onclick="play(this,'LINK')">10. rész</div>
+    -->
+
+  </div>
+
 </div>
 
 <script>
-function openPlayer(){
-  document.getElementById("player").style.display="block";
-}
-function closePlayer(){
-  document.getElementById("player").style.display="none";
+function play(el,link){
+  document.getElementById("player").src = link;
+  document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
+  el.classList.add("active");
 }
 </script>
 
