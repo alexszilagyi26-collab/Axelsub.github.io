@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>AxelSub – Anime Feliratok</title>
+<title>AxelSub • Anime Feliratok</title>
 
 <style>
 *{box-sizing:border-box}
@@ -15,13 +15,25 @@ body{
 
 /* ===== HEADER ===== */
 header{
-  padding:20px;
-  font-size:28px;
+  padding:18px 25px;
+  font-size:26px;
   font-weight:bold;
-  background:linear-gradient(90deg,#ff4500,#ff0000);
+  background:#111;
+  display:flex;
+  align-items:center;
+  gap:30px;
 }
+nav{
+  margin-left:auto;
+}
+nav span{
+  margin-left:20px;
+  cursor:pointer;
+  opacity:.8;
+}
+nav span:hover{opacity:1}
 
-/* ===== HERO AJÁNLÓ ===== */
+/* ===== HERO ===== */
 .hero{
   position:relative;
   height:420px;
@@ -35,36 +47,40 @@ header{
   opacity:0;
   transition:opacity 1s;
 }
-.hero-slide.active{
-  opacity:1;
+.hero-slide.active{opacity:1}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
 }
 .hero-content{
   position:absolute;
   bottom:40px;
   left:40px;
-  max-width:500px;
+  z-index:2;
 }
 .hero-content h2{
+  font-size:34px;
   margin:0 0 10px;
-  font-size:32px;
 }
 .hero-content button{
-  padding:12px 20px;
+  padding:12px 22px;
+  font-size:16px;
   background:#ff4500;
   border:none;
   color:#fff;
-  font-size:16px;
-  cursor:pointer;
   border-radius:6px;
+  cursor:pointer;
 }
 
-/* ===== AJÁNLOTT GRID ===== */
+/* ===== AJÁNLOTT ===== */
 .recommended{
-  padding:20px;
+  padding:25px;
 }
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:20px;
 }
 .card{
@@ -80,14 +96,12 @@ header{
 }
 .card img{
   width:100%;
-  height:280px;
+  height:300px;
   object-fit:cover;
 }
-.card div{
-  padding:10px;
-}
+.card div{padding:10px}
 
-/* ===== LEJÁTSZÓ ===== */
+/* ===== PLAYER ===== */
 #playerOverlay{
   display:none;
   position:fixed;
@@ -99,9 +113,7 @@ header{
   display:flex;
   height:100%;
 }
-.video{
-  flex:3;
-}
+.video{flex:3}
 .video iframe{
   width:100%;
   height:100%;
@@ -120,88 +132,94 @@ header{
   padding:12px;
   cursor:pointer;
 }
-.ep:hover,.active{
-  background:#ff4500;
-}
+.ep:hover,.active{background:#ff4500}
+
 .close{
   position:absolute;
   top:15px;
   right:20px;
-  font-size:28px;
+  font-size:26px;
   cursor:pointer;
-  z-index:1000000;
 }
 </style>
 </head>
 
 <body>
 
-<header>AxelSub • Anime Feliratok</header>
+<header>
+  AxelSub
+  <nav>
+    <span>Anime</span>
+    <span>Manga</span>
+    <span>Csevegő</span>
+    <span>🔍 Kereső</span>
+  </nav>
+</header>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-slide active"
-    style="background-image:url('images/chitose.jpg')">
+  <div class="hero-slide active" style="background-image:url('images/chitose.jpg')">
     <div class="hero-content">
       <h2>Chitose-kun wa Ramune Bin no Naka</h2>
-      <button onclick="openPlayer()">▶ Lejátszás</button>
+      <button onclick="openPlayer(chitose)">▶ Lejátszás</button>
     </div>
   </div>
 
-  <div class="hero-slide"
-    style="background-image:url('images/kingdom.jpg')">
+  <div class="hero-slide" style="background-image:url('images/kingdom.jpg')">
     <div class="hero-content">
-      <h2>Kingdom – 6. évad</h2>
-      <button onclick="openPlayer()">▶ Lejátszás</button>
+      <h2>Kingdom – 6. évad 13. rész</h2>
+      <button onclick="openPlayer(kingdom)">▶ Lejátszás</button>
     </div>
   </div>
 </section>
 
-<!-- ===== KÁRTYÁK ===== -->
+<!-- AJÁNLOTT -->
 <section class="recommended">
-  <h2>🔥 Ajánlott animék</h2>
-  <div class="grid">
-    <div class="card" onclick="openPlayer()">
-      <img src="images/chitose.jpg">
-      <div>Chitose-kun – 9. rész</div>
-    </div>
+<h2>🔥 Ajánlott animék</h2>
+<div class="grid">
+  <div class="card" onclick="openPlayer(chitose)">
+    <img src="images/chitose.jpg">
+    <div>Chitose-kun – 9. rész</div>
   </div>
+
+  <div class="card" onclick="openPlayer(kingdom)">
+    <img src="images/kingdom.jpg">
+    <div>Kingdom – 6. évad 13. rész</div>
+  </div>
+</div>
 </section>
 
-<!-- ===== PLAYER ===== -->
+<!-- PLAYER -->
 <div id="playerOverlay">
   <div class="close" onclick="closePlayer()">✖</div>
-
   <div id="playerLayout">
     <div class="video">
-      <iframe id="player"
-        src="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
-        allow="autoplay; fullscreen">
-      </iframe>
+      <iframe id="player" allow="autoplay; fullscreen"></iframe>
     </div>
-
     <div class="episodes">
       <h3>Epizódok</h3>
-      <div class="ep active"
-        onclick="play(this,'https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview')">
-        9. rész – Magyar felirat
-      </div>
+      <div class="ep active">Kiválasztott rész</div>
     </div>
   </div>
 </div>
 
 <script>
-/* HERO AUTO SLIDE */
+/* LINKEK */
+const chitose="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview";
+const kingdom="https://drive.google.com/file/d/1bmVfCA_NhhYe9E35DoLR4U5059g6mxHz/preview";
+
+/* HERO AUTO */
 let slides=document.querySelectorAll(".hero-slide");
-let index=0;
+let i=0;
 setInterval(()=>{
-  slides[index].classList.remove("active");
-  index=(index+1)%slides.length;
-  slides[index].classList.add("active");
+  slides[i].classList.remove("active");
+  i=(i+1)%slides.length;
+  slides[i].classList.add("active");
 },5000);
 
 /* PLAYER */
-function openPlayer(){
+function openPlayer(link){
+  document.getElementById("player").src=link;
   document.getElementById("playerOverlay").style.display="block";
   document.documentElement.requestFullscreen?.();
 }
@@ -209,13 +227,7 @@ function closePlayer(){
   document.getElementById("playerOverlay").style.display="none";
   document.exitFullscreen?.();
 }
-function play(el,link){
-  document.getElementById("player").src=link;
-  document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
-  el.classList.add("active");
-}
 </script>
 
 </body>
 </html>
-
