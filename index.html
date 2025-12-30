@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>AxelSub – Anime Feliratok</title>
-
 <style>
 *{box-sizing:border-box}
 body{
@@ -13,23 +12,17 @@ body{
   background:url("images/bg.jpg") no-repeat center center fixed;
   background-size:cover;
 }
-
-/* ===== HEADER ===== */
 header{
   padding:20px;
   font-size:28px;
   font-weight:bold;
   background:linear-gradient(90deg,rgba(255,69,0,.8),rgba(255,0,0,.8));
-  backdrop-filter:blur(4px);
 }
-
-/* ===== NAV ===== */
 nav{
   position:sticky;
   top:0;
   z-index:9999;
   background:rgba(0,0,0,.4);
-  backdrop-filter:blur(6px);
 }
 nav ul{
   list-style:none;
@@ -37,38 +30,16 @@ nav ul{
   gap:30px;
   padding:15px 25px;
   margin:0;
-  align-items:center;
 }
-nav li{
-  cursor:pointer;
-  font-weight:bold;
-}
+nav li{cursor:pointer;font-weight:bold}
 nav li:hover{color:#ff4500}
 
-/* ===== DROPDOWN ===== */
-.dropdown{position:relative}
-.dropdown-content{
-  display:none;
-  position:absolute;
-  top:100%;
-  left:0;
-  background:rgba(0,0,0,.85);
-  padding:12px 18px;
-  border-radius:10px;
-}
-.dropdown:hover .dropdown-content{display:block}
-
-/* ===== AJÁNLÓ ===== */
 .new-episodes{
   background:rgba(0,0,0,.55);
   padding:20px;
   margin:20px;
   border-radius:12px;
-  backdrop-filter:blur(4px);
 }
-.new-episodes h2{color:#ff4500}
-
-/* ===== GRID ===== */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
@@ -81,6 +52,7 @@ nav li:hover{color:#ff4500}
   overflow:hidden;
   text-align:center;
   transition:.3s;
+  cursor:pointer;
 }
 .card:hover{
   transform:scale(1.05);
@@ -93,37 +65,29 @@ nav li:hover{color:#ff4500}
 }
 .card div{padding:12px}
 
-/* ===== KATALÓGUS (TELJES KÉPERNYŐS KERESŐ) ===== */
-#catalog{
+/* ===== LEJÁTSZÓ ===== */
+#player{
+  display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.95);
-  display:none;
   z-index:99999;
 }
-.catalog-inner{
-  padding:30px;
-}
-.catalog-inner input{
+.player-inner{
   width:100%;
-  padding:18px;
-  font-size:22px;
-  border-radius:30px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+.player-inner iframe{
+  flex:1;
   border:none;
-  outline:none;
 }
 .close{
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:30px;
+  padding:15px;
+  font-size:22px;
   cursor:pointer;
-}
-.catalog-grid{
-  margin-top:30px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:25px;
+  text-align:right;
 }
 </style>
 </head>
@@ -134,79 +98,47 @@ nav li:hover{color:#ff4500}
 
 <nav>
 <ul>
-  <li class="dropdown">
-    Anime ▾
-    <ul class="dropdown-content">
-      <li>Futó animék</li>
-      <li>Befejezett animék</li>
-    </ul>
-  </li>
+  <li>Anime</li>
   <li>Manga</li>
   <li>Hírek</li>
-  <li>Csevegő</li>
-
-  <li style="margin-left:auto" onclick="openCatalog()">🔍 Keresés</li>
 </ul>
 </nav>
 
 <section class="new-episodes">
 <h2>🆕 Ajánlott animék</h2>
-• Kingdom – 6. évad 13. rész<br>
-• Chitose-kun wa Ramune Bin no Naka – 9. rész<br>
-• Kakuriyo no Yadomeshi Ni – 12. rész
+• Chitose-kun wa Ramune Bin no Naka – 9. rész
 </section>
 
 <section class="grid">
-<div class="card">
-<img src="images/kingdom.jpg">
-<div>Kingdom<br><small>6. évad – befejezett</small></div>
-</div>
-
-<div class="card">
-<img src="images/chitose.jpg">
-<div>Chitose-kun wa Ramune Bin no Naka<br><small>9. rész – fut</small></div>
-</div>
-
-<div class="card">
-<img src="images/kakuriyo.jpg">
-<div>Kakuriyo no Yadomeshi Ni<br><small>befejezett</small></div>
-</div>
+  <!-- CHITOSE CARD -->
+  <div class="card" onclick="openPlayer()">
+    <img src="images/chitose.jpg">
+    <div>
+      Chitose-kun wa Ramune Bin no Naka<br>
+      <small>9. rész – Magyar felirat</small>
+    </div>
+  </div>
 </section>
 
-<!-- ===== KATALÓGUS ===== -->
-<div id="catalog">
-<div class="catalog-inner">
-<span class="close" onclick="closeCatalog()">✖</span>
-
-<input type="text" id="search" placeholder="Mit szeretnél ma nézni?">
-
-<div class="catalog-grid" id="catalogGrid">
-  <div class="card"><img src="images/kingdom.jpg"><div>Kingdom</div></div>
-  <div class="card"><img src="images/chitose.jpg"><div>Chitose-kun wa Ramune Bin no Naka</div></div>
-  <div class="card"><img src="images/kakuriyo.jpg"><div>Kakuriyo no Yadomeshi Ni</div></div>
-</div>
-</div>
+<!-- ===== LEJÁTSZÓ ABLAK ===== -->
+<div id="player">
+  <div class="player-inner">
+    <div class="close" onclick="closePlayer()">✖ Bezárás</div>
+    <iframe 
+      src="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+      allow="autoplay">
+    </iframe>
+  </div>
 </div>
 
 <script>
-function openCatalog(){
-  document.getElementById("catalog").style.display="block";
+function openPlayer(){
+  document.getElementById("player").style.display="block";
 }
-function closeCatalog(){
-  document.getElementById("catalog").style.display="none";
+function closePlayer(){
+  document.getElementById("player").style.display="none";
 }
-
-const search=document.getElementById("search");
-const cards=document.querySelectorAll("#catalogGrid .card");
-
-search.addEventListener("keyup",()=>{
-  let v=search.value.toLowerCase();
-  cards.forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
-  });
-});
 </script>
 
 </body>
 </html>
-
