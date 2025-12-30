@@ -6,20 +6,22 @@
 
 <style>
 :root{
-  --bg:#111;
-  --card:#1c1c1c;
-  --text:#fff;
+  --bg:#0f0f0f;
+  --card:#1b1b1b;
+  --text:#ffffff;
   --accent:#f5b301;
 }
 .light{
   --bg:#f2f2f2;
-  --card:#fff;
-  --text:#111;
+  --card:#ffffff;
+  --text:#111111;
 }
+
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, Helvetica, sans-serif;
   background:var(--bg);
   color:var(--text);
 }
@@ -27,50 +29,58 @@ body{
 /* ===== HEADER ===== */
 header{
   display:flex;
-  align-items:center;
-  gap:15px;
+  gap:12px;
   padding:15px;
+  align-items:center;
 }
 header input{
   flex:1;
-  padding:10px;
+  padding:10px 12px;
   border-radius:8px;
   border:none;
 }
 .toggle{
-  cursor:pointer;
-  padding:8px 12px;
-  border-radius:8px;
+  padding:10px 14px;
   background:var(--accent);
   color:#000;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
-/* ===== AJÁNLÓ ===== */
+/* ===== SECTIONS ===== */
 .section{
   padding:20px;
 }
+.section h2{
+  margin:0 0 12px;
+}
+
+/* ===== AJÁNLÓ ===== */
 .cards{
   display:flex;
   gap:15px;
   overflow-x:auto;
 }
 .anime-card{
-  min-width:260px;
-  height:150px;
+  min-width:280px;
+  height:160px;
   position:relative;
-  border-radius:12px;
+  border-radius:14px;
   overflow:hidden;
   cursor:pointer;
+  background:#000;
 }
 .anime-card img{
   width:100%;
   height:100%;
   object-fit:cover;
+  display:block;
 }
 .overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.8),transparent);
+  background:linear-gradient(to top,rgba(0,0,0,.85),transparent);
 }
 .play{
   position:absolute;
@@ -78,35 +88,38 @@ header input{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:40px;
+  font-size:42px;
+  color:#fff;
 }
 .title{
   position:absolute;
+  left:12px;
   bottom:10px;
-  left:10px;
   font-weight:bold;
 }
 
 /* ===== EPIZÓDOK ===== */
 .episodes{
   display:flex;
-  gap:10px;
+  gap:12px;
   flex-wrap:wrap;
 }
 .ep{
-  width:140px;
+  width:150px;
   background:var(--card);
   border-radius:10px;
   overflow:hidden;
+  cursor:pointer;
 }
 .ep img{
   width:100%;
-  height:80px;
+  height:85px;
   object-fit:cover;
 }
 .ep div{
   padding:6px;
   text-align:center;
+  font-size:14px;
 }
 </style>
 </head>
@@ -114,19 +127,27 @@ header input{
 <body>
 
 <header>
-  <input placeholder="Keresés animekre...">
+  <input type="text" placeholder="Keresés animekre...">
   <div class="toggle" onclick="toggleMode()">Dark / Light</div>
 </header>
 
 <!-- ===== AJÁNLOTT ===== -->
 <div class="section">
   <h2>Ajánlott animék</h2>
+
   <div class="cards">
-    <div class="anime-card" onclick="openSeason()">
-      <img src="https://via.placeholder.com/400x200">
+    <div class="anime-card">
+      <img src="images/kingdom.jpg" alt="Kingdom">
       <div class="overlay"></div>
       <div class="play">▶</div>
       <div class="title">Kingdom – 6. évad</div>
+    </div>
+
+    <div class="anime-card">
+      <img src="images/chitose.jpg" alt="Chitose">
+      <div class="overlay"></div>
+      <div class="play">▶</div>
+      <div class="title">Chitose-kun – 9. rész</div>
     </div>
   </div>
 </div>
@@ -134,18 +155,16 @@ header input{
 <!-- ===== LEGUTÓBBI RÉSZEK ===== -->
 <div class="section">
   <h2>Legutóbbi részek</h2>
+
   <div class="episodes">
     <div class="ep">
-      <img src="https://via.placeholder.com/200x120">
-      <div>13. rész</div>
+      <img src="images/kingdom.jpg">
+      <div>Kingdom – 13. rész</div>
     </div>
+
     <div class="ep">
-      <img src="https://via.placeholder.com/200x120">
-      <div>12. rész</div>
-    </div>
-    <div class="ep">
-      <img src="https://via.placeholder.com/200x120">
-      <div>11. rész</div>
+      <img src="images/chitose.jpg">
+      <div>Chitose – 9. rész</div>
     </div>
   </div>
 </div>
@@ -154,12 +173,7 @@ header input{
 function toggleMode(){
   document.body.classList.toggle("light");
 }
-
-function openSeason(){
-  alert("Itt jön be az egész évad oldala, teso 😎");
-}
 </script>
 
 </body>
 </html>
-
