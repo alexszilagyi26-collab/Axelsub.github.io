@@ -11,63 +11,105 @@ body{
   color:#fff;
   font-family:Arial;
 }
-.main{
-  display:flex;
-  height:100vh;
-}
-.player{
-  flex:3;
-  background:#000;
-}
-.player iframe{
-  width:100%;
-  height:100%;
-  border:none;
-}
+
+/* EPIZÓD LISTA */
 .episodes{
-  flex:1;
-  background:#141414;
-  overflow-y:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:15px;
+  padding:20px;
 }
+
 .ep{
-  display:flex;
-  gap:10px;
-  padding:10px;
+  background:#141414;
   cursor:pointer;
-  border-bottom:1px solid #222;
+  border-radius:10px;
+  overflow:hidden;
+  transition:0.2s;
+}
+.ep:hover{
+  transform:scale(1.03);
 }
 .ep img{
-  width:120px;
-  height:70px;
+  width:100%;
+  height:120px;
   object-fit:cover;
 }
-.ep.active{
-  background:#222;
+.ep div{
+  padding:10px;
+}
+
+/* MODAL LEJÁTSZÓ */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.modal-content{
+  width:90%;
+  max-width:1000px;
+  background:#000;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  background:#111;
+}
+
+.close{
+  cursor:pointer;
+  font-size:24px;
+}
+
+.player iframe{
+  width:100%;
+  height:500px;
+  border:none;
+}
+@media(max-width:700px){
+  .player iframe{ height:240px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="main">
+<!-- EPIZÓDOK -->
+<div class="episodes" id="episodes"></div>
 
-  <!-- LEJÁTSZÓ -->
-  <div class="player" id="player">
-    <iframe src="https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
-      allowfullscreen></iframe>
+<!-- LEJÁTSZÓ MODAL -->
+<div class="modal" id="playerModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="playerTitle"></span>
+      <span class="close" onclick="closePlayer()">✖</span>
+    </div>
+    <div class="player" id="player"></div>
   </div>
-
-  <!-- EPIZÓDOK -->
-  <div class="episodes" id="episodes"></div>
-
 </div>
 
 <script>
 const anime = "chitose";
 
 const eps = {
-  1: "https://drive.google.com/file/d/XXXX/preview",
-  9: "https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+  1: {
+    title: "1. rész",
+    src: "https://drive.google.com/file/d/XXXX/preview"
+  },
+  9: {
+    title: "9. rész",
+    src: "https://drive.google.com/file/d/1t2VBDgDpbSxAhFyZ6GLiSw0Q8ATMBRgB/preview"
+  }
 };
 
 const list = document.getElementById("episodes");
@@ -77,18 +119,26 @@ Object.keys(eps).forEach(ep=>{
   div.className="ep";
   div.innerHTML=`
     <img src="images/${anime}/ep${ep}.jpg">
-    <div>${ep}. rész</div>
+    <div>${eps[ep].title}</div>
   `;
-  div.onclick=()=>play(ep,div);
+  div.onclick=()=>openPlayer(ep);
   list.appendChild(div);
 });
 
-function play(ep,el){
-  document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
-  el.classList.add("active");
-  document.getElementById("player").innerHTML=`
-    <iframe src="${eps[ep]}" allowfullscreen></iframe>
+function openPlayer(ep){
+  document.getElementById("playerTitle").innerText =
+    "Chitose – " + eps[ep].title;
+
+  document.getElementById("player").innerHTML = `
+    <iframe src="${eps[ep].src}" allowfullscreen></iframe>
   `;
+
+  document.getElementById("playerModal").style.display="flex";
+}
+
+function closePlayer(){
+  document.getElementById("player").innerHTML="";
+  document.getElementById("playerModal").style.display="none";
 }
 </script>
 
