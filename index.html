@@ -1,132 +1,87 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AxelSub - Prémium Anime Stream</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #00C2FF;
-            --accent: #FF9900;
-            --dark: #0a0a0a;
-            --card-bg: #141414;
-            --glass: rgba(20, 20, 20, 0.85);
-        }
-        * { box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--dark); color: white; margin: 0; overflow-x: hidden; }
-        header {
-            position: sticky; top: 0; z-index: 1000; background: var(--glass);
-            backdrop-filter: blur(12px); padding: 10px 5%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo-img { height: 60px; }
-        .hero { position: relative; height: 550px; overflow: hidden; background: #000; }
-        .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: 1s; background-size: cover; background-position: center; }
-        .slide.active { opacity: 1; }
-        .slide-content { position: absolute; bottom: 80px; left: 5%; z-index: 2; }
-        .container { padding: 0 5%; max-width: 1600px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; }
-        .card-img-wrapper { height: 320px; }
-        .card img { width: 100%; height: 100%; object-fit: cover; }
-        .card-info { padding: 15px; }
-        .card-ep { color: var(--accent); font-weight: bold; }
-    </style>
+    <title>NeonAnime Stream</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<header>
-    <img src="logo.png" class="logo-img">
-    <input id="search-bar" placeholder="Keresés...">
-</header>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">NEON<span class="highlight">ANIME</span></div>
+        <div class="nav-links">
+            <a href="#" class="active">Kezdőlap</a>
+            <a href="#">Sorozatok</a>
+            <a href="#">Filmek</a>
+            <a href="#">Kedvencek</a>
+        </div>
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Keresés...">
+        </div>
+    </nav>
 
-<div class="hero" id="hero-slider"></div>
-
-<div class="container">
-    <h2>Legutóbbi Fordítások</h2>
-    <div class="grid" id="anime-grid"></div>
-</div>
-
-<script>
-const myAnimes = [
-    { id: 172905, ep: '01. Rész', video: 'https://videa.hu/videok/yusha-party-link' },
-    { id: 175968, ep: '13. Rész', video: 'https://videa.hu/videok/kingdom-6-evad-13.resz-link' },
-    { id: 119661, ep: '09. Rész', video: 'https://videa.hu/videok/chitose-kun-9.resz-link' },
-    { id: 101215, ep: '12. Rész', video: 'https://videa.hu/videok/kakuriyo-no-yadomeshi-12.resz-link' }
-];
-
-let globalAnimeList = [];
-
-async function getAniList() {
-    const query = `
-    query ($ids: [Int]) {
-        Page {
-            media(id_in: $ids) {
-                id
-                title { romaji }
-                coverImage { extraLarge large }
-                bannerImage
-            }
-        }
-    }`;
-
-    const res = await fetch('https://graphql.anilist.co', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
-    });
-
-    const json = await res.json();
-    const data = json.data.Page.media;
-
-    globalAnimeList = myAnimes.map(a => {
-        const m = data.find(d => d.id === a.id);
-        return {
-            ...a,
-            title: m.title,
-            cardImage: m.coverImage.extraLarge || m.coverImage.large,
-            heroImage: m.bannerImage || m.coverImage.extraLarge
-        };
-    });
-
-    render(globalAnimeList);
-}
-
-function render(list) {
-    const hero = document.getElementById('hero-slider');
-    const grid = document.getElementById('anime-grid');
-
-    hero.innerHTML = '';
-    list.slice(0,3).forEach((a,i)=>{
-        const d=document.createElement('div');
-        d.className=`slide ${i==0?'active':''}`;
-        d.style.backgroundImage=`url('${a.heroImage}')`;
-        d.innerHTML=`<div class="slide-content"><h1>${a.title.romaji}</h1></div>`;
-        hero.appendChild(d);
-    });
-
-    grid.innerHTML='';
-    list.forEach(a=>{
-        const c=document.createElement('div');
-        c.className='card';
-        c.innerHTML=`
-            <div class="card-img-wrapper">
-                <img src="${a.cardImage}">
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">ÚJ RÉSZ</span>
+            <h1>Cyberpunk: <span class="glow-text">Edgerunners</span></h1>
+            <p>Egy disztópikus jövőben, ahol a korrupció és a kibernetikai beültetések uralják a világot, egy
+                tehetséges, de vakmerő utcagyerek úgy dönt, hogy zsoldosnak áll.</p>
+            <div class="hero-buttons">
+                <button class="btn primary"
+                    onclick="startPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')">
+                    <i data-lucide="play"></i> Lejátszás Most
+                </button>
+                <button class="btn secondary">
+                    <i data-lucide="info"></i> Részletek
+                </button>
             </div>
-            <div class="card-info">
-                <div>${a.title.romaji}</div>
-                <div class="card-ep">${a.ep}</div>
-            </div>`;
-        grid.appendChild(c);
-    });
-}
+        </div>
+        <div class="hero-backdrop"></div>
+    </header>
 
-getAniList();
-</script>
+    <!-- Trending Section -->
+    <section class="container">
+        <h2 class="section-title">Népszerű Most <i data-lucide="flame" class="icon-flame"></i></h2>
+        <div class="anime-grid" id="animeGrid">
+            <!-- Anime Cards will be injected by JS -->
+        </div>
+    </section>
 
+    <!-- Video Player Modal -->
+    <div id="videoModal" class="video-modal hidden">
+        <div class="player-container">
+            <button class="close-btn" onclick="closePlayer()"><i data-lucide="x"></i></button>
+            <video id="mainVideo" src=""></video>
+
+            <!-- Custom Controls -->
+            <div class="custom-controls">
+                <div class="progress-area" id="progressArea">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="controls-row">
+                    <button id="playPauseBtn"><i data-lucide="play"></i></button>
+                    <span id="timeDisplay">00:00 / 00:00</span>
+                    <div class="spacer"></div>
+                    <button id="muteBtn"><i data-lucide="volume-2"></i></button>
+                    <button id="fullscreenBtn"><i data-lucide="maximize"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
-</html>
 
+</html>
