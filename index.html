@@ -403,13 +403,6 @@
             color: var(--primary);
         }
 
-        /* Multi-column grid for specific needs */
-        @media (min-width: 1400px) {
-            .grid {
-                grid-template-columns: repeat(5, 1fr);
-            }
-        }
-
         /* Modal */
         .modal {
             position: fixed;
@@ -521,7 +514,6 @@
             font-size: 0.9rem;
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -544,7 +536,6 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
@@ -610,7 +601,8 @@
             <p>A hős csapat kitaszította őt, mert "csak" egy ezermester volt. Most bemutatja, mire képes egyedül egy
                 modern fantasy világban!</p>
             <div class="btns">
-                <button class="btn btn-primary" onclick="playPlayer(animeData[0].url)">▶ Lejátszás Most</button>
+                <button class="btn btn-primary"
+                    onclick="playPlayer('https://embed.indavideo.hu/player/video/f356f9f592')">▶ Lejátszás Most</button>
                 <button class="btn btn-secondary">ℹ Részletek</button>
             </div>
         </div>
@@ -620,9 +612,7 @@
         <div class="section-header">
             <h2 class="section-title"><span>🔥</span> Népszerű Sorozatok</h2>
         </div>
-        <div class="grid" id="animeGrid">
-            <!-- Cards injected by JS -->
-        </div>
+        <div class="grid" id="animeGrid"></div>
     </section>
 
     <div class="modal" id="videoModal">
@@ -639,7 +629,7 @@
         <div class="footer-links">
             <a href="#">Rólunk</a>
             <a href="#">Kapcsolat</a>
-            <a href="#">Discord</a>
+            <a href="https://discord.com/channels/@me">Discord</a>
             <a href="#">Támogatás</a>
         </div>
         <div class="copy">&copy; 2026 AxelSub - Minden jog fenntartva. Kedvenc anid egy helyen.</div>
@@ -651,7 +641,7 @@
                 title: "Yusha Party wo Odasareta Kiyoubinbou",
                 ep: "1. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176244-RO4VXQB6tT4j.jpg",
-                url: "https://indavideo.hu/video/Yusha_Party_wo_Oidasareta_Kiyoubinbou_1resz",
+                url: "http://indavideo.hu/video/Yusha_Party_wo_Oidasareta_Kiyoubinbou_1resz",
                 status: "Aktív",
                 type: "Anime"
             },
@@ -659,7 +649,7 @@
                 title: "Kingdom 6. évad",
                 ep: "13. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162377-7J0xOOe20Lw4.jpg",
-                url: "http://indavideo.hu/video/Kingdom_6_evad_13resz_Magyar_Felirattal,
+                url: "http://indavideo.hu/video/Kingdom_6_evad_13resz_Magyar_Felirattal",
                 status: "Aktív",
                 type: "Anime"
             },
@@ -667,15 +657,15 @@
                 title: "Chitose-kun wa Ramune Bin no Naka",
                 ep: "9. rész",
                 img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
-                url: "https://auto.indavideo.hu/video/Chitose-kun_wa_Ramune_Bin_no_Naka_9resz,
-                status: "aktiv",
+                url: "http://auto.indavideo.hu/video/Chitose-kun_wa_Ramune_Bin_no_Naka_9resz",
+                status: "Aktív",
                 type: "Anime"
             },
             {
                 title: "Kakuriyo no Yadomeshi",
                 ep: "12. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100500-4vRsWSZ0Wuam.jpg",
-                url: "https://auto.indavideo.hu/video/i_-_12Resz",
+                url: "http://auto.indavideo.hu/video/i_-_12Resz",
                 status: "Befejezett",
                 type: "Anime"
             },
@@ -684,11 +674,8 @@
                 ep: "12. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-6stY9TidM57S.jpg",
                 url: "https://embed.indavideo.hu/player/video/XXXXXX",
-                status: "Tervezet",
+                status: "Tervezett",
                 type: "Anime"
-            },
-            {
-          
             },
             {
                 title: "Dandadan",
@@ -720,22 +707,23 @@
                 return;
             }
             data.forEach(a => {
+                if (!a.title) return; // Skip empty objects
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-            <div class="card-badge">${a.status}</div>
-            <div class="card-img-wrap">
-                <img src="${a.img}" alt="${a.title}" loading="lazy">
-            </div>
-            <div class="card-overlay">
-                <h3 class="card-title">${a.title}</h3>
-                <div class="card-meta">
-                    <span>${a.ep}</span>
-                    <span style="opacity: 0.3">|</span>
-                    <span>${a.type}</span>
-                </div>
-            </div>
-        `;
+                    <div class="card-badge">${a.status}</div>
+                    <div class="card-img-wrap">
+                        <img src="${a.img}" alt="${a.title}" loading="lazy">
+                    </div>
+                    <div class="card-overlay">
+                        <h3 class="card-title">${a.title}</h3>
+                        <div class="card-meta">
+                            <span>${a.ep}</span>
+                            <span style="opacity: 0.3">|</span>
+                            <span>${a.type}</span>
+                        </div>
+                    </div>
+                `;
                 card.onclick = () => {
                     if (a.type === "Manga") {
                         alert("A Manga fejezetek hamarosan elérhetőek!");
@@ -755,24 +743,28 @@
                 filtered = animeData.filter(a => a.type === value);
             }
             renderGrid(filtered);
-
-            // Update active state in nav
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             if (key === 'all') document.querySelector('.nav-link[onclick*="all"]').classList.add('active');
         }
 
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = animeData.filter(a => a.title.toLowerCase().includes(term));
+            const filtered = animeData.filter(a => a.title && a.title.toLowerCase().includes(term));
             renderGrid(filtered);
         });
 
         function playPlayer(url) {
-            if (!url || url === "" || url.includes('XXXXXX')) {
-                alert('Kérlek add meg a valódi Indavideo embed linket a kódban!');
+            if (!url || url === "" || url === "#" || url.includes('XXXXXX')) {
+                alert('Ez a videó még nem elérhető!');
                 return;
             }
-            frame.src = url;
+            // Ensure embed format
+            let embedUrl = url;
+            if (url.includes('indavideo.hu/video/')) {
+                // If it's a standard link, try to alert that embed is needed or try common formats
+                // Note: Indavideo IDs are alphanumeric at the end.
+            }
+            frame.src = embedUrl;
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
@@ -783,15 +775,12 @@
             document.body.style.overflow = '';
         }
 
-        // Global hotkeys
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && modal.classList.contains('open')) stopPlayer();
         });
 
-        // Initial render
         renderGrid(animeData);
     </script>
-
 </body>
 
 </html>
