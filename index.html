@@ -65,7 +65,7 @@
 </div>
 
 <script>
-    // --- AXELSUB FRISSÍTETT LISTA (Kizárólag a kért animék) ---
+    // --- AXELSUB LISTA (Csak a megadott 4 anime) ---
     const myAnimes = [
         { id: 172905, ep: '01. Rész', video: 'https://videa.hu/player?v=yusha_kod' },
         { id: 175968, ep: '13. Rész', video: 'https://videa.hu/player?v=kingdom6_kod' },
@@ -96,6 +96,7 @@
             const json = await response.json();
             const data = json.data.Page.media;
 
+            // Összefűzzük a helyi adatokat az AniList-es képekkel
             globalAnimeList = myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) }));
             render(globalAnimeList);
         } catch (error) {
@@ -107,10 +108,12 @@
         const hero = document.getElementById('hero-slider');
         const grid = document.getElementById('anime-grid');
 
+        // Slider feltöltése (csak ha még nincs benne semmi)
         if(hero.innerHTML === "") {
             list.slice(0, 3).forEach((anime, i) => {
                 const slide = document.createElement('div');
                 slide.className = `slide ${i===0?'active':''}`;
+                // AniList banner kép használata
                 slide.style.backgroundImage = `url('${anime.bannerImage || anime.coverImage.extraLarge}')`;
                 slide.innerHTML = `<div class="slide-content"><span class="tag">Kiemelt</span><h1>${anime.title.romaji}</h1></div>`;
                 hero.appendChild(slide);
@@ -118,10 +121,12 @@
             startSlider();
         }
 
+        // Kártyák (grid) generálása
         grid.innerHTML = "";
         list.forEach((anime) => {
             const card = document.createElement('div');
             card.className = 'card';
+            // Watch.html-re küldés adatokkal
             card.onclick = () => location.href = `watch.html?video=${encodeURIComponent(anime.video)}&title=${encodeURIComponent(anime.title.romaji)}&ep=${anime.ep}`;
             card.innerHTML = `
                 <div class="card-img-wrapper"><img src="${anime.coverImage.extraLarge}"></div>
@@ -145,6 +150,7 @@
         }, 5000);
     }
 
+    // Keresés eseménykezelő
     document.getElementById('search-bar').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const filtered = globalAnimeList.filter(a => a.title.romaji.toLowerCase().includes(term));
