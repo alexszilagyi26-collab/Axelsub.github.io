@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeonAnime Stream</title>
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
@@ -34,13 +33,9 @@
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--card-bg);
-            border-radius: 4px;
+        .hidden {
+            display: none;
         }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .glass-nav {
             position: fixed;
@@ -67,78 +62,6 @@
             text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
         }
 
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin: 0 1.5rem;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--text);
-        }
-
-        .dropdown { position: relative; display: inline-block; }
-
-        .dropdown-btn {
-            color: var(--text-muted);
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(18, 18, 37, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            min-width: 150px;
-            padding: 0.5rem 0;
-            z-index: 200;
-        }
-
-        .dropdown:hover .dropdown-content { display: block; }
-
-        .dropdown-content a {
-            display: block;
-            padding: 0.7rem 1.2rem;
-            color: var(--text-muted);
-        }
-
-        .dropdown-content a:hover {
-            background: var(--glass);
-            color: var(--primary);
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: var(--glass);
-            padding: 0.6rem 1rem;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .search-bar input {
-            background: transparent;
-            border: none;
-            color: white;
-            margin-left: 0.5rem;
-            outline: none;
-            width: 150px;
-        }
-
         .hero {
             height: 90vh;
             display: flex;
@@ -154,11 +77,10 @@
             height: 100%;
             background: url('https://cdn.myanimelist.net/images/anime/1506/138982.jpg') center/cover no-repeat;
             mask-image: linear-gradient(to right, transparent, black 80%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 80%);
             opacity: 0.7;
             z-index: -1;
         }
-
-        .hero-content { max-width: 600px; }
 
         .badge {
             background: var(--secondary);
@@ -184,17 +106,13 @@
             cursor: pointer;
             border: none;
             font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn.primary {
             background: var(--primary);
             color: #000;
         }
 
-        .container { padding: 4rem 5%; }
+        .container {
+            padding: 4rem 5%;
+        }
 
         .anime-grid {
             display: grid;
@@ -207,6 +125,7 @@
             border-radius: 15px;
             overflow: hidden;
             cursor: pointer;
+            position: relative;
         }
 
         .card-image {
@@ -232,15 +151,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: .3s;
             z-index: 1000;
-        }
-
-        .video-modal:not(.hidden) {
-            opacity: 1;
-            pointer-events: all;
         }
 
         .player-container {
@@ -264,12 +175,10 @@
 </nav>
 
 <header class="hero">
-    <div class="hero-content">
+    <div>
         <span class="badge">ÚJ RÉSZ</span>
         <h1>Yusha Party <span class="glow-text">Odasareta</span></h1>
-        <button class="btn primary" onclick="startPlayer(animeData[0].url)">
-            ▶ Lejátszás
-        </button>
+        <button class="btn" onclick="startPlayer(animeData[0].url)">▶ Lejátszás</button>
     </div>
     <div class="hero-backdrop"></div>
 </header>
@@ -299,33 +208,34 @@ const modal = document.getElementById('videoModal');
 const videoFrame = document.getElementById('videoFrame');
 
 animeData.forEach(a => {
-    const c = document.createElement('div');
-    c.className = 'anime-card';
-    c.innerHTML = `
+    const card = document.createElement('div');
+    card.className = 'anime-card';
+    card.innerHTML = `
         <img src="${a.img}" class="card-image">
         <div class="card-overlay">
             <strong>${a.title}</strong>
             <small>${a.ep}</small>
-        </div>`;
-    c.onclick = () => startPlayer(a.url);
-    grid.appendChild(c);
+        </div>
+    `;
+    card.onclick = () => startPlayer(a.url);
+    grid.appendChild(card);
 });
 
 function startPlayer(url) {
     if (url.includes('XXXXXX')) {
-        alert('Teso, még nincs indavideo ID beírva.');
+        alert('Teso, még nincs indavideo ID megadva.');
         return;
     }
     videoFrame.src = url;
     modal.classList.remove('hidden');
 }
 
-modal.onclick = e => {
+modal.addEventListener('click', e => {
     if (e.target === modal) {
         videoFrame.src = '';
         modal.classList.add('hidden');
     }
-};
+});
 
 lucide.createIcons();
 </script>
