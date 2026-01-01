@@ -1,244 +1,797 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeonAnime Stream</title>
-
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>AxelSub - Anime Stream</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --bg-color: #050510;
-            --card-bg: #121225;
+            --bg: #050510;
+            --card: #121225;
             --primary: #00f3ff;
-            --secondary: #ff0055;
-            --text: #ffffff;
-            --text-muted: #a0a0b0;
+            --accent: #ff0055;
+            --text: #fff;
+            --muted: #a0a0b0;
             --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(5, 5, 16, 0.9);
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .hidden {
-            display: none;
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: 0.3s;
         }
 
-        .glass-nav {
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--card);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Navigation */
+        .nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 16, 0.7);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 2px;
+            cursor: pointer;
         }
 
-        .highlight {
+        .logo span {
             color: var(--primary);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
         }
 
-        .hero {
-            height: 90vh;
+        .nav-menu {
             display: flex;
             align-items: center;
-            position: relative;
-            padding: 0 5%;
+            gap: 0.5rem;
         }
 
-        .hero-backdrop {
+        .nav-link,
+        .dropdown-btn {
+            color: var(--muted);
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active,
+        .dropdown-btn:hover {
+            color: var(--text);
+            background: var(--glass);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
             position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(18, 18, 37, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            min-width: 180px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--glass);
+            color: var(--primary);
+            padding-left: 1.8rem;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            background: var(--glass);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            gap: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .search:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            width: 250px;
+        }
+
+        .search input {
+            background: none;
+            border: none;
+            color: var(--text);
+            outline: none;
+            width: 130px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .search svg {
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .search:focus-within svg {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 5% 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
             right: 0;
             width: 60%;
             height: 100%;
-            background: url('https://cdn.myanimelist.net/images/anime/1506/138982.jpg') center/cover no-repeat;
-            mask-image: linear-gradient(to right, transparent, black 80%);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 80%);
-            opacity: 0.7;
-            z-index: -1;
+            background: url('https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176244-RO4VXQB6tT4j.jpg') center/cover no-repeat;
+            mask-image: linear-gradient(to right, transparent, black 60%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 60%);
+            opacity: 0.4;
+            z-index: 0;
+            animation: slowZoom 20s infinite alternate;
         }
 
-        .badge {
-            background: var(--secondary);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .hero-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.75rem;
             font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.5);
+            margin-bottom: 1.5rem;
         }
 
         .hero h1 {
-            font-size: 4.5rem;
-            margin: 1rem 0;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
         }
 
-        .glow-text {
+        .hero h1 span {
             color: var(--primary);
-            text-shadow: 0 0 20px rgba(0,243,255,0.6);
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .btns {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 1.1rem 2.2rem;
             border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
             border: none;
-            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.4s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
             background: var(--primary);
             color: #000;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
         }
 
-        .container {
-            padding: 4rem 5%;
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.5);
         }
 
-        .anime-grid {
+        .btn-secondary {
+            background: var(--glass);
+            color: var(--text);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 5%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 800;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2.5rem;
         }
 
-        .anime-card {
-            background: var(--card-bg);
-            border-radius: 15px;
+        .card {
+            background: var(--card);
+            border-radius: 20px;
             overflow: hidden;
+            position: relative;
             cursor: pointer;
+            border: 1px solid var(--border);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 243, 255, 0.15);
+        }
+
+        .card-img-wrap {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
             position: relative;
         }
 
-        .card-image {
+        .card img {
             width: 100%;
-            height: 280px;
+            height: 100%;
             object-fit: cover;
+            transition: 0.8s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 0.4rem 0.8rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+            border: 1px solid var(--border);
+            color: var(--primary);
         }
 
         .card-overlay {
             position: absolute;
             inset: 0;
+            background: linear-gradient(to top, rgba(5, 5, 16, 1) 15%, rgba(5, 5, 16, 0.6) 40%, transparent 70%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 1rem;
-            background: linear-gradient(to top, rgba(0,0,0,.9), transparent);
+            padding: 1.5rem;
+            transition: 0.4s;
         }
 
-        .video-modal {
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            color: #fff;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card:hover .card-title {
+            color: var(--primary);
+        }
+
+        /* Multi-column grid for specific needs */
+        @media (min-width: 1400px) {
+            .grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Modal */
+        .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,.95);
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.open {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .player-container {
-            width: 90%;
-            max-width: 1200px;
-            aspect-ratio: 16 / 9;
+            width: 95%;
+            max-width: 1280px;
+            position: relative;
+            transform: scale(0.9);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        iframe {
+        .modal.open .player-container {
+            transform: scale(1);
+        }
+
+        .player {
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 0 100px rgba(0, 243, 255, 0.2);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .player iframe {
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -1.5rem;
+            right: -1.5rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: #ff3377;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 5%;
+            background: #0a0a1a;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copy {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slowZoom {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-bg {
+                width: 100%;
+                opacity: 0.3;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .card-img-wrap {
+                height: 240px;
+            }
+
+            .close-btn {
+                top: -4rem;
+                right: 0;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<nav class="glass-nav">
-    <div class="logo">NEON<span class="highlight">ANIME</span></div>
-</nav>
-
-<header class="hero">
-    <div>
-        <span class="badge">ÚJ RÉSZ</span>
-        <h1>Yusha Party <span class="glow-text">Odasareta</span></h1>
-        <button class="btn" onclick="startPlayer(animeData[0].url)">▶ Lejátszás</button>
-    </div>
-    <div class="hero-backdrop"></div>
-</header>
-
-<section class="container">
-    <div class="anime-grid" id="animeGrid"></div>
-</section>
-
-<div id="videoModal" class="video-modal hidden">
-    <div class="player-container">
-        <iframe id="videoFrame" allowfullscreen></iframe>
-    </div>
-</div>
-
-<script>
-const animeData = [
-    {
-        title: "Yusha Party",
-        ep: "1. rész",
-        img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
-        url: "https://embed.indavideo.hu/player/video/XXXXXX"
-    }
-];
-
-const grid = document.getElementById('animeGrid');
-const modal = document.getElementById('videoModal');
-const videoFrame = document.getElementById('videoFrame');
-
-animeData.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'anime-card';
-    card.innerHTML = `
-        <img src="${a.img}" class="card-image">
-        <div class="card-overlay">
-            <strong>${a.title}</strong>
-            <small>${a.ep}</small>
+    <nav class="nav">
+        <div class="logo" onclick="window.location.reload()">AXEL<span>SUB</span></div>
+        <div class="nav-menu">
+            <a href="#" class="nav-link active" onclick="filterBy('all', 'all')">Kezdőlap</a>
+            <div class="dropdown">
+                <button class="dropdown-btn">Anime ▾</button>
+                <div class="dropdown-menu">
+                    <a href="#" onclick="filterBy('status', 'Aktív')">Aktív</a>
+                    <a href="#" onclick="filterBy('status', 'Tervezett')">Tervezett</a>
+                    <a href="#" onclick="filterBy('status', 'Befejezett')">Befejezett</a>
+                </div>
+            </div>
+            <a href="#" class="nav-link" onclick="filterBy('type', 'Manga')">Manga</a>
+            <a href="#" class="nav-link">Kedvencek</a>
         </div>
-    `;
-    card.onclick = () => startPlayer(a.url);
-    grid.appendChild(card);
-});
+        <div class="search" id="searchBar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input type="text" placeholder="Keresés..." id="searchInput">
+        </div>
+    </nav>
 
-function startPlayer(url) {
-    if (url.includes('XXXXXX')) {
-        alert('Teso, még nincs indavideo ID megadva.');
-        return;
-    }
-    videoFrame.src = url;
-    modal.classList.remove('hidden');
-}
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="tag">Kiemelt Akció</div>
+            <h1>Yusha Party wo <span>Odasareta Kiyoubinbou</span></h1>
+            <p>A hős csapat kitaszította őt, mert "csak" egy ezermester volt. Most bemutatja, mire képes egyedül egy
+                modern fantasy világban!</p>
+            <div class="btns">
+                <button class="btn btn-primary" onclick="playPlayer(animeData[0].url)">▶ Lejátszás Most</button>
+                <button class="btn btn-secondary">ℹ Részletek</button>
+            </div>
+        </div>
+    </header>
 
-modal.addEventListener('click', e => {
-    if (e.target === modal) {
-        videoFrame.src = '';
-        modal.classList.add('hidden');
-    }
-});
+    <section class="section" id="stream">
+        <div class="section-header">
+            <h2 class="section-title"><span>🔥</span> Népszerű Sorozatok</h2>
+        </div>
+        <div class="grid" id="animeGrid">
+            <!-- Cards injected by JS -->
+        </div>
+    </section>
 
-lucide.createIcons();
-</script>
+    <div class="modal" id="videoModal">
+        <div class="player-container">
+            <button class="close-btn" onclick="stopPlayer()">✕</button>
+            <div class="player">
+                <iframe id="videoFrame" src="" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-logo">AXEL<span>SUB</span></div>
+        <div class="footer-links">
+            <a href="#">Rólunk</a>
+            <a href="#">Kapcsolat</a>
+            <a href="#">Discord</a>
+            <a href="#">Támogatás</a>
+        </div>
+        <div class="copy">&copy; 2026 AxelSub - Minden jog fenntartva. Kedvenc anid egy helyen.</div>
+    </footer>
+
+    <script>
+        const animeData = [
+            {
+                title: "Yusha Party wo Odasareta Kiyoubinbou",
+                ep: "1. rész",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176244-RO4VXQB6tT4j.jpg",
+                url: "https://indavideo.hu/video/Yusha_Party_wo_Oidasareta_Kiyoubinbou_1resz",
+                status: "Aktív",
+                type: "Anime"
+            },
+            {
+                title: "Kingdom 6. évad",
+                ep: "13. rész",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162377-7J0xOOe20Lw4.jpg",
+                url: "http://indavideo.hu/video/Kingdom_6_evad_13resz_Magyar_Felirattal,
+                status: "Aktív",
+                type: "Anime"
+            },
+            {
+                title: "Chitose-kun wa Ramune Bin no Naka",
+                ep: "9. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
+                url: "https://auto.indavideo.hu/video/Chitose-kun_wa_Ramune_Bin_no_Naka_9resz,
+                status: "aktiv",
+                type: "Anime"
+            },
+            {
+                title: "Kakuriyo no Yadomeshi",
+                ep: "12. rész",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100500-4vRsWSZ0Wuam.jpg",
+                url: "https://auto.indavideo.hu/video/i_-_12Resz",
+                status: "Befejezett",
+                type: "Anime"
+            },
+            {
+                title: "Solo Leveling",
+                ep: "12. rész",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-6stY9TidM57S.jpg",
+                url: "https://embed.indavideo.hu/player/video/XXXXXX",
+                status: "Tervezet",
+                type: "Anime"
+            },
+            {
+          
+            },
+            {
+                title: "Dandadan",
+                ep: "Volume 1",
+                img: "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx132029-7sh922H8L5Jk.jpg",
+                url: "#",
+                status: "Aktív",
+                type: "Manga"
+            },
+            {
+                title: "Berserk",
+                ep: "Chapter 373",
+                img: "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30002-79Se667677b3.png",
+                url: "#",
+                status: "Aktív",
+                type: "Manga"
+            }
+        ];
+
+        const grid = document.getElementById('animeGrid');
+        const modal = document.getElementById('videoModal');
+        const frame = document.getElementById('videoFrame');
+        const searchInput = document.getElementById('searchInput');
+
+        function renderGrid(data) {
+            grid.innerHTML = '';
+            if (data.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--muted);">Nincs találat... 🔍</div>';
+                return;
+            }
+            data.forEach(a => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+            <div class="card-badge">${a.status}</div>
+            <div class="card-img-wrap">
+                <img src="${a.img}" alt="${a.title}" loading="lazy">
+            </div>
+            <div class="card-overlay">
+                <h3 class="card-title">${a.title}</h3>
+                <div class="card-meta">
+                    <span>${a.ep}</span>
+                    <span style="opacity: 0.3">|</span>
+                    <span>${a.type}</span>
+                </div>
+            </div>
+        `;
+                card.onclick = () => {
+                    if (a.type === "Manga") {
+                        alert("A Manga fejezetek hamarosan elérhetőek!");
+                    } else {
+                        playPlayer(a.url);
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function filterBy(key, value) {
+            let filtered = animeData;
+            if (key === 'status') {
+                filtered = animeData.filter(a => a.status === value);
+            } else if (key === 'type') {
+                filtered = animeData.filter(a => a.type === value);
+            }
+            renderGrid(filtered);
+
+            // Update active state in nav
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if (key === 'all') document.querySelector('.nav-link[onclick*="all"]').classList.add('active');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = animeData.filter(a => a.title.toLowerCase().includes(term));
+            renderGrid(filtered);
+        });
+
+        function playPlayer(url) {
+            if (!url || url === "" || url.includes('XXXXXX')) {
+                alert('Kérlek add meg a valódi Indavideo embed linket a kódban!');
+                return;
+            }
+            frame.src = url;
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function stopPlayer() {
+            frame.src = '';
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Global hotkeys
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('open')) stopPlayer();
+        });
+
+        // Initial render
+        renderGrid(animeData);
+    </script>
 
 </body>
+
 </html>
