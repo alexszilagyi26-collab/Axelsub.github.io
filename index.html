@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="hu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeonAnime Stream</title>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -34,22 +34,13 @@
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb {
             background: var(--card-bg);
             border-radius: 4px;
         }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .glass-nav {
             position: fixed;
@@ -87,13 +78,9 @@
         .nav-links a:hover,
         .nav-links a.active {
             color: var(--text);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+        .dropdown { position: relative; display: inline-block; }
 
         .dropdown-btn {
             color: var(--text-muted);
@@ -102,14 +89,9 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
             display: flex;
             align-items: center;
             gap: 0.3rem;
-        }
-
-        .dropdown-btn:hover {
-            color: var(--text);
         }
 
         .dropdown-content {
@@ -126,14 +108,11 @@
             z-index: 200;
         }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+        .dropdown:hover .dropdown-content { display: block; }
 
         .dropdown-content a {
             display: block;
             padding: 0.7rem 1.2rem;
-            margin: 0;
             color: var(--text-muted);
         }
 
@@ -166,27 +145,20 @@
             align-items: center;
             position: relative;
             padding: 0 5%;
-            background: radial-gradient(circle at 70% 50%, rgba(0, 243, 255, 0.1), transparent),
-                radial-gradient(circle at 20% 80%, rgba(255, 0, 85, 0.1), transparent);
         }
 
         .hero-backdrop {
             position: absolute;
-            top: 0;
             right: 0;
             width: 60%;
             height: 100%;
-            background: url('https://cdn.myanimelist.net/images/anime/1506/138982.jpg') no-repeat center center/cover;
+            background: url('https://cdn.myanimelist.net/images/anime/1506/138982.jpg') center/cover no-repeat;
             mask-image: linear-gradient(to right, transparent, black 80%);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 80%);
-            z-index: -1;
             opacity: 0.7;
+            z-index: -1;
         }
 
-        .hero-content {
-            max-width: 600px;
-            z-index: 10;
-        }
+        .hero-content { max-width: 600px; }
 
         .badge {
             background: var(--secondary);
@@ -194,79 +166,35 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
         }
 
         .hero h1 {
             font-size: 4.5rem;
-            line-height: 1.1;
             margin: 1rem 0;
         }
 
         .glow-text {
             color: var(--primary);
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+            text-shadow: 0 0 20px rgba(0,243,255,0.6);
         }
 
         .btn {
             padding: 1rem 2rem;
             border-radius: 50px;
-            font-weight: 600;
             cursor: pointer;
             border: none;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: 0.3s;
-            font-size: 1rem;
         }
 
         .btn.primary {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
         }
 
-        .btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
-        }
-
-        .btn.secondary {
-            background: var(--glass);
-            color: var(--text);
-            border: 1px solid var(--glass-border);
-            margin-left: 1rem;
-        }
-
-        .btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .container {
-            padding: 4rem 5%;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .icon-flame {
-            color: #ff9d00;
-        }
+        .container { padding: 4rem 5%; }
 
         .anime-grid {
             display: grid;
@@ -278,16 +206,7 @@
             background: var(--card-bg);
             border-radius: 15px;
             overflow: hidden;
-            position: relative;
-            transition: 0.4s;
             cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .anime-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.15);
         }
 
         .card-image {
@@ -298,43 +217,25 @@
 
         .card-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            inset: 0;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 1rem;
-            opacity: 1;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .card-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            background: linear-gradient(to top, rgba(0,0,0,.9), transparent);
         }
 
         .video-modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
+            inset: 0;
+            background: rgba(0,0,0,.95);
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transition: .3s;
+            z-index: 1000;
         }
 
         .video-modal:not(.hidden) {
@@ -345,184 +246,89 @@
         .player-container {
             width: 90%;
             max-width: 1200px;
-            background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
-            border: 1px solid var(--glass-border);
             aspect-ratio: 16 / 9;
         }
 
-        #videoFrame {
+        iframe {
             width: 100%;
             height: 100%;
             border: none;
-            display: block;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 12px;
-            border-radius: 50%;
-            z-index: 20;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn:hover {
-            background: var(--secondary);
-            transform: scale(1.1);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="glass-nav">
-        <div class="logo">NEON<span class="highlight">ANIME</span></div>
-        <div class="nav-links">
-            <a href="#" class="active">Kezdőlap</a>
-            <div class="dropdown">
-                <button class="dropdown-btn">Anime <i data-lucide="chevron-down"
-                        style="width:16px;height:16px;"></i></button>
-                <div class="dropdown-content">
-                    <a href="#">Aktív</a>
-                    <a href="#">Tervezett</a>
-                    <a href="#">Befejezett</a>
-                </div>
-            </div>
-            <a href="#">Manga</a>
-            <a href="#">Kedvencek</a>
-        </div>
-        <div class="search-bar">
-            <i data-lucide="search"></i>
-            <input type="text" placeholder="Keresés...">
-        </div>
-    </nav>
+<nav class="glass-nav">
+    <div class="logo">NEON<span class="highlight">ANIME</span></div>
+</nav>
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <span class="badge">ÚJ RÉSZ</span>
-            <h1>Yusha Party wo <span class="glow-text">Odasareta Kiyoubinbou</span></h1>
-            <p>Egy hős party kidobott egy szegény kalandort, aki most egyedül próbál boldogulni.
-                Vajon sikerül neki új életet kezdenie, vagy visszatér a régi csapatához?</p>
-            <div class="hero-buttons">
-                <button class="btn primary" onclick="startPlayer(animeData[0].url)">
-                    <i data-lucide="play"></i> Lejátszás Most
-                </button>
-                <button class="btn secondary">
-                    <i data-lucide="info"></i> Részletek
-                </button>
-            </div>
-        </div>
-        <div class="hero-backdrop"></div>
-    </header>
-
-    <!-- Trending Section -->
-    <section class="container">
-        <h2 class="section-title">Népszerű Most <i data-lucide="flame" class="icon-flame"></i></h2>
-        <div class="anime-grid" id="animeGrid"></div>
-    </section>
-
-    <!-- Video Player Modal -->
-    <div id="videoModal" class="video-modal hidden">
-        <div class="player-container">
-            <button class="close-btn" onclick="closePlayer()"><i data-lucide="x"></i></button>
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
-        </div>
+<header class="hero">
+    <div class="hero-content">
+        <span class="badge">ÚJ RÉSZ</span>
+        <h1>Yusha Party <span class="glow-text">Odasareta</span></h1>
+        <button class="btn primary" onclick="startPlayer(animeData[0].url)">
+            ▶ Lejátszás
+        </button>
     </div>
+    <div class="hero-backdrop"></div>
+</header>
 
-    <script>
-        // Anime adatok - CSERÉLD KI AZ XXXXXX-ET A VALÓDI INDAVIDEO URL-EKRE!
-        const animeData = [
-            {
-                title: "Yusha Party wo Odasareta Kiyoubinbou",
-                ep: "1. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX"
-            },
-            {
-                title: "Kingdom",
-                ep: "6. évad 13. rész",
-                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162377-7J0xOOe20Lw4.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX"
-            },
-            {
-                title: "Chitose-kun wa Ramune Bin no Naka",
-                ep: "9. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX"
-            },
-            {
-                title: "Kakuriyo no Yadomeshi",
-                ep: "12. rész",
-                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100500-4vRsWSZ0Wuam.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX"
-            }
-        ];
+<section class="container">
+    <div class="anime-grid" id="animeGrid"></div>
+</section>
 
-        const grid = document.getElementById('animeGrid');
-        const modal = document.getElementById('videoModal');
-        const videoFrame = document.getElementById('videoFrame');
+<div id="videoModal" class="video-modal hidden">
+    <div class="player-container">
+        <iframe id="videoFrame" allowfullscreen></iframe>
+    </div>
+</div>
 
-        function initGrid() {
-            animeData.forEach(anime => {
-                const card = document.createElement('div');
-                card.className = 'anime-card';
-                card.innerHTML = `
-                    <img src="${anime.img}" alt="${anime.title}" class="card-image">
-                    <div class="card-overlay">
-                        <h3 class="card-title">${anime.title}</h3>
-                        <span class="card-meta">${anime.ep} • Magyar Felirat</span>
-                    </div>
-                `;
-                card.onclick = () => startPlayer(anime.url);
-                grid.appendChild(card);
-            });
-        }
+<script>
+const animeData = [
+    {
+        title: "Yusha Party",
+        ep: "1. rész",
+        img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
+        url: "https://embed.indavideo.hu/player/video/XXXXXX"
+    }
+];
 
-        function startPlayer(url) {
-            if (!url || url.includes('XXXXXX')) {
-                alert('Nincs beállítva videó URL! Cseréld ki az XXXXXX-et a valódi indavideo embed linkre.');
-                return;
-            }
-            videoFrame.src = url;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+const grid = document.getElementById('animeGrid');
+const modal = document.getElementById('videoModal');
+const videoFrame = document.getElementById('videoFrame');
 
-        function closePlayer() {
-            videoFrame.src = '';
-            modal.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
+animeData.forEach(a => {
+    const c = document.createElement('div');
+    c.className = 'anime-card';
+    c.innerHTML = `
+        <img src="${a.img}" class="card-image">
+        <div class="card-overlay">
+            <strong>${a.title}</strong>
+            <small>${a.ep}</small>
+        </div>`;
+    c.onclick = () => startPlayer(a.url);
+    grid.appendChild(c);
+});
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                closePlayer();
-            }
-        });
+function startPlayer(url) {
+    if (url.includes('XXXXXX')) {
+        alert('Teso, még nincs indavideo ID beírva.');
+        return;
+    }
+    videoFrame.src = url;
+    modal.classList.remove('hidden');
+}
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closePlayer();
-            }
-        });
+modal.onclick = e => {
+    if (e.target === modal) {
+        videoFrame.src = '';
+        modal.classList.add('hidden');
+    }
+};
 
-        initGrid();
-        lucide.createIcons();
-    </script>
+lucide.createIcons();
+</script>
+
 </body>
-
 </html>
