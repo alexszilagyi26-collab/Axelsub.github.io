@@ -3,137 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Fordításaim</title>
+    <title>ANIME HUB - Főoldal</title>
     <style>
-        /* Alapstílusok */
+        :root {
+            --neon-blue: #00f2ff;
+            --dark-bg: #0a0a0a;
+            --card-bg: #161616;
+            --text-color: #e0e0e0;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f0f;
-            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
             margin: 0;
-            padding: 0;
+            overflow-x: hidden;
         }
 
+        /* Neon Fejléc (ugyanaz, mint a lejátszó oldalon) */
         header {
-            background-color: #1a1a1a;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #e50914;
+            padding: 15px 5%;
+            background: #000;
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            color: #ccc;
+        .neon-logo {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            font-weight: bold;
+            font-size: 24px;
             text-decoration: none;
-            margin: 0 15px;
-            transition: 0.3s;
         }
 
-        nav a:hover {
-            color: #e50914;
+        input[type="text"] {
+            background: #222;
+            border: 1px solid var(--neon-blue);
+            padding: 8px 15px;
+            color: white;
+            border-radius: 5px;
+            outline: none;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+        /* Hero Képváltó */
+        .hero-carousel {
+            width: 100%;
+            height: 450px; /* Magasság beállítása */
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+            background-color: #000; /* Alap háttér, ha nincs kép */
         }
 
-        /* Epizód kártyák rácsa */
+        .carousel-item {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+            box-sizing: border-box;
+            background-blend-mode: overlay; /* Keveri az átlátszó színt a háttérrel */
+            background-color: rgba(0, 0, 0, 0.4); /* Sötétebb átlátszó réteg a szöveg olvashatóságáért */
+        }
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item-info {
+            max-width: 50%;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-item-info h2 {
+            font-size: 3em;
+            margin: 0 0 10px 0;
+            color: white;
+        }
+
+        .carousel-item-info p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: #ccc;
+        }
+
+        /* Tartalom rész */
+        .content-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h2.section-title {
+            color: var(--neon-blue);
+            border-left: 5px solid var(--neon-blue);
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
         .anime-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
+            margin-bottom: 50px;
         }
 
         .anime-card {
-            background-color: #1f1f1f;
-            border-radius: 8px;
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: 0.3s;
             cursor: pointer;
+            position: relative;
         }
 
         .anime-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--neon-blue);
         }
 
-        .thumbnail {
+        .anime-card img {
             width: 100%;
-            height: 150px;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
+            height: 250px; /* Nagyobb kártyaképek */
+            object-fit: cover;
         }
 
-        .info {
+        .card-info {
             padding: 15px;
+            font-size: 15px;
         }
 
-        .info h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
+        .card-info h3 {
+            margin: 0 0 5px 0;
+            color: var(--neon-blue);
         }
 
-        .tag {
-            background-color: #e50914;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #666;
+        .card-info p {
+            margin: 0;
+            color: #aaa;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>ANIME <span style="color: #e50914;">FORDÍTÁSOK</span></h1>
-    <nav>
-        <a href="#">Főoldal</a>
-        <a href="#">Összes Anime</a>
-        <a href="#">Kapcsolat</a>
-    </nav>
+    <a href="index.html" class="neon-logo">ANIME HUB</a>
+    <input type="text" placeholder="Keresés...">
 </header>
 
-<div class="container">
-    <h2>Legutóbbi feltöltések</h2>
-    
-    <div class="anime-grid">
-        <div class="anime-card">
-            <div class="thumbnail">IDÉZZ BE IDE EGY KÉPET</div>
-            <div class="info">
-                <span class="tag">01. rész</span>
-                <h3>Anime Címe - 01</h3>
-                <p style="color: #888; font-size: 14px;">Feltöltve: 2024.05.20.</p>
-            </div>
+<div class="hero-carousel" id="hero-carousel">
+    <div class="carousel-item active" style="background-image: url('https://kitsu.io/uploads/anime/cover_images/7376/original.jpg')">
+        <div class="carousel-item-info">
+            <h2>Gintama</h2>
+            <p>Egy alternatív Edo-kor, ahol az űrlények (Amanto) hódították meg a Földet. Gin-san és barátai furcsa megbízásokat vállalnak el.</p>
         </div>
-
-        <div class="anime-card">
-            <div class="thumbnail">IDÉZZ BE IDE EGY KÉPET</div>
-            <div class="info">
-                <span class="tag">02. rész</span>
-                <h3>Anime Címe - 02</h3>
-                <p style="color: #888; font-size: 14px;">Feltöltve: 2024.05.21.</p>
-            </div>
+    </div>
+    <div class="carousel-item" style="background-image: url('https://assets.nflxext.com/us/boxshots/600x900/80119330.jpg')">
+        <div class="carousel-item-info">
+            <h2>One Piece</h2>
+            <p>Monkey D. Luffy és kalózcsapata a Grand Line-on utazva keresi a legendás kincset, a One Piece-t.</p>
         </div>
-
+    </div>
+    <div class="carousel-item" style="background-image: url('https://animecorner.me/wp-content/uploads/2023/12/jujutsu-kaisen-s2-key-visual-scaled.jpg')">
+        <div class="carousel-item-info">
+            <h2>Jujutsu Kaisen</h2>
+            <p>Yuji Itadori egy titokzatos átokvilágba csöppen, ahol jujutsu varázslóvá válik, hogy megmentse a világot.</p>
         </div>
+    </div>
 </div>
 
-<footer>
-    <p>&copy; 2024 Anime Fordító Oldalam - Minden jog fenntartva</p>
-</footer>
+<div class="content-container">
+    <h2 class="section-title">Legutóbbi Epizódok</h2>
+    
+    <div class="anime-grid">
+        <div class="anime-card" onclick="location.href='watch.html?anime=onepiece&episode=1081'">
+            <img src="https://m.media-amazon.com/images/M/MV5BMjYxMzcyNzk2NF5BMl5BanBnXkFtZTgwNTU0ODAxMTE@._V1_FMjpg_UX1000_.jpg" alt="One Piece">
+            <div class="card-info">
+                <h3>One Piece - 1081. rész</h3>
+                <p>Nagy csata Wano földjén!</p>
+            </div>
+        </div>
+
+        <div class="anime-card" onclick="location.href='watch.html?anime=gintama&episode=200'">
+            <img src="https://i.ebayimg.com/images/g/x6wAAOSw6J1g344q/s-l1600.jpg" alt="Gintama">
+            <div class="card-info">
+                <h3>Gintama - 200. rész</h3>
+                <p>A Yorozuya újabb kalandja!</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Népszerű Animék</h2>
+    <div class="anime-grid">
+        <div class="anime-card" onclick="location.href='watch.html?anime=jujutsukaisen&episode=23'">
+            <img src="https://otakukart.com/wp-content/uploads/2022/07/Jujutsu-Kaisen-Episode-22-Release-Date.jpg" alt="Jujutsu Kaisen">
+            <div class="card-info">
+                <h3>Jujutsu Kaisen - 23. rész</h3>
+                <p>Cursed spirit támadás!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Képváltó logika
+    const carousel = document.getElementById('hero-carousel');
+    const items = carousel.getElementsByClassName('carousel-item');
+    let currentIndex = 0;
+
+    function showNextItem() {
+        items[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % items.length;
+        items[currentIndex].classList.add('active');
+    }
+
+    setInterval(showNextItem, 5000); // Váltás 5 másodpercenként
+
+    // Kezdeti aktiválás
+    if (items.length > 0) {
+        items[0].classList.add('active');
+    }
+</script>
 
 </body>
 </html>
