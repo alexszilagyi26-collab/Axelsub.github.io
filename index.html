@@ -66,46 +66,84 @@
     let globalAnimeList = [];
 
     async function getAniList() {
-        const query = `query ($ids: [Int]) { Page { media(id_in: $ids) { id title { romaji } coverImage { extraLarge } bannerImage } } }`;
+        const query = `
+        query ($ids: [Int]) {
+          Page {
+            media(id_in: $ids, type: ANIME) {
+              id
+              title { romaji }
+              description(asHtml: false)
+              coverImage {
+                extraLarge
+              }
+              bannerImage
+            }
+          }
+        }`;
+
         try {
             const response = await fetch('https://graphql.anilist.co', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
+                body: JSON.stringify({
+                    query,
+                    variables: { ids: myAnimes.map(a => a.id) }
+                })
             });
+
             const json = await response.json();
             const data = json.data.Page.media;
-            globalAnimeList = myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) }));
+
+            globalAnimeList = myAnimes.map(a => ({
+                ...a,
+                ...data.find(d => d.id === a.id)
+            }));
+
             render(globalAnimeList);
-        } catch (error) { console.error("AniList hiba:", error); }
+        } catch (error) {
+            console.error("AniList hiba:", error);
+        }
     }
 
     function render(list) {
         const hero = document.getElementById('hero-slider');
         const grid = document.getElementById('anime-grid');
 
-        if(hero.innerHTML === "") {
+        // HERO – CSAK ANILIST KÉP
+        if (hero.innerHTML === "") {
             list.slice(0, 3).forEach((anime, i) => {
+                const img = anime.bannerImage || anime.coverImage.extraLarge;
+
                 const slide = document.createElement('div');
-                slide.className = `slide ${i===0?'active':''}`;
-                slide.style.backgroundImage = `url('${anime.bannerImage || anime.coverImage.extraLarge}')`;
-                slide.innerHTML = `<div class="slide-content"><span class="tag">Kiemelt</span><h1>${anime.title.romaji}</h1></div>`;
+                slide.className = `slide ${i === 0 ? 'active' : ''}`;
+                slide.style.backgroundImage = `url('${img}')`;
+                slide.innerHTML = `
+                    <div class="slide-content">
+                        <span class="tag">Kiemelt</span>
+                        <h1>${anime.title.romaji}</h1>
+                    </div>`;
                 hero.appendChild(slide);
             });
             startSlider();
         }
 
+        // CARDS – BORÍTÓ + LEÍRÁS ANILISTRŐL
         grid.innerHTML = "";
         list.forEach((anime) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.onclick = () => location.href = `watch.html?video=${encodeURIComponent(anime.video)}&title=${encodeURIComponent(anime.title.romaji)}&ep=${anime.ep}`;
+            card.onclick = () =>
+                location.href = `watch.html?video=${encodeURIComponent(anime.video)}&title=${encodeURIComponent(anime.title.romaji)}&ep=${anime.ep}`;
+
             card.innerHTML = `
-                <div class="card-img-wrapper"><img src="${anime.coverImage.extraLarge}"></div>
+                <div class="card-img-wrapper">
+                    <img src="${anime.coverImage.extraLarge}" alt="${anime.title.romaji}">
+                </div>
                 <div class="card-info">
                     <div class="card-title">${anime.title.romaji}</div>
                     <div class="card-ep">${anime.ep}</div>
                 </div>`;
+
             grid.appendChild(card);
         });
     }
@@ -114,7 +152,7 @@
         let s = 0;
         setInterval(() => {
             const slides = document.querySelectorAll('.slide');
-            if(slides.length > 0) {
+            if (slides.length > 0) {
                 slides[s].classList.remove('active');
                 s = (s + 1) % slides.length;
                 slides[s].classList.add('active');
@@ -124,7 +162,9 @@
 
     document.getElementById('search-bar').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
-        render(globalAnimeList.filter(a => a.title.romaji.toLowerCase().includes(term)));
+        render(globalAnimeList.filter(a =>
+            a.title.romaji.toLowerCase().includes(term)
+        ));
     });
 
     getAniList();
