@@ -1,87 +1,205 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeonAnime Stream</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Lucide Icons -->
+    <title>AxelSub - NeonAnime Stream</title>
+    
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-</head>
 
+    <style>
+        :root {
+            --bg-color: #050510;
+            --card-bg: #121225;
+            --primary: #00f3ff;
+            --secondary: #ff0055;
+            --text: #ffffff;
+            --text-muted: #a0a0b0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text); overflow-x: hidden; }
+
+        /* Navigation */
+        .glass-nav {
+            position: fixed; top: 0; width: 100%; padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 16, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border); z-index: 100;
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; }
+        .highlight { color: var(--primary); text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .search-bar { display: flex; align-items: center; background: var(--glass); padding: 0.5rem 1rem; border-radius: 50px; border: 1px solid var(--glass-border); }
+        .search-bar input { background: transparent; border: none; color: white; margin-left: 0.5rem; outline: none; width: 150px; }
+
+        /* Hero */
+        .hero {
+            height: 85vh; display: flex; align-items: center; position: relative; padding: 0 5%;
+            background: radial-gradient(circle at 70% 50%, rgba(0, 243, 255, 0.1), transparent);
+        }
+        .hero-backdrop {
+            position: absolute; top: 0; right: 0; width: 60%; height: 100%;
+            background-size: cover; background-position: center;
+            mask-image: linear-gradient(to right, transparent, black 80%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 80%);
+            z-index: -1; opacity: 0.5; transition: 1s;
+        }
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin: 1rem 0; }
+        .glow-text { color: var(--primary); text-shadow: 0 0 20px rgba(0, 243, 255, 0.6); }
+        .badge { background: var(--secondary); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); }
+
+        /* Buttons */
+        .btn { padding: 0.8rem 1.8rem; border-radius: 50px; cursor: pointer; border: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: 0.3s; }
+        .btn.primary { background: var(--primary); color: #000; }
+        .btn.primary:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--primary); }
+        .btn.secondary { background: var(--glass); color: white; border: 1px solid var(--glass-border); margin-left: 1rem; }
+
+        /* Grid */
+        .container { padding: 4rem 5%; }
+        .section-title { font-size: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+        .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; }
+        .anime-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; position: relative; transition: 0.4s; cursor: pointer; border: 1px solid transparent; }
+        .anime-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .card-image { width: 100%; height: 300px; object-fit: cover; }
+        .card-overlay { position: absolute; bottom: 0; width: 100%; padding: 1.5rem 1rem; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
+
+        /* Modal & Player */
+        .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        .video-modal.hidden { opacity: 0; pointer-events: none; }
+        .player-container { width: 90%; max-width: 1000px; border-radius: 20px; overflow: hidden; position: relative; background: #000; border: 1px solid var(--primary); }
+        iframe, video { width: 100%; aspect-ratio: 16/9; display: block; border: none; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: var(--secondary); border: none; color: white; padding: 8px; border-radius: 50%; cursor: pointer; z-index: 10; }
+    </style>
+</head>
 <body>
 
-    <!-- Navigation -->
     <nav class="glass-nav">
-        <div class="logo">NEON<span class="highlight">ANIME</span></div>
+        <div class="logo">AXEL<span class="highlight">SUB</span></div>
         <div class="nav-links">
             <a href="#" class="active">Kezdőlap</a>
-            <a href="#">Sorozatok</a>
-            <a href="#">Filmek</a>
-            <a href="#">Kedvencek</a>
+            <a href="#">Projektek</a>
+            <a href="#">Kapcsolat</a>
         </div>
         <div class="search-bar">
-            <i data-lucide="search"></i>
-            <input type="text" placeholder="Keresés...">
+            <i data-lucide="search" size="18"></i>
+            <input type="text" id="searchInput" placeholder="Keresés...">
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <header class="hero">
+        <div class="hero-backdrop" id="heroBackdrop"></div>
         <div class="hero-content">
-            <span class="badge">ÚJ RÉSZ</span>
-            <h1>Cyberpunk: <span class="glow-text">Edgerunners</span></h1>
-            <p>Egy disztópikus jövőben, ahol a korrupció és a kibernetikai beültetések uralják a világot, egy
-                tehetséges, de vakmerő utcagyerek úgy dönt, hogy zsoldosnak áll.</p>
+            <span class="badge" id="heroBadge">KIEMELT</span>
+            <h1 id="heroTitle">Betöltés...</h1>
+            <p id="heroDesc" style="color: var(--text-muted); margin-bottom: 2rem; max-width: 500px;"></p>
             <div class="hero-buttons">
-                <button class="btn primary"
-                    onclick="startPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')">
-                    <i data-lucide="play"></i> Lejátszás Most
-                </button>
-                <button class="btn secondary">
-                    <i data-lucide="info"></i> Részletek
-                </button>
+                <button class="btn primary" id="heroPlayBtn"><i data-lucide="play"></i> Lejátszás</button>
             </div>
         </div>
-        <div class="hero-backdrop"></div>
     </header>
 
-    <!-- Trending Section -->
     <section class="container">
-        <h2 class="section-title">Népszerű Most <i data-lucide="flame" class="icon-flame"></i></h2>
-        <div class="anime-grid" id="animeGrid">
-            <!-- Anime Cards will be injected by JS -->
-        </div>
+        <h2 class="section-title">Friss Fordítások <i data-lucide="flame" style="color:#ff9d00"></i></h2>
+        <div class="anime-grid" id="animeGrid"></div>
     </section>
 
-    <!-- Video Player Modal -->
     <div id="videoModal" class="video-modal hidden">
         <div class="player-container">
             <button class="close-btn" onclick="closePlayer()"><i data-lucide="x"></i></button>
-            <video id="mainVideo" src=""></video>
-
-            <!-- Custom Controls -->
-            <div class="custom-controls">
-                <div class="progress-area" id="progressArea">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="controls-row">
-                    <button id="playPauseBtn"><i data-lucide="play"></i></button>
-                    <span id="timeDisplay">00:00 / 00:00</span>
-                    <div class="spacer"></div>
-                    <button id="muteBtn"><i data-lucide="volume-2"></i></button>
-                    <button id="fullscreenBtn"><i data-lucide="maximize"></i></button>
-                </div>
-            </div>
-        </div>
+            <div id="playerHTML"></div> </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
+        // --- PROJEKTJEID LISTÁJA ---
+        const myAnimes = [
+            { id: 172905, ep: '01. Rész', video: 'https://videa.hu/player?v=pY5mX9B2G8t6w3Q1' }, // Csak példa Videa link
+            { id: 175968, ep: '13. Rész', video: 'https://videa.hu/player?v=A8kL9mP2q5r4z7X0' },
+            { id: 119661, ep: '09. Rész', video: 'https://videa.hu/player?v=S3nK9jM1v6b4x2Z1' },
+            { id: 101215, ep: '12. Rész', video: 'https://videa.hu/player?v=D5fG8hJ2k4l6m7N9' }
+        ];
+
+        let globalList = [];
+
+        // --- ANILIST ADATOK LEKÉRÉSE ---
+        async function loadAnimes() {
+            const query = `query ($ids: [Int]) { Page { media(id_in: $ids) { id title { romaji } description bannerImage coverImage { extraLarge } } } }`;
+            const response = await fetch('https://graphql.anilist.co', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
+            });
+            const json = await response.json();
+            const data = json.data.Page.media;
+
+            globalList = myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) }));
+            render(globalList);
+        }
+
+        function render(list) {
+            const grid = document.getElementById('animeGrid');
+            const heroBackdrop = document.getElementById('heroBackdrop');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroDesc = document.getElementById('heroDesc');
+
+            // Hero (az első anime a listában)
+            if (list.length > 0) {
+                heroTitle.innerHTML = `<span class="glow-text">${list[0].title.romaji}</span>`;
+                heroBackdrop.style.backgroundImage = `url('${list[0].bannerImage || list[0].coverImage.extraLarge}')`;
+                heroDesc.innerText = list[0].description.replace(/<[^>]*>/g, '').substring(0, 160) + "...";
+                document.getElementById('heroPlayBtn').onclick = () => startPlayer(list[0].video);
+            }
+
+            // Grid
+            grid.innerHTML = "";
+            list.forEach(anime => {
+                const card = document.createElement('div');
+                card.className = 'anime-card';
+                card.innerHTML = `
+                    <img src="${anime.coverImage.extraLarge}" class="card-image">
+                    <div class="card-overlay">
+                        <div class="card-title">${anime.title.romaji}</div>
+                        <div style="color:var(--primary); font-size:0.8rem; font-weight:bold;">${anime.ep}</div>
+                    </div>
+                `;
+                card.onclick = () => startPlayer(anime.video);
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // --- LEJÁTSZÓ KEZELÉSE ---
+        function startPlayer(url) {
+            const modal = document.getElementById('videoModal');
+            const container = document.getElementById('playerHTML');
+            
+            // Ha Videa link, iframe-et használunk, ha MP4, akkor video taget
+            if (url.includes('videa.hu')) {
+                container.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+            } else {
+                container.innerHTML = `<video src="${url}" controls autoplay id="mainVideo"></video>`;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closePlayer() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.getElementById('playerHTML').innerHTML = "";
+        }
+
+        // Keresés
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            render(globalList.filter(a => a.title.romaji.toLowerCase().includes(val)));
+        });
+
+        loadAnimes();
         lucide.createIcons();
     </script>
 </body>
-
 </html>
