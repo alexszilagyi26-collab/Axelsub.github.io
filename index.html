@@ -90,6 +90,58 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .dropdown-btn:hover {
+            color: var(--text);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(18, 18, 37, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            min-width: 150px;
+            padding: 0.5rem 0;
+            z-index: 200;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.7rem 1.2rem;
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        .dropdown-content a:hover {
+            background: var(--glass);
+            color: var(--primary);
+        }
+
         .search-bar {
             display: flex;
             align-items: center;
@@ -340,8 +392,16 @@
         <div class="logo">NEON<span class="highlight">ANIME</span></div>
         <div class="nav-links">
             <a href="#" class="active">Kezdőlap</a>
-            <a href="#">Sorozatok</a>
-            <a href="#">Filmek</a>
+            <div class="dropdown">
+                <button class="dropdown-btn">Anime <i data-lucide="chevron-down"
+                        style="width:16px;height:16px;"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">Aktív</a>
+                    <a href="#">Tervezett</a>
+                    <a href="#">Befejezett</a>
+                </div>
+            </div>
+            <a href="#">Manga</a>
             <a href="#">Kedvencek</a>
         </div>
         <div class="search-bar">
@@ -395,7 +455,7 @@
             {
                 title: "Kingdom",
                 ep: "6. évad 13. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1370/124186.jpg",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162377-7J0xOOe20Lw4.jpg",
                 url: "https://embed.indavideo.hu/player/video/XXXXXX"
             },
             {
@@ -407,7 +467,7 @@
             {
                 title: "Kakuriyo no Yadomeshi",
                 ep: "12. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1710/92408.jpg",
+                img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100500-4vRsWSZ0Wuam.jpg",
                 url: "https://embed.indavideo.hu/player/video/XXXXXX"
             }
         ];
