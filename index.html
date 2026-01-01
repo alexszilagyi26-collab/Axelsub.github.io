@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00C2FF; /* A logó kékje */
-            --accent: #FF9900;  /* A logó narancsa */
+            --primary: #00C2FF; /* Neon Kék */
+            --accent: #FF9900;  /* Láva Narancs */
             --dark: #0a0a0a;
             --card-bg: #141414;
             --glass: rgba(20, 20, 20, 0.85);
@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* Üveghatású Fejléc */
+        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -38,50 +38,29 @@
             align-items: center;
         }
 
-        .logo-img {
-            height: 60px; /* Logó mérete */
-            filter: drop-shadow(0 0 10px rgba(0, 194, 255, 0.5));
-            transition: 0.3s;
-        }
+        .logo-img { height: 60px; filter: drop-shadow(0 0 10px rgba(0, 194, 255, 0.5)); transition: 0.3s; }
         .logo-img:hover { transform: scale(1.05); }
 
-        .search-bar {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 30px;
-            color: white;
-            outline: none;
-            width: 250px;
-            transition: 0.3s;
-        }
-        .search-bar:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 194, 255, 0.3);
-        }
-
-        /* Hero Slider */
+        /* Hero Slider (Automatikus) */
         .hero {
             position: relative;
-            height: 500px;
+            height: 550px;
             overflow: hidden;
             margin-bottom: 40px;
+            background: #000;
         }
         
         .hero::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
+            bottom: 0; left: 0; width: 100%; height: 200px;
             background: linear-gradient(to top, var(--dark), transparent);
+            z-index: 1;
         }
 
         .slide {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             opacity: 0;
             transition: opacity 1s ease-in-out;
             background-size: cover;
@@ -91,229 +70,207 @@
 
         .slide-content {
             position: absolute;
-            bottom: 60px;
-            left: 5%;
+            bottom: 80px; left: 5%;
             z-index: 2;
-            max-width: 600px;
+            max-width: 700px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
         }
 
-        .tag {
-            background: var(--accent);
-            color: black;
-            padding: 5px 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 12px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
+        .tag { background: var(--accent); color: black; padding: 5px 12px; font-weight: 800; font-size: 12px; border-radius: 4px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; }
 
-        .slide-content h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            line-height: 1;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-        }
-        
-        .slide-content p { font-size: 1.1rem; color: #ddd; margin-top: 10px; }
+        .slide-content h1 { font-size: 3.5rem; margin: 0; line-height: 1.1; color: white; }
+        .slide-content p { font-size: 1rem; color: #ddd; margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-        /* Grid Rendszer */
+        /* Grid */
         .container { padding: 0 5%; max-width: 1600px; margin: 0 auto; }
-        
-        .section-title {
-            font-size: 1.5rem;
-            border-left: 5px solid var(--primary);
-            padding-left: 15px;
-            margin: 40px 0 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .section-title { font-size: 1.5rem; border-left: 5px solid var(--primary); padding-left: 15px; margin: 40px 0 20px 0; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 25px;
             padding-bottom: 50px;
         }
 
-        /* Prémium Kártya Design */
+        /* Kártya Design */
         .card {
             background: var(--card-bg);
             border-radius: 12px;
             overflow: hidden;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 1px solid transparent;
+            border: 1px solid #222;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 194, 255, 0.2);
-        }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 194, 255, 0.2); }
 
-        .card-img-wrapper {
-            position: relative;
-            height: 140px;
-            overflow: hidden;
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
-
+        .card-img-wrapper { height: 320px; overflow: hidden; position: relative; } /* Álló borítókép */
+        .card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .card:hover img { transform: scale(1.1); }
 
-        /* Lejátszás ikon hoverkor */
-        .play-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .card:hover .play-overlay { opacity: 1; }
-        
-        .play-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px var(--accent);
-        }
-        .play-icon::before {
-            content: '';
-            border-style: solid;
-            border-width: 8px 0 8px 14px;
-            border-color: transparent transparent transparent white;
-            margin-left: 4px;
-        }
-
-        .card-info { padding: 15px; }
-        .card-title { font-weight: 600; font-size: 1rem; margin-bottom: 5px; color: white; }
-        .card-meta { font-size: 0.85rem; color: #888; display: flex; justify-content: space-between; }
-        .card-ep { color: var(--primary); font-weight: bold; }
+        .card-info { padding: 15px; position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, black, transparent); }
+        .card-title { font-weight: 600; font-size: 1rem; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-ep { color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-top: 5px; display: block; }
 
     </style>
 </head>
 <body>
 
 <header>
-    <a href="index.html">
-        <img src="logo.png" alt="AxelSub Logo" class="logo-img">
-    </a>
-    <input type="text" class="search-bar" placeholder="Keresés az animék között...">
+    <a href="index.html"><img src="logo.png" alt="AxelSub" class="logo-img"></a>
 </header>
 
-<div class="hero">
-    <div class="slide active" style="background-image: url('https://kitsu.io/uploads/anime/cover_images/7376/original.jpg')">
-        <div class="slide-content">
-            <span class="tag">Friss rész</span>
-            <h1>Yusha Party</h1>
-            <p>Yusha Party wo Oidasareta Kiyoubinbou - A szezon legújabb fantasy kalandja magyar felirattal!</p>
-        </div>
+<div class="hero" id="hero-slider">
     </div>
-    
-    <div class="slide" style="background-image: url('https://animecorner.me/wp-content/uploads/2023/12/kingdom-season-5-key-visual-scaled.jpg')">
-        <div class="slide-content">
-            <span class="tag">Háborús</span>
-            <h1>Kingdom 5. Évad</h1>
-            <p>A legendás stratégiai háború folytatódik. Shin útja a tábornoki rangig.</p>
-        </div>
-    </div>
-</div>
 
 <div class="container">
     <div class="section-title">Legfrissebb Fordítások</div>
-    
-    <div class="grid">
-        <div class="card" onclick="location.href='watch.html?ep=yusha-01'">
-            <div class="card-img-wrapper">
-                <img src="https://i.ytimg.com/vi/qV1w5z1gq14/maxresdefault.jpg" alt="Yusha">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-            </div>
-            <div class="card-info">
-                <div class="card-title">Yusha Party wo Oidasareta...</div>
-                <div class="card-meta">
-                    <span class="card-ep">01. Rész</span>
-                    <span>26 perce</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" onclick="location.href='watch.html?ep=kingdom-s6-13'">
-            <div class="card-img-wrapper">
-                <img src="https://m.media-amazon.com/images/M/MV5BMjkwNzYyMzItNzI4OS00MzlhLTlhYWUtYTRkZGU2ZmMzZDc2XkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_FMjpg_UX1000_.jpg" alt="Kingdom">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-            </div>
-            <div class="card-info">
-                <div class="card-title">Kingdom 5. Évad</div>
-                <div class="card-meta">
-                    <span class="card-ep">13. Rész</span>
-                    <span>2 napja</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" onclick="location.href='watch.html?ep=chitose-09'">
-            <div class="card-img-wrapper">
-                <img src="https://d17x34b9fcv5q7.cloudfront.net/series_cover/original/9e924d55-6675-4c06-8800-47b2df31086a.jpg" alt="Chitose">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-            </div>
-            <div class="card-info">
-                <div class="card-title">Chitose-kun wa Ramune...</div>
-                <div class="card-meta">
-                    <span class="card-ep">09. Rész</span>
-                    <span>4 napja</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" onclick="location.href='watch.html?ep=kakuriyo-12'">
-            <div class="card-img-wrapper">
-                <img src="https://m.media-amazon.com/images/M/MV5BZTIxZDY5YzUtZGUwYy00MTE4LWEyMzktODQ0YjM5ODIzYjM2XkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_.jpg" alt="Kakuriyo">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-            </div>
-            <div class="card-info">
-                <div class="card-title">Kakuriyo no Yadomeshi</div>
-                <div class="card-meta">
-                    <span class="card-ep">12. Rész</span>
-                    <span>6 napja</span>
-                </div>
-            </div>
-        </div>
-
+    <div class="grid" id="anime-grid">
+        <div style="color:white;">Betöltés az AniListről...</div>
     </div>
 </div>
 
 <script>
-    // Automatikus Slide váltás
-    let slideIndex = 0;
-    const slides = document.querySelectorAll('.slide');
+    // ==================================================
+    // 1. LÉPÉS: ITT KELL MEGADNOD AZ ANIMÉKET!
+    // Csak az AniList ID kell és a te videó linked/epizód számod.
+    // ==================================================
     
-    function showSlides() {
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].classList.remove('active');
+    const myAnimes = [
+        { 
+            id: 172905, // Yusha Party ID (AniListről)
+            episode: '01. Rész', 
+            videoUrl: 'https://videa.hu/player?v=IDE_A_YUSHA_KOD' // A te Videa linked
+        },
+        { 
+            id: 161494, // Kingdom 5. évad ID
+            episode: '13. Rész', 
+            videoUrl: 'https://videa.hu/player?v=IDE_A_KINGDOM_KOD'
+        },
+        { 
+            id: 170997, // Chitose-kun ID (Hivatalos LN/Anime ID)
+            episode: '09. Rész', 
+            videoUrl: 'https://videa.hu/player?v=IDE_A_CHITOSE_KOD' 
+        },
+        { 
+            id: 101215, // Kakuriyo no Yadomeshi ID
+            episode: '12. Rész', 
+            videoUrl: 'https://videa.hu/player?v=IDE_A_KAKURIYO_KOD' 
         }
-        slideIndex++;
-        if (slideIndex > slides.length) {slideIndex = 1}
-        slides[slideIndex-1].classList.add('active');
-        setTimeout(showSlides, 6000); // 6 másodperc
+    ];
+
+    // ==================================================
+    // 2. LÉPÉS: AUTOMATA LEKÉRDEZÉS (NE NYÚLJ HOZZÁ)
+    // ==================================================
+
+    async function fetchAniListData() {
+        const ids = myAnimes.map(a => a.id);
+        
+        // GraphQL lekérdezés az AniList API-hoz
+        const query = `
+        query ($ids: [Int]) {
+            Page {
+                media(id_in: $ids, type: ANIME) {
+                    id
+                    title { romaji english native }
+                    coverImage { extraLarge large color }
+                    bannerImage
+                    description
+                }
+            }
+        }
+        `;
+
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ query: query, variables: { ids: ids } })
+        });
+
+        const json = await response.json();
+        const apiData = json.data.Page.media;
+
+        // Összefésüljük a te adataidat az API adataival
+        const combinedData = myAnimes.map(local => {
+            const remote = apiData.find(api => api.id === local.id);
+            return { ...local, ...remote };
+        });
+
+        renderPage(combinedData);
     }
-    showSlides();
+
+    function renderPage(animes) {
+        const heroContainer = document.getElementById('hero-slider');
+        const gridContainer = document.getElementById('anime-grid');
+        
+        heroContainer.innerHTML = '';
+        gridContainer.innerHTML = '';
+
+        animes.forEach((anime, index) => {
+            // 1. HERO SLIDER LÉTREHOZÁSA (Csak az első 3 anime kerül be)
+            if(index < 3) {
+                const banner = anime.bannerImage || anime.coverImage.extraLarge; // Ha nincs banner, használja a borítót
+                const title = anime.title.english || anime.title.romaji;
+                const desc = anime.description ? anime.description.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : 'Nincs leírás.';
+
+                const slide = document.createElement('div');
+                slide.className = index === 0 ? 'slide active' : 'slide';
+                slide.style.backgroundImage = `url('${banner}')`;
+                slide.innerHTML = `
+                    <div class="slide-content">
+                        <span class="tag" style="background:${anime.coverImage.color || '#FF9900'}">Kiemelt</span>
+                        <h1>${title}</h1>
+                        <p>${desc}</p>
+                    </div>
+                `;
+                heroContainer.appendChild(slide);
+            }
+
+            // 2. GRID KÁRTYÁK LÉTREHOZÁSA (Mindegyik bekerül)
+            const title = anime.title.romaji || anime.title.english;
+            const cover = anime.coverImage.extraLarge;
+            
+            // Link generálása a watch.html-re
+            // Itt átadjuk az összes adatot, hogy a watch.html-nek ne kelljen újra lekérdeznie
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Átadjuk az adatokat URL paraméterként
+            card.onclick = () => {
+                location.href = `watch.html?id=${anime.id}&ep=${encodeURIComponent(anime.episode)}&video=${encodeURIComponent(anime.videoUrl)}&title=${encodeURIComponent(title)}&cover=${encodeURIComponent(cover)}`;
+            };
+
+            card.innerHTML = `
+                <div class="card-img-wrapper">
+                    <img src="${cover}" alt="${title}">
+                </div>
+                <div class="card-info">
+                    <div class="card-title">${title}</div>
+                    <span class="card-ep" style="color:var(--accent)">${anime.episode}</span>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        // Slider Indítása
+        startSlider();
+    }
+
+    function startSlider() {
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        if(slides.length === 0) return;
+
+        setInterval(() => {
+            slides[slideIndex].classList.remove('active');
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add('active');
+        }, 5000);
+    }
+
+    // Indulás!
+    fetchAniListData();
 </script>
 
 </body>
