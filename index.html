@@ -54,55 +54,26 @@
 
 <header>
     <a href="index.html"><img src="logo.png" alt="AxelSub Logo" class="logo-img"></a>
-    <input type="text" class="search-bar" style="background:rgba(255,255,255,0.1); border:none; padding:10px 20px; border-radius:20px; color:white;" placeholder="Keresés...">
+    <input type="text" id="search-bar" style="background:rgba(255,255,255,0.1); border:1px solid var(--primary); padding:10px 20px; border-radius:20px; color:white; outline:none;" placeholder="Keresés...">
 </header>
 
-<div class="hero" id="hero-slider">
-    </div>
+<div class="hero" id="hero-slider"></div>
 
 <div class="container">
     <div class="section-title">Legutóbbi Fordítások</div>
-    <div class="grid" id="anime-grid">
-        </div>
+    <div class="grid" id="anime-grid"></div>
 </div>
 
 <script>
-    // --- IDE ÍRD AZ ÚJ RÉSZEKET ---
-    const myAnimes = [// ==================================================
-    // AXELSUB - KIZÁRÓLAG A KÉPEIDEN SZEREPLŐ ANIMÉK
-    // ==================================================
-    
+    // --- AXELSUB FRISSÍTETT LISTA (Kizárólag a kért animék) ---
     const myAnimes = [
-        { 
-            id: 172905, // Yusha Party wo Oidasareta...
-            episode: '01. Rész', 
-            videoUrl: 'https://videa.hu/player?v=yusha_kod' 
-        },
-        { 
-            id: 175968, // Kingdom 6. ÉVAD
-            episode: '13. Rész', 
-            videoUrl: 'https://videa.hu/player?v=kingdom6_kod'
-        },
-        { 
-            id: 119661, // Chitose-kun wa Ramune Bin no Naka Ni
-            episode: '09. Rész', 
-            videoUrl: 'https://videa.hu/player?v=chitose_kod' 
-        },
-        { 
-            id: 101215, // Kakuriyo no Yadomeshi
-            episode: '12. Rész', 
-            videoUrl: 'https://videa.hu/player?v=kakuriyo_kod' 
-        },
-        { 
-            id: 146637, // Fushidara Tsura
-            episode: '01. Rész', 
-            videoUrl: 'https://videa.hu/player?v=fushidara_kod' 
-        },
-        { 
-          ' 
-        }
+        { id: 172905, ep: '01. Rész', video: 'https://videa.hu/player?v=yusha_kod' },
+        { id: 175968, ep: '13. Rész', video: 'https://videa.hu/player?v=kingdom6_kod' },
+        { id: 119661, ep: '09. Rész', video: 'https://videa.hu/player?v=chitose_kod' },
+        { id: 101215, ep: '12. Rész', video: 'https://videa.hu/player?v=kakuriyo_kod' }
     ];
-    ];
+
+    let globalAnimeList = [];
 
     async function getAniList() {
         const query = `
@@ -112,37 +83,43 @@
                 title { romaji english }
                 coverImage { extraLarge }
                 bannerImage
-                description
             }}
         }`;
 
-        const response = await fetch('https://graphql.anilist.co', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
-        });
+        try {
+            const response = await fetch('https://graphql.anilist.co', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
+            });
 
-        const json = await response.json();
-        const data = json.data.Page.media;
+            const json = await response.json();
+            const data = json.data.Page.media;
 
-        render(myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) })));
+            globalAnimeList = myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) }));
+            render(globalAnimeList);
+        } catch (error) {
+            console.error("AniList hiba:", error);
+        }
     }
 
     function render(list) {
         const hero = document.getElementById('hero-slider');
         const grid = document.getElementById('anime-grid');
 
-        list.forEach((anime, i) => {
-            // Slider (első 3)
-            if(i < 3) {
+        if(hero.innerHTML === "") {
+            list.slice(0, 3).forEach((anime, i) => {
                 const slide = document.createElement('div');
                 slide.className = `slide ${i===0?'active':''}`;
                 slide.style.backgroundImage = `url('${anime.bannerImage || anime.coverImage.extraLarge}')`;
                 slide.innerHTML = `<div class="slide-content"><span class="tag">Kiemelt</span><h1>${anime.title.romaji}</h1></div>`;
                 hero.appendChild(slide);
-            }
+            });
+            startSlider();
+        }
 
-            // Kártyák
+        grid.innerHTML = "";
+        list.forEach((anime) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => location.href = `watch.html?video=${encodeURIComponent(anime.video)}&title=${encodeURIComponent(anime.title.romaji)}&ep=${anime.ep}`;
@@ -154,11 +131,25 @@
                 </div>`;
             grid.appendChild(card);
         });
-
-        // Automata váltás 5 másodpercenként
-        let s = 0; const slides = document.querySelectorAll('.slide');
-        setInterval(() => { slides[s].classList.remove('active'); s=(s+1)%slides.length; slides[s].classList.add('active'); }, 5000);
     }
+
+    function startSlider() {
+        let s = 0;
+        setInterval(() => {
+            const slides = document.querySelectorAll('.slide');
+            if(slides.length > 0) {
+                slides[s].classList.remove('active');
+                s = (s + 1) % slides.length;
+                slides[s].classList.add('active');
+            }
+        }, 5000);
+    }
+
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = globalAnimeList.filter(a => a.title.romaji.toLowerCase().includes(term));
+        render(filtered);
+    });
 
     getAniList();
 </script>
