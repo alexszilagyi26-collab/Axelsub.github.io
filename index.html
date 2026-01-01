@@ -7,271 +7,131 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00C2FF; /* Neon Kék */
-            --accent: #FF9900;  /* Láva Narancs */
+            --primary: #00C2FF;
+            --accent: #FF9900;
             --dark: #0a0a0a;
             --card-bg: #141414;
             --glass: rgba(20, 20, 20, 0.85);
         }
 
         * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--dark); color: white; margin: 0; overflow-x: hidden; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark);
-            color: white;
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* Header */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            padding: 10px 5%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; z-index: 1000; background: var(--glass);
+            backdrop-filter: blur(12px); padding: 10px 5%; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         .logo-img { height: 60px; filter: drop-shadow(0 0 10px rgba(0, 194, 255, 0.5)); transition: 0.3s; }
-        .logo-img:hover { transform: scale(1.05); }
 
-        /* Hero Slider (Automatikus) */
-        .hero {
-            position: relative;
-            height: 550px;
-            overflow: hidden;
-            margin-bottom: 40px;
-            background: #000;
-        }
-        
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 200px;
-            background: linear-gradient(to top, var(--dark), transparent);
-            z-index: 1;
-        }
+        /* Hero Slider */
+        .hero { position: relative; height: 550px; overflow: hidden; margin-bottom: 40px; background: #000; }
+        .hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, var(--dark), transparent); z-index: 1; }
 
-        .slide {
-            position: absolute;
-            width: 100%; height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            background-size: cover;
-            background-position: center;
-        }
+        .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s; background-size: cover; background-position: center; }
         .slide.active { opacity: 1; }
-
-        .slide-content {
-            position: absolute;
-            bottom: 80px; left: 5%;
-            z-index: 2;
-            max-width: 700px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
-        }
-
+        .slide-content { position: absolute; bottom: 80px; left: 5%; z-index: 2; max-width: 700px; }
         .tag { background: var(--accent); color: black; padding: 5px 12px; font-weight: 800; font-size: 12px; border-radius: 4px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; }
-
-        .slide-content h1 { font-size: 3.5rem; margin: 0; line-height: 1.1; color: white; }
-        .slide-content p { font-size: 1rem; color: #ddd; margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .slide-content h1 { font-size: 3.5rem; margin: 0; line-height: 1.1; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
 
         /* Grid */
         .container { padding: 0 5%; max-width: 1600px; margin: 0 auto; }
         .section-title { font-size: 1.5rem; border-left: 5px solid var(--primary); padding-left: 15px; margin: 40px 0 20px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; padding-bottom: 50px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            padding-bottom: 50px;
-        }
-
-        /* Kártya Design */
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.4s;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 1px solid #222;
-        }
-
+        /* Card */
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; position: relative; transition: 0.4s; cursor: pointer; border: 1px solid #222; }
         .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 194, 255, 0.2); }
-
-        .card-img-wrapper { height: 320px; overflow: hidden; position: relative; } /* Álló borítókép */
+        .card-img-wrapper { height: 320px; overflow: hidden; }
         .card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .card:hover img { transform: scale(1.1); }
-
-        .card-info { padding: 15px; position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, black, transparent); }
+        .card-info { padding: 15px; position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, black, transparent); }
         .card-title { font-weight: 600; font-size: 1rem; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-ep { color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-top: 5px; display: block; }
-
+        .card-ep { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="index.html"><img src="logo.png" alt="AxelSub" class="logo-img"></a>
+    <a href="index.html"><img src="logo.png" alt="AxelSub Logo" class="logo-img"></a>
+    <input type="text" class="search-bar" style="background:rgba(255,255,255,0.1); border:none; padding:10px 20px; border-radius:20px; color:white;" placeholder="Keresés...">
 </header>
 
 <div class="hero" id="hero-slider">
     </div>
 
 <div class="container">
-    <div class="section-title">Legfrissebb Fordítások</div>
+    <div class="section-title">Legutóbbi Fordítások</div>
     <div class="grid" id="anime-grid">
-        <div style="color:white;">Betöltés az AniListről...</div>
-    </div>
+        </div>
 </div>
 
 <script>
-    // ==================================================
-    // 1. LÉPÉS: ITT KELL MEGADNOD AZ ANIMÉKET!
-    // Csak az AniList ID kell és a te videó linked/epizód számod.
-    // ==================================================
-    
+    // --- IDE ÍRD AZ ÚJ RÉSZEKET ---
     const myAnimes = [
-        { 
-            id: 172905, // Yusha Party ID (AniListről)
-            episode: '01. Rész', 
-            videoUrl: 'https://videa.hu/player?v=IDE_A_YUSHA_KOD' // A te Videa linked
-        },
-        { 
-            id: 161494, // Kingdom 5. évad ID
-            episode: '13. Rész', 
-            videoUrl: 'https://videa.hu/player?v=IDE_A_KINGDOM_KOD'
-        },
-        { 
-            id: 170997, // Chitose-kun ID (Hivatalos LN/Anime ID)
-            episode: '09. Rész', 
-            videoUrl: 'https://videa.hu/player?v=IDE_A_CHITOSE_KOD' 
-        },
-        { 
-            id: 101215, // Kakuriyo no Yadomeshi ID
-            episode: '12. Rész', 
-            videoUrl: 'https://videa.hu/player?v=IDE_A_KAKURIYO_KOD' 
-        }
+        { id: 172905, ep: '01. Rész', video: 'https://videa.hu/videok/yusha-party-link' },
+        { id: 161494, ep: '13. Rész', video: 'https://videa.hu/videok/kingdom-link' },
+        { id: 170997, ep: '09. Rész', video: 'https://videa.hu/videok/chitose-link' },
+        { id: 101215, ep: '12. Rész', video: 'https://videa.hu/videok/kakuriyo-link' }
     ];
 
-    // ==================================================
-    // 2. LÉPÉS: AUTOMATA LEKÉRDEZÉS (NE NYÚLJ HOZZÁ)
-    // ==================================================
-
-    async function fetchAniListData() {
-        const ids = myAnimes.map(a => a.id);
-        
-        // GraphQL lekérdezés az AniList API-hoz
+    async function getAniList() {
         const query = `
         query ($ids: [Int]) {
-            Page {
-                media(id_in: $ids, type: ANIME) {
-                    id
-                    title { romaji english native }
-                    coverImage { extraLarge large color }
-                    bannerImage
-                    description
-                }
-            }
-        }
-        `;
+            Page { media(id_in: $ids) {
+                id
+                title { romaji english }
+                coverImage { extraLarge }
+                bannerImage
+                description
+            }}
+        }`;
 
         const response = await fetch('https://graphql.anilist.co', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ query: query, variables: { ids: ids } })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, variables: { ids: myAnimes.map(a => a.id) } })
         });
 
         const json = await response.json();
-        const apiData = json.data.Page.media;
+        const data = json.data.Page.media;
 
-        // Összefésüljük a te adataidat az API adataival
-        const combinedData = myAnimes.map(local => {
-            const remote = apiData.find(api => api.id === local.id);
-            return { ...local, ...remote };
-        });
-
-        renderPage(combinedData);
+        render(myAnimes.map(a => ({ ...a, ...data.find(d => d.id === a.id) })));
     }
 
-    function renderPage(animes) {
-        const heroContainer = document.getElementById('hero-slider');
-        const gridContainer = document.getElementById('anime-grid');
-        
-        heroContainer.innerHTML = '';
-        gridContainer.innerHTML = '';
+    function render(list) {
+        const hero = document.getElementById('hero-slider');
+        const grid = document.getElementById('anime-grid');
 
-        animes.forEach((anime, index) => {
-            // 1. HERO SLIDER LÉTREHOZÁSA (Csak az első 3 anime kerül be)
-            if(index < 3) {
-                const banner = anime.bannerImage || anime.coverImage.extraLarge; // Ha nincs banner, használja a borítót
-                const title = anime.title.english || anime.title.romaji;
-                const desc = anime.description ? anime.description.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : 'Nincs leírás.';
-
+        list.forEach((anime, i) => {
+            // Slider (első 3)
+            if(i < 3) {
                 const slide = document.createElement('div');
-                slide.className = index === 0 ? 'slide active' : 'slide';
-                slide.style.backgroundImage = `url('${banner}')`;
-                slide.innerHTML = `
-                    <div class="slide-content">
-                        <span class="tag" style="background:${anime.coverImage.color || '#FF9900'}">Kiemelt</span>
-                        <h1>${title}</h1>
-                        <p>${desc}</p>
-                    </div>
-                `;
-                heroContainer.appendChild(slide);
+                slide.className = `slide ${i===0?'active':''}`;
+                slide.style.backgroundImage = `url('${anime.bannerImage || anime.coverImage.extraLarge}')`;
+                slide.innerHTML = `<div class="slide-content"><span class="tag">Kiemelt</span><h1>${anime.title.romaji}</h1></div>`;
+                hero.appendChild(slide);
             }
 
-            // 2. GRID KÁRTYÁK LÉTREHOZÁSA (Mindegyik bekerül)
-            const title = anime.title.romaji || anime.title.english;
-            const cover = anime.coverImage.extraLarge;
-            
-            // Link generálása a watch.html-re
-            // Itt átadjuk az összes adatot, hogy a watch.html-nek ne kelljen újra lekérdeznie
+            // Kártyák
             const card = document.createElement('div');
             card.className = 'card';
-            // Átadjuk az adatokat URL paraméterként
-            card.onclick = () => {
-                location.href = `watch.html?id=${anime.id}&ep=${encodeURIComponent(anime.episode)}&video=${encodeURIComponent(anime.videoUrl)}&title=${encodeURIComponent(title)}&cover=${encodeURIComponent(cover)}`;
-            };
-
+            card.onclick = () => location.href = `watch.html?video=${encodeURIComponent(anime.video)}&title=${encodeURIComponent(anime.title.romaji)}&ep=${anime.ep}`;
             card.innerHTML = `
-                <div class="card-img-wrapper">
-                    <img src="${cover}" alt="${title}">
-                </div>
+                <div class="card-img-wrapper"><img src="${anime.coverImage.extraLarge}"></div>
                 <div class="card-info">
-                    <div class="card-title">${title}</div>
-                    <span class="card-ep" style="color:var(--accent)">${anime.episode}</span>
-                </div>
-            `;
-            gridContainer.appendChild(card);
+                    <div class="card-title">${anime.title.romaji}</div>
+                    <div class="card-ep">${anime.ep}</div>
+                </div>`;
+            grid.appendChild(card);
         });
 
-        // Slider Indítása
-        startSlider();
+        // Automata váltás 5 másodpercenként
+        let s = 0; const slides = document.querySelectorAll('.slide');
+        setInterval(() => { slides[s].classList.remove('active'); s=(s+1)%slides.length; slides[s].classList.add('active'); }, 5000);
     }
 
-    function startSlider() {
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        if(slides.length === 0) return;
-
-        setInterval(() => {
-            slides[slideIndex].classList.remove('active');
-            slideIndex = (slideIndex + 1) % slides.length;
-            slides[slideIndex].classList.add('active');
-        }, 5000);
-    }
-
-    // Indulás!
-    fetchAniListData();
+    getAniList();
 </script>
-
 </body>
 </html>
