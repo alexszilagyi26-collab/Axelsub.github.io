@@ -1,80 +1,139 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<title>AxelSub</title>
-<style>
-body{
-  margin:0;
-  background:#0f0f0f;
-  color:#fff;
-  font-family:Arial;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  padding:30px;
-}
-.card{
-  background:#141414;
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.3s;
-}
-.card:hover{ transform:scale(1.05); }
-.card img{
-  width:100%;
-  height:320px;
-  object-fit:cover;
-}
-.card h3{
-  margin:10px;
-  font-size:16px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Fordításaim</title>
+    <style>
+        /* Alapstílusok */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f0f;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e50914;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #e50914;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Epizód kártyák rácsa */
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .anime-card {
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .anime-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 150px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .info {
+            padding: 15px;
+        }
+
+        .info h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+
+        .tag {
+            background-color: #e50914;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
 
-<div class="grid" id="grid"></div>
+<header>
+    <h1>ANIME <span style="color: #e50914;">FORDÍTÁSOK</span></h1>
+    <nav>
+        <a href="#">Főoldal</a>
+        <a href="#">Összes Anime</a>
+        <a href="#">Kapcsolat</a>
+    </nav>
+</header>
 
-<script>
-const anime = {
-  title: "Chitose-kun wa Ramune Bin no Naka",
-  page: "chitose.html"
-};
+<div class="container">
+    <h2>Legutóbbi feltöltések</h2>
+    
+    <div class="anime-grid">
+        <div class="anime-card">
+            <div class="thumbnail">IDÉZZ BE IDE EGY KÉPET</div>
+            <div class="info">
+                <span class="tag">01. rész</span>
+                <h3>Anime Címe - 01</h3>
+                <p style="color: #888; font-size: 14px;">Feltöltve: 2024.05.20.</p>
+            </div>
+        </div>
 
-fetch("https://graphql.anilist.co",{
-  method:"POST",
-  headers:{
-    "Content-Type":"application/json",
-    "Accept":"application/json"
-  },
-  body:JSON.stringify({
-    query:`
-      query {
-        Media(search:"${anime.title}", type:ANIME){
-          coverImage{ extraLarge }
-          title{ romaji }
-        }
-      }
-    `
-  })
-})
-.then(r=>r.json())
-.then(d=>{
-  const m=d.data.Media;
-  document.getElementById("grid").innerHTML=`
-    <div class="card" onclick="location.href='${anime.page}'">
-      <img src="${m.coverImage.extraLarge}">
-      <h3>${m.title.romaji}</h3>
-    </div>
-  `;
-});
-</script>
+        <div class="anime-card">
+            <div class="thumbnail">IDÉZZ BE IDE EGY KÉPET</div>
+            <div class="info">
+                <span class="tag">02. rész</span>
+                <h3>Anime Címe - 02</h3>
+                <p style="color: #888; font-size: 14px;">Feltöltve: 2024.05.21.</p>
+            </div>
+        </div>
+
+        </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Anime Fordító Oldalam - Minden jog fenntartva</p>
+</footer>
 
 </body>
 </html>
-
-
