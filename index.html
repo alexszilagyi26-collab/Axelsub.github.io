@@ -68,11 +68,40 @@
 
 <script>
     // --- IDE ÍRD AZ ÚJ RÉSZEKET ---
+    const myAnimes = [// ==================================================
+    // AXELSUB - KIZÁRÓLAG A KÉPEIDEN SZEREPLŐ ANIMÉK
+    // ==================================================
+    
     const myAnimes = [
-        { id: 172905, ep: '01. Rész', video: 'https://videa.hu/videok/yusha-party-link' },
-        { id: 161494, ep: '13. Rész', video: 'https://videa.hu/videok/kingdom-link' },
-        { id: 170997, ep: '09. Rész', video: 'https://videa.hu/videok/chitose-link' },
-        { id: 101215, ep: '12. Rész', video: 'https://videa.hu/videok/kakuriyo-link' }
+        { 
+            id: 172905, // Yusha Party wo Oidasareta...
+            episode: '01. Rész', 
+            videoUrl: 'https://videa.hu/player?v=yusha_kod' 
+        },
+        { 
+            id: 175968, // Kingdom 6. ÉVAD
+            episode: '13. Rész', 
+            videoUrl: 'https://videa.hu/player?v=kingdom6_kod'
+        },
+        { 
+            id: 119661, // Chitose-kun wa Ramune Bin no Naka Ni
+            episode: '09. Rész', 
+            videoUrl: 'https://videa.hu/player?v=chitose_kod' 
+        },
+        { 
+            id: 101215, // Kakuriyo no Yadomeshi
+            episode: '12. Rész', 
+            videoUrl: 'https://videa.hu/player?v=kakuriyo_kod' 
+        },
+        { 
+            id: 146637, // Fushidara Tsura
+            episode: '01. Rész', 
+            videoUrl: 'https://videa.hu/player?v=fushidara_kod' 
+        },
+        { 
+          ' 
+        }
+    ];
     ];
 
     async function getAniList() {
