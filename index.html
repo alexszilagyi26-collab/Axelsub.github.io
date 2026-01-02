@@ -573,7 +573,7 @@
             {
                 title: "Yusha Party wo Oidasareta Kiyoubinbou",
                 ep: "1. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
+                img: "https://voe.sx/cache/ubbamlgb5dkn_storyboard_L1.jpg",
                 url: "https://voe.sx/e/ubbamlgb5dkn",
                 host: "VOE"
             },
@@ -645,10 +645,14 @@
             iframe.style.display = 'none'; iframe.src = "";
             video.style.display = 'none'; video.pause(); video.src = "";
 
-            if (url.includes('indavideo.hu')) {
+            if (url.includes('indavideo.hu') || url.includes('voe.sx')) {
                 let embedUrl = url;
-                if (!url.includes('embed.indavideo.hu')) {
+                if (url.includes('indavideo.hu') && !url.includes('embed.indavideo.hu')) {
                     embedUrl = url.replace('indavideo.hu/video/', 'embed.indavideo.hu/player/video/');
+                }
+                // VOE esetén biztosítjuk az /e/ (embed) formátumot
+                if (url.includes('voe.sx') && !url.includes('/e/')) {
+                    embedUrl = url.replace('voe.sx/', 'voe.sx/e/');
                 }
                 iframe.style.display = 'block'; iframe.src = embedUrl;
             } else {
