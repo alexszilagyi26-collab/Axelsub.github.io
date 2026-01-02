@@ -567,6 +567,7 @@ DOCTYPE html>
                 url: "https://embed.indavideo.hu/player/video/947ceabfe5",
                 host: "Indavideo",
                 status: "Aktív",
+                desc: "Kirúgták a hős csapatából, mert 'csak' egy ezermester volt. Ismerd meg Kiyoubinbou történetét, aki bebizonyítja, hogy a sokoldalúság a legnagyobb fegyver!",
                 anilistId: 187264
             },
             {
@@ -576,6 +577,7 @@ DOCTYPE html>
                 url: "https://embed.indavideo.hu/player/video/f9e0a81177",
                 host: "Indavideo",
                 status: "Aktív",
+                desc: "A háború folytatódik Kína egyesítéséért. Xin és a Fei Xin egység újabb hatalmas ütközetek előtt áll a stratégiai csaták sorozatában.",
                 anilistId: 162377
             },
             {
@@ -585,6 +587,7 @@ DOCTYPE html>
                 url: "https://embed.indavideo.hu/player/video/4458f38699",
                 host: "Indavideo",
                 status: "Aktív",
+                desc: "Chitose Saku népszerű, okos és jóképű. De a tökéletes középiskolai élet mögött bonyolult kapcsolatok és érzelmek rejtőznek.",
                 anilistId: 140724
             },
             {
@@ -594,6 +597,7 @@ DOCTYPE html>
                 url: "https://embed.indavideo.hu/player/video/66847a9645",
                 host: "Indavideo",
                 status: "Befejezett",
+                desc: "Aoi képes látni a szellemeket. Amikor egy ogre elrabolja, a túlvilág egyik fogadójában kell munkába állnia, hogy megfizesse a tartozást.",
                 anilistId: 100500
             }
         ];
@@ -656,17 +660,17 @@ DOCTYPE html>
             const main = animeData[0];
             document.getElementById('heroPlayBtn').onclick = () => playPlayer(main.url);
 
-            // Failsafe local data
+            // Magyar leírás használata az adatokból
             document.getElementById("heroTitle").innerHTML = `<span>${main.title}</span>`;
-            document.getElementById("heroDesc").innerText = "Tarts velünk az AxelSub legújabb fordításaival!";
+            document.getElementById("heroDesc").innerText = main.desc;
             document.getElementById("heroBg").style.backgroundImage = `url(${main.img})`;
 
-            // Attempt to get high-res data
+            // Csak a nagyfelbontású háttérképet próbáljuk meg lekérni, a leírást békén hagyjuk
             fetch("https://graphql.anilist.co", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    query: `query($id:Int){Media(id:$id){title{romaji english} description bannerImage coverImage{extraLarge}}}`,
+                    query: `query($id:Int){Media(id:$id){bannerImage coverImage{extraLarge}}}`,
                     variables: { id: main.anilistId }
                 })
             })
@@ -674,10 +678,6 @@ DOCTYPE html>
                 .then(d => {
                     const a = d.data?.Media;
                     if (!a) return;
-                    document.getElementById("heroTitle").innerHTML = `<span>${a.title.english || a.title.romaji}</span>`;
-                    let dText = a.description?.replace(/<[^>]*>/g, "") || "";
-                    if (dText.includes('.')) dText = dText.split('.').slice(0, 2).join('.') + '.';
-                    document.getElementById("heroDesc").innerText = dText || "Nézd meg most!";
                     const bg = a.bannerImage || a.coverImage.extraLarge;
                     if (bg) document.getElementById("heroBg").style.backgroundImage = `url(${bg})`;
                 })
