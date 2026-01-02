@@ -558,7 +558,7 @@
     <div class="modal" id="videoModal">
         <div class="player-wrap">
             <button class="close-btn" onclick="stopPlayer()">✕</button>
-            <iframe id="videoIframe" src="" allowfullscreen></iframe>
+            <iframe id="videoIframe" src="" allowfullscreen scrolling="no" frameborder="0"></iframe>
             <video id="videoNative" controls controlsList="nodownload" crossorigin="anonymous"></video>
         </div>
     </div>
@@ -650,10 +650,14 @@
                 if (url.includes('indavideo.hu') && !url.includes('embed.indavideo.hu')) {
                     embedUrl = url.replace('indavideo.hu/video/', 'embed.indavideo.hu/player/video/');
                 }
-                // VOE esetén biztosítjuk az /e/ (embed) formátumot
+
+                // VOE esetén biztosítjuk az /e/ (embed) formátumot, ha még nincs ott
                 if (url.includes('voe.sx') && !url.includes('/e/')) {
                     embedUrl = url.replace('voe.sx/', 'voe.sx/e/');
+                } else if (url.includes('voe.sx')) {
+                    embedUrl = url;
                 }
+
                 iframe.style.display = 'block'; iframe.src = embedUrl;
             } else {
                 video.style.display = 'block'; video.src = url;
