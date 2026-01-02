@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hu">
 
 <head>
@@ -557,50 +557,20 @@ DOCTYPE html>
         <p>&copy; 2026 AxelSub Official - Minden jog fenntartva.</p>
     </footer>
 
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // --- ADATOK (MyAnimeList URL-ekre cserélve a stabilitásért) ---
-        const animeData = [
-            {
-                title: "Yuusha Party wo Oidasareta Kiyoubinbou",
-                ep: "1. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1063/144158.jpg",
-                url: "https://cold1.gofile.io/download/web/99aec094-b541-4f00-a9e4-677fbbf70fc0/Yusha%20Party%20wo%20Oidasareta%20Kiyoubinbou%201.resz.mp4",
-                host: "Indavideo",
-                status: "Aktív",
-                desc: "Kirúgták a hős csapatából, mert 'csak' egy ezermester volt. Ismerd meg Kiyoubinbou történetét, aki bebizonyítja, hogy a sokoldalúság a legnagyobb fegyver!",
-                anilistId: 187264
-            },
-            {
-                title: "Kingdom 6. évad",
-                ep: "13. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1370/124186.jpg",
-                url: "https://embed.indavideo.hu/player/video/f9e0a81177",
-                host: "Indavideo",
-                status: "Aktív",
-                desc: "A háború folytatódik Kína egyesítéséért. Xin és a Fei Xin egység újabb hatalmas ütközetek előtt áll a stratégiai csaták sorozatában.",
-                anilistId: 162377
-            },
-            {
-                title: "Chitose-kun wa Ramune Bin no Naka",
-                ep: "9. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
-                url: "https://embed.indavideo.hu/player/video/4458f38699",
-                host: "Indavideo",
-                status: "Aktív",
-                desc: "Chitose Saku népszerű, okos és jóképű. De a tökéletes középiskolai élet mögött bonyolult kapcsolatok és érzelmek rejtőznek.",
-                anilistId: 140724
-            },
-            {
-                title: "Kakuriyo no Yadomeshi",
-                ep: "12. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1710/92408.jpg",
-                url: "https://embed.indavideo.hu/player/video/66847a9645",
-                host: "Indavideo",
-                status: "Befejezett",
-                desc: "Aoi képes látni a szellemeket. Amikor egy ogre elrabolja, a túlvilág egyik fogadójában kell munkába állnia, hogy megfizesse a tartozást.",
-                anilistId: 100500
-            }
-        ];
+        // --- SUPABASE KONFIGURÁCIÓ ---
+        const SB_URL = "https://xtyewbtzwlrvoobklkya.supabase.co";
+        const SB_KEY = "sb_publishable_Gbn4_UQrMgAkkSNw4vUWkg_Lvg7gAWO";
+
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        // Global animeData is now primarily from script.js, but we can extend it
+        if (typeof animeData === 'undefined') {
+            var animeData = [];
+        }
 
         const grid = document.getElementById('animeGrid');
         const modal = document.getElementById('videoModal');
@@ -608,24 +578,44 @@ DOCTYPE html>
         const video = document.getElementById('videoNative');
         const searchInput = document.getElementById('searchInput');
 
-        function renderGrid(data) {
-            console.log("Grid render:", data.length);
-            if (!data || data.length === 0) {
-                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:var(--muted);">Nincs találat.</div>';
-                return;
+        async function loadData() {
+            // Uncomment to use Supabase instead of local file
+            /*
+            console.log("Adatok lekérése a Supabase-ből...");
+            try {
+                const { data, error } = await _supabase
+                    .from('anime')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    animeData = data;
+                    renderGrid(animeData);
+                    updateHero();
+                }
+            } catch (error) {
+                console.error("Supabase hiba:", error);
             }
+            */
+            // For now, we rely on script.js. 
+            // If script.js ran, animeData is already populated and initGrid likely ran.
+        }
+
+        function renderGrid(data) {
             grid.innerHTML = '';
             data.forEach(a => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="card-badge">${a.status}</div>
+                    <div class="card-badge">${a.status || 'Aktív'}</div>
                     <img src="${a.img}" alt="${a.title}" onerror="this.src='https://via.placeholder.com/320x450/121225/ffffff?text=Kép+Hiba'">
                     <div class="card-info">
                         <h3 class="card-title" title="${a.title}">${a.title}</h3>
                         <div class="card-meta">
                             <span>${a.ep}</span>
-                            <span class="badge-host">${a.host}</span>
+                            <span class="badge-host">${a.host || 'Videó'}</span>
                         </div>
                     </div>
                 `;
@@ -634,61 +624,42 @@ DOCTYPE html>
             });
         }
 
-        function playPlayer(url) {
-            if (!url || url.includes("XXXXXX")) {
+        // Global Play Function
+        window.playPlayer = function (url) {
+            if (!url) {
                 alert("Ez a videó még nem elérhető!");
                 return;
             }
             iframe.style.display = 'none'; iframe.src = "";
             video.style.display = 'none'; video.pause(); video.src = "";
+
+            // Check for Indavideo
             if (url.includes('indavideo.hu')) {
                 iframe.style.display = 'block'; iframe.src = url;
-            } else {
-                video.style.display = 'block'; video.src = url; video.play();
             }
+            // Fallback for MP4 or internal files
+            else {
+                video.style.display = 'block'; video.src = url;
+                video.play().catch(e => console.log("Autoplay blocked:", e));
+            }
+
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
 
-        function stopPlayer() {
+        window.stopPlayer = function () {
             iframe.src = ""; video.pause(); video.src = "";
             modal.classList.remove('open');
             document.body.style.overflow = '';
         }
 
-        function updateHero() {
-            const main = animeData[0];
+        // Allow script.js to update hero
+        window.updateHeroLocal = function (main) {
             document.getElementById('heroPlayBtn').onclick = () => playPlayer(main.url);
-
-            // Magyar leírás használata az adatokból
             document.getElementById("heroTitle").innerHTML = `<span>${main.title}</span>`;
-            document.getElementById("heroDesc").innerText = main.desc;
+            document.getElementById("heroDesc").innerText = main.ep || "Nézd meg a legújabb részt!";
             document.getElementById("heroBg").style.backgroundImage = `url(${main.img})`;
-
-            // Csak a nagyfelbontású háttérképet próbáljuk meg lekérni, a leírást békén hagyjuk
-            fetch("https://graphql.anilist.co", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    query: `query($id:Int){Media(id:$id){bannerImage coverImage{extraLarge}}}`,
-                    variables: { id: main.anilistId }
-                })
-            })
-                .then(r => r.json())
-                .then(d => {
-                    const a = d.data?.Media;
-                    if (!a) return;
-                    const bg = a.bannerImage || a.coverImage.extraLarge;
-                    if (bg) document.getElementById("heroBg").style.backgroundImage = `url(${bg})`;
-                })
-                .catch(e => console.error("API error:", e));
         }
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = animeData.filter(a => a.title.toLowerCase().includes(term));
-            renderGrid(filtered);
-        });
 
         function filterBy(k, v) {
             const filtered = animeData.filter(a => a[k] === v);
@@ -697,11 +668,9 @@ DOCTYPE html>
 
         window.onclick = (e) => { if (e.target === modal) stopPlayer(); };
 
-        window.onload = () => {
-            updateHero();
-            renderGrid(animeData);
-        };
+        // We do NOT overwrite onload if we want script.js to work alongside.
+        // script.js uses DOMContentLoaded.
     </script>
+    <script src="script.js"></script>
 </body>
 
-</html>
