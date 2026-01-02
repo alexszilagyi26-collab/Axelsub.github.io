@@ -573,25 +573,25 @@
                 title: "Yusha Party wo Odasareta Kiyoubinbou",
                 ep: "1. rész",
                 img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
-                url: "https://cold1.gofile.io/download/web/99aec094-b541-4f00-a9e4-677fbbf70fc0/Yusha%20Party%20wo%20Oidasareta%20Kiyoubinbou%201.resz.mp4"
+                url: "https://pixeldrain.com/api/file/QWAuhznR"
             },
             {
                 title: "Kingdom",
                 ep: "6. évad 13. rész",
-                img: "https://cdn.myanimelist.net/images/anime/1370/124186.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+                img: "kingdom_poster.jpg",
+                url: "http://indavideo.hu/video/Kingdom_6_evad_13resz_Magyar_Felirattal"
             },
             {
                 title: "Chitose-kun wa Ramune Bin no Naka",
                 ep: "9. rész",
                 img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+                url: "https://auto.indavideo.hu/video/Chitose-kun_wa_Ramune_Bin_no_Naka_9resz"
             },
             {
                 title: "Kakuriyo no Yadomeshi",
                 ep: "12. rész",
                 img: "https://cdn.myanimelist.net/images/anime/1710/92408.jpg",
-                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+                url: "http://auto.indavideo.hu/video/i_-_12Resz"
             }
         ];
 
@@ -723,7 +723,35 @@
         window.onclick = (e) => { if (e.target === modal) stopPlayer(); };
 
         // Start
-        window.onload = loadData;
+        window.onload = () => {
+            loadData();
+            startHeroSlider();
+        };
+
+        // Hero Slider Logic
+        let currentHeroIndex = 0;
+        let heroInterval;
+
+        function startHeroSlider() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (animeData.length === 0) return;
+                currentHeroIndex = (currentHeroIndex + 1) % animeData.length;
+                updateHeroLocal(animeData[currentHeroIndex]);
+            }, 5000); // 5 seconds
+        }
+
+        // Stop slider when user interacts or video plays
+        function stopHeroSlider() {
+            if (heroInterval) clearInterval(heroInterval);
+        }
+
+        // Modify playPlayer to stop slider
+        const originalPlayPlayer = window.playPlayer;
+        window.playPlayer = function (url) {
+            stopHeroSlider();
+            originalPlayPlayer(url);
+        }
     </script>
 </body>
 
