@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hu">
 
@@ -34,12 +35,6 @@
             color: var(--text);
             overflow-x: hidden;
             line-height: 1.6;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: 0.3s;
         }
 
         /* Scrollbar */
@@ -154,6 +149,7 @@
             padding: 0.8rem 1.5rem;
             color: var(--muted);
             font-size: 0.95rem;
+            text-decoration: none;
         }
 
         .dropdown-menu a:hover {
@@ -292,7 +288,7 @@
             position: relative;
             cursor: pointer;
             border: 1px solid var(--border);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s;
         }
 
         .card:hover {
@@ -308,10 +304,6 @@
             transition: 0.5s;
         }
 
-        .card:hover img {
-            transform: scale(1.05);
-        }
-
         .card-info {
             padding: 1.5rem;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
@@ -321,19 +313,31 @@
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 5px;
         }
 
-        .card-ep {
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.8rem;
             color: var(--primary);
             font-weight: 600;
         }
 
-        /* Custom Modal Player */
+        .badge-host {
+            background: rgba(0, 243, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 5px;
+            color: var(--primary);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            font-size: 0.7rem;
+        }
+
+        /* Modal Player UI */
         .modal {
             position: fixed;
             inset: 0;
@@ -361,11 +365,20 @@
             border: 1px solid var(--border);
         }
 
+        /* Iframe version (Indavideo) */
         .player-wrap iframe {
             width: 100%;
             aspect-ratio: 16/9;
             border: none;
-            display: block;
+            display: none;
+        }
+
+        /* Native version (Archive.org / MP4) */
+        .player-wrap video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: none;
+            outline: none;
         }
 
         .close-player {
@@ -446,9 +459,8 @@
 <body>
 
     <nav class="nav">
-        <div class="logo" onclick="window.location.reload()">
+        <div class="logo">
             <img src="logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-            <!-- Fallback icon if logo.png missing -->
             AXEL<span>SUB</span>
         </div>
         <div class="nav-menu">
@@ -475,10 +487,10 @@
     <header class="hero">
         <div class="hero-bg" id="heroBg"></div>
         <div class="hero-content">
-            <div class="tag">Heti Kiemelt</div>
-            <h1 id="heroTitle">Betöltés...</h1>
+            <div class="tag">Kiemelt Akció</div>
+            <h1 id="heroTitle"><span>Betöltés...</span></h1>
             <p id="heroDesc">Animáció indítása...</p>
-            <button class="btn-play" onclick="playPlayer(animeData[0].url)">▶ Lejátszás</button>
+            <button class="btn-play" id="heroPlayBtn">▶ Lejátszás</button>
         </div>
     </header>
 
@@ -490,23 +502,27 @@
     <div class="modal" id="videoModal">
         <div class="player-wrap">
             <button class="close-player" onclick="stopPlayer()">✕</button>
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
+            <!-- Indavideo módhoz -->
+            <iframe id="videoIframe" src="" allowfullscreen></iframe>
+            <!-- Archive.org / Saját tárhely módhoz (AxelSub Player) -->
+            <video id="videoNative" controls controlsList="nodownload"></video>
         </div>
     </div>
 
     <footer class="footer">
-        <div class="logo" style="justify-content: center; margin-bottom: 20px;">AXEL<span>SUB</span></div>
         <p>&copy; 2026 AxelSub Official - Minden jog fenntartva.</p>
     </footer>
 
     <script>
         // --- ADATOK ---
+        // Ha Archive.org linket használsz, add meg a közvetlen .mp4 linket!
         const animeData = [
             {
                 title: "Yusha Party wo Odasareta Kiyoubinbou",
                 ep: "1. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176244-RO4VXQB6tT4j.jpg",
-                url: "https://embed.indavideo.hu/player/video/947ceabfe5",
+                url: "https://archive.org/download/your-video-id/video.mp4", // Példa Archive.org link
+                host: "Archive.org",
                 status: "Aktív",
                 anilistId: 172905
             },
@@ -515,6 +531,7 @@
                 ep: "13. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162377-7J0xOOe20Lw4.jpg",
                 url: "https://embed.indavideo.hu/player/video/f9e0a81177",
+                host: "Indavideo",
                 status: "Aktív",
                 anilistId: 162377
             },
@@ -523,6 +540,7 @@
                 ep: "9. rész",
                 img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
                 url: "https://embed.indavideo.hu/player/video/4458f38699",
+                host: "Indavideo",
                 status: "Aktív",
                 anilistId: 140724
             },
@@ -531,6 +549,7 @@
                 ep: "12. rész",
                 img: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100500-4vRsWSZ0Wuam.jpg",
                 url: "https://embed.indavideo.hu/player/video/66847a9645",
+                host: "Indavideo",
                 status: "Befejezett",
                 anilistId: 100500
             }
@@ -539,7 +558,8 @@
         // --- LOGIKA ---
         const grid = document.getElementById('animeGrid');
         const modal = document.getElementById('videoModal');
-        const frame = document.getElementById('videoFrame');
+        const iframe = document.getElementById('videoIframe');
+        const video = document.getElementById('videoNative');
         const searchInput = document.getElementById('searchInput');
 
         function renderGrid(data) {
@@ -552,7 +572,10 @@
             <img src="${a.img}" alt="${a.title}">
             <div class="card-info">
                 <h3 class="card-title">${a.title}</h3>
-                <span class="card-ep">${a.ep}</span>
+                <div class="card-meta">
+                    <span>${a.ep}</span>
+                    <span class="badge-host">${a.host}</span>
+                </div>
             </div>
         `;
                 card.onclick = () => playPlayer(a.url);
@@ -565,21 +588,42 @@
                 alert("Ez a videó még nem elérhető!");
                 return;
             }
-            // Az 'embed.indavideo.hu' a kulcs ahhoz, hogy a weboldalon belül maradjon a lejátszó.
-            frame.src = url;
+
+            // Reset players
+            iframe.style.display = 'none';
+            iframe.src = "";
+            video.style.display = 'none';
+            video.pause();
+            video.src = "";
+
+            // Kijelöljük a lejátszót a link formátuma alapján
+            if (url.includes('indavideo.hu')) {
+                iframe.style.display = 'block';
+                iframe.src = url;
+            } else {
+                // Minden más linket (pl .mp4) a saját AxelSub lejátszónkkal indítunk
+                video.style.display = 'block';
+                video.src = url;
+                video.play();
+            }
+
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
 
         function stopPlayer() {
-            frame.src = "";
+            iframe.src = "";
+            video.pause();
+            video.src = "";
             modal.classList.remove('open');
             document.body.style.overflow = '';
         }
 
-        // Hero tartalom lekérése
+        // Hero frissítése
         function updateHero() {
             const main = animeData[0];
+            document.getElementById('heroPlayBtn').onclick = () => playPlayer(main.url);
+
             fetch("https://graphql.anilist.co", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -594,10 +638,6 @@
                     document.getElementById("heroTitle").innerHTML = `<span>${a.title.english || a.title.romaji}</span>`;
                     document.getElementById("heroDesc").innerText = a.description?.replace(/<[^>]*>/g, "").split(".")[0] + "." || "Kezdd el nézni most!";
                     if (a.bannerImage) document.getElementById("heroBg").style.backgroundImage = `url(${a.bannerImage})`;
-                })
-                .catch(() => {
-                    document.getElementById("heroTitle").innerText = main.title;
-                    document.getElementById("heroDesc").innerText = "Új rész elérhető!";
                 });
         }
 
@@ -612,10 +652,7 @@
             renderGrid(filtered);
         }
 
-        // Bezárás kattintásra a modálon kívül
         window.onclick = (e) => { if (e.target === modal) stopPlayer(); };
-
-        // Kezdés
         updateHero();
         renderGrid(animeData);
     </script>
