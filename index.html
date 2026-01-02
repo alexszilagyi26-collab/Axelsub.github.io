@@ -567,10 +567,33 @@
 
         const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        // Global animeData is now primarily from script.js, but we can extend it
-        if (typeof animeData === 'undefined') {
-            var animeData = [];
-        }
+        // --- HELYI ADATOK (Script.js merge) ---
+        const animeData = [
+            {
+                title: "Yusha Party wo Odasareta Kiyoubinbou",
+                ep: "1. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1506/138982.jpg",
+                url: "https://cold1.gofile.io/download/web/99aec094-b541-4f00-a9e4-677fbbf70fc0/Yusha%20Party%20wo%20Oidasareta%20Kiyoubinbou%201.resz.mp4"
+            },
+            {
+                title: "Kingdom",
+                ep: "6. évad 13. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1370/124186.jpg",
+                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+            },
+            {
+                title: "Chitose-kun wa Ramune Bin no Naka",
+                ep: "9. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
+                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+            },
+            {
+                title: "Kakuriyo no Yadomeshi",
+                ep: "12. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1710/92408.jpg",
+                url: "https://embed.indavideo.hu/player/video/XXXXXX" // Cseréld ki a valódi URL-re
+            }
+        ];
 
         const grid = document.getElementById('animeGrid');
         const modal = document.getElementById('videoModal');
@@ -599,8 +622,11 @@
                 console.error("Supabase hiba:", error);
             }
             */
-            // For now, we rely on script.js. 
-            // If script.js ran, animeData is already populated and initGrid likely ran.
+            // HELYI ADATOK HASZNÁLATA
+            if (animeData.length > 0) {
+                renderGrid(animeData);
+                updateHeroLocal(animeData[0]);
+            }
         }
 
         function renderGrid(data) {
@@ -609,7 +635,7 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="card-badge">${a.status || 'Aktív'}</div>
+                    <div class="card-badge">${a.status || 'ÚJ'}</div>
                     <img src="${a.img}" alt="${a.title}" onerror="this.src='https://via.placeholder.com/320x450/121225/ffffff?text=Kép+Hiba'">
                     <div class="card-info">
                         <h3 class="card-title" title="${a.title}">${a.title}</h3>
@@ -626,8 +652,8 @@
 
         // Global Play Function
         window.playPlayer = function (url) {
-            if (!url) {
-                alert("Ez a videó még nem elérhető!");
+            if (!url || url.includes('XXXXXX')) {
+                alert("Ez a videó még nem elérhető! (URL: " + url + ")");
                 return;
             }
             iframe.style.display = 'none'; iframe.src = "";
@@ -655,10 +681,31 @@
 
         // Allow script.js to update hero
         window.updateHeroLocal = function (main) {
+            if (!main) return;
             document.getElementById('heroPlayBtn').onclick = () => playPlayer(main.url);
             document.getElementById("heroTitle").innerHTML = `<span>${main.title}</span>`;
             document.getElementById("heroDesc").innerText = main.ep || "Nézd meg a legújabb részt!";
             document.getElementById("heroBg").style.backgroundImage = `url(${main.img})`;
+
+            // Opcionális Anilist háttérlekérdezés (ha van ID)
+            if (main.anilist_id) {
+                fetch("https://graphql.anilist.co", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        query: `query($id:Int){Media(id:$id){bannerImage coverImage{extraLarge}}}`,
+                        variables: { id: parseInt(main.anilist_id) }
+                    })
+                })
+                    .then(r => r.json())
+                    .then(d => {
+                        const a = d.data?.Media;
+                        if (!a) return;
+                        const bg = a.bannerImage || a.coverImage.extraLarge;
+                        if (bg) document.getElementById("heroBg").style.backgroundImage = `url(${bg})`;
+                    })
+                    .catch(e => console.error("AniList API error:", e));
+            }
         }
 
         function filterBy(k, v) {
@@ -666,11 +713,18 @@
             renderGrid(filtered);
         }
 
+        // Kereső funkció
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = animeData.filter(a => a.title.toLowerCase().includes(term));
+            renderGrid(filtered);
+        });
+
         window.onclick = (e) => { if (e.target === modal) stopPlayer(); };
 
-        // We do NOT overwrite onload if we want script.js to work alongside.
-        // script.js uses DOMContentLoaded.
+        // Start
+        window.onload = loadData;
     </script>
-    <script src="script.js"></script>
 </body>
 
+</html>
