@@ -573,7 +573,721 @@
             {
                 title: "Yusha Party wo Oidasareta Kiyoubinbou",
                 ep: "1. rész",
-                img: "https://voe.sx/cache/ubbamlgb5dkn_storyboard_L1.jpg",
+                img: "<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxelSub - Anime Stream</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050510;
+            --card: #121225;
+            --primary: #00f3ff;
+            --accent: #ff0055;
+            --text: #fff;
+            --muted: #a0a0b0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(5, 5, 16, 0.96);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--card);
+            border-radius: 4px;
+            border: 2px solid var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Navbar */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            font-weight: 900;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-link,
+        .dropdown-btn {
+            color: var(--muted);
+            font-weight: 600;
+            padding: 0.6rem 1.1rem;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: 8px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active,
+        .dropdown-btn:hover {
+            color: var(--text);
+            background: var(--glass);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(18, 18, 37, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            min-width: 170px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1.2rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--glass);
+            color: var(--primary);
+            padding-left: 1.5rem;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            background: var(--glass);
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            gap: 0.6rem;
+            margin-left: 1rem;
+            transition: 0.3s;
+        }
+
+        .search:focus-within {
+            border-color: var(--primary);
+            width: 220px;
+        }
+
+        .search input {
+            background: none;
+            border: none;
+            color: var(--text);
+            outline: none;
+            width: 130px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 5% 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 100%;
+            background-position: center;
+            background-size: cover;
+            opacity: 0.4;
+            z-index: 0;
+            mask-image: linear-gradient(to right, transparent, black 60%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 60%);
+            transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .btn-play {
+            padding: 1.1rem 2.8rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: var(--primary);
+            color: #000;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-play:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.6);
+        }
+
+        /* Grid */
+        .container {
+            padding: 4rem 5%;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: 0.4s;
+            height: 320px;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.7s;
+        }
+
+        .card:hover img {
+            transform: scale(1.1) brightness(0.7);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(5, 5, 16, 0.85);
+            backdrop-filter: blur(5px);
+            padding: 0.4rem 0.8rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            z-index: 5;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .card-info {
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(5, 5, 16, 1) 35%, transparent);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .badge-host {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 7px;
+            border-radius: 5px;
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.99);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal.open {
+            display: flex;
+            animation: fadeInModal 0.4s ease;
+        }
+
+        .player-wrap {
+            width: 95%;
+            max-width: 1200px;
+            position: relative;
+            border-radius: 24px;
+            background: #000;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 120px rgba(0, 243, 255, 0.2);
+        }
+
+        .player-wrap iframe,
+        .player-wrap video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            display: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            width: 45px;
+            height: 45px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 900;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .footer {
+            padding: 4rem 5%;
+            background: #03030b;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .hero {
+                min-height: 60vh;
+                padding-top: 100px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-bg {
+                width: 100%;
+                opacity: 0.3;
+                mask-image: none;
+                -webkit-mask-image: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="logo" onclick="window.location.reload()">
+            <div class="logo-box" id="logoBox">
+                <img src="images/logo.png" id="logoImg"
+                    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block'">
+                <div id="logoFallback" style="display:none; font-size:2rem;">🌐</div>
+            </div>
+            AXEL<span>SUB</span>
+        </div>
+        <div class="nav-menu">
+            <a href="#" class="nav-link active" onclick="location.reload()">Kezdőlap</a>
+            <div class="dropdown">
+                <button class="dropdown-btn">Anime ▾</button>
+                <div class="dropdown-menu">
+                    <a href="#" onclick="filterBy('status', 'Aktív')">Aktív</a>
+                    <a href="#" onclick="filterBy('status', 'Tervezett')">Tervezett</a>
+                    <a href="#" onclick="filterBy('status', 'Befejezett')">Befejezett</a>
+                </div>
+            </div>
+            <a href="#" class="nav-link">Manga</a>
+        </div>
+        <div class="search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                style="opacity:0.6">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input type="text" placeholder="Keresés..." id="searchInput">
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-content">
+            <div class="tag">Kiemelt Akció</div>
+            <h1 id="heroTitle"><span>Betöltés...</span></h1>
+            <p id="heroDesc">Az adatok betöltése folyamatban...</p>
+            <button class="btn-play" id="heroPlayBtn">▶ Lejátszás</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title"><span>🔥</span> Népszerű Sorozatok</h2>
+        <div class="grid" id="animeGrid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--muted);">Animációk
+                betöltése...</div>
+        </div>
+    </div>
+
+    <div class="modal" id="videoModal">
+        <div class="player-wrap">
+            <button class="close-btn" onclick="stopPlayer()">✕</button>
+            <iframe id="videoIframe" src="" allowfullscreen scrolling="no" frameborder="0"></iframe>
+            <video id="videoNative" controls controlsList="nodownload" crossorigin="anonymous"></video>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 AxelSub Official - Minden jog fenntartva.</p>
+    </footer>
+
+    <script>
+        // --- HELYI ADATOK ---
+        const animeData = [
+            {
+                title: "Yusha Party wo Oidasareta Kiyoubinbou",
+                ep: "1. rész",
+                img: "https://myanimelist.net/anime/61128/Yuusha_Party_wo_Oidasareta_Kiyoubinbou/pics",
+                url: "https://voe.sx/e/ubbamlgb5dkn",
+                host: "VOE"
+            },
+            {
+                title: "Kingdom",
+                ep: "6. évad 13. rész",
+                img: "https://via.placeholder.com/320x450?text=Kingdom",
+                url: "https://embed.indavideo.hu/player/video/f9e0a81177",
+                host: "Indavideo"
+            },
+            {
+                title: "Chitose-kun wa Ramune Bin no Naka",
+                ep: "9. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1252/140724.jpg",
+                url: "https://auto.indavideo.hu/video/Chitose-kun_wa_Ramune_Bin_no_Naka_9resz",
+                host: "Indavideo"
+            },
+            {
+                title: "Kakuriyo no Yadomeshi",
+                ep: "12. rész",
+                img: "https://cdn.myanimelist.net/images/anime/1710/92408.jpg",
+                url: "http://auto.indavideo.hu/video/i_-_12Resz",
+                host: "Indavideo"
+            }
+        ];
+
+        const grid = document.getElementById('animeGrid');
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('videoIframe');
+        const video = document.getElementById('videoNative');
+        const searchInput = document.getElementById('searchInput');
+
+        let currentHeroIndex = 0;
+        let heroInterval;
+
+        function loadData() {
+            if (animeData.length > 0) {
+                renderGrid(animeData);
+                updateHeroLocal(animeData[0]);
+                startHeroSlider();
+            }
+        }
+
+        function renderGrid(data) {
+            grid.innerHTML = '';
+            data.forEach(a => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-badge">${a.status || 'ÚJ'}</div>
+                    <img src="${a.img}" alt="${a.title}" onerror="this.src='https://via.placeholder.com/320x450/121225/ffffff?text=Kép+Hiba'">
+                    <div class="card-info">
+                        <h3 class="card-title" title="${a.title}">${a.title}</h3>
+                        <div class="card-meta">
+                            <span>${a.ep}</span>
+                            <span class="badge-host">${a.host || 'Videó'}</span>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => playPlayer(a.url);
+                grid.appendChild(card);
+            });
+        }
+
+        window.playPlayer = function (url) {
+            if (!url) return;
+            stopHeroSlider();
+
+            iframe.style.display = 'none'; iframe.src = "";
+            video.style.display = 'none'; video.pause(); video.src = "";
+
+            if (url.includes('indavideo.hu') || url.includes('voe.sx')) {
+                let embedUrl = url;
+                if (url.includes('indavideo.hu') && !url.includes('embed.indavideo.hu')) {
+                    embedUrl = url.replace('indavideo.hu/video/', 'embed.indavideo.hu/player/video/');
+                }
+
+                // VOE esetén biztosítjuk az /e/ (embed) formátumot, ha még nincs ott
+                if (url.includes('voe.sx') && !url.includes('/e/')) {
+                    embedUrl = url.replace('voe.sx/', 'voe.sx/e/');
+                } else if (url.includes('voe.sx')) {
+                    embedUrl = url;
+                }
+
+                iframe.style.display = 'block'; iframe.src = embedUrl;
+            } else {
+                video.style.display = 'block'; video.src = url;
+                video.play().catch(e => console.log("Autoplay blocked:", e));
+            }
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.stopPlayer = function () {
+            iframe.src = ""; video.pause(); video.src = "";
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            startHeroSlider();
+        }
+
+        window.updateHeroLocal = function (main) {
+            if (!main) return;
+            const titleEl = document.getElementById("heroTitle");
+            const descEl = document.getElementById("heroDesc");
+            const bgEl = document.getElementById("heroBg");
+            const playBtn = document.getElementById('heroPlayBtn');
+
+            if (playBtn) playBtn.onclick = () => playPlayer(main.url);
+            if (titleEl) titleEl.innerHTML = `<span>${main.title}</span>`;
+            if (descEl) descEl.innerText = main.ep;
+            if (bgEl) bgEl.style.backgroundImage = `url(${main.img})`;
+        }
+
+        function startHeroSlider() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (animeData.length === 0) return;
+                currentHeroIndex = (currentHeroIndex + 1) % animeData.length;
+                updateHeroLocal(animeData[currentHeroIndex]);
+            }, 5000);
+        }
+
+        function stopHeroSlider() {
+            if (heroInterval) clearInterval(heroInterval);
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = animeData.filter(a => a.title.toLowerCase().includes(term));
+            renderGrid(filtered);
+        });
+
+        window.onclick = (e) => { if (e.target === modal) stopPlayer(); };
+        window.onload = loadData;
+    </script>
+</body>
+
+</html>",
                 url: "https://voe.sx/e/ubbamlgb5dkn",
                 host: "VOE"
             },
@@ -713,3 +1427,4 @@
 </body>
 
 </html>
+
